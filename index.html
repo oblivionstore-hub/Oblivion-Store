@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Oblivion Store - Official Minecraft Server Webstore</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(12px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes floatLogo {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-8px) rotate(2deg); }
+        }
+        .animate-fade {
+            animation: fadeIn 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+        .floating-logo {
+            animation: floatLogo 3.5s ease-in-out infinite;
+        }
+        .glass-panel {
+            background: rgba(15, 23, 42, 0.85);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(99, 102, 241, 0.2);
+        }
+        .premium-glow {
+            box-shadow: 0 0 40px -5px rgba(99, 102, 241, 0.35);
+        }
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: #020617; }
+        ::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 9999px; }
+    </style>
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col pb-20 selection:bg-indigo-500 selection:text-slate-950">
+
+    <!-- HEADER / BANNER UTAMA TOKO -->
+    <header class="relative bg-gradient-to-b from-indigo-950 via-slate-900 to-slate-950 pt-10 pb-10 px-4 border-b border-indigo-500/20 shadow-2xl">
+        <div class="container mx-auto max-w-4xl text-center space-y-4">
+            
+            <!-- Logo Melayang Bergerak -->
+            <div class="inline-flex items-center justify-center bg-gradient-to-br from-indigo-500 to-purple-600 w-20 h-20 rounded-3xl shadow-2xl shadow-indigo-500/50 text-white text-3xl font-black floating-logo select-none">
+                <i class="fa-solid fa-cube"></i>
+            </div>
+
+            <!-- Nama Toko -->
+            <h1 class="text-2xl sm:text-4xl font-black tracking-wider bg-gradient-to-r from-white via-slate-100 to-indigo-400 bg-clip-text text-transparent">
+                OBLIVION STORE
+            </h1>
+
+            <!-- Deskripsi Toko -->
+            <p class="text-xs sm:text-sm text-slate-300 max-w-xl mx-auto leading-relaxed">
+                Webstore resmi untuk kebutuhan server Minecraft Oblivion. Tersedia Top-Up Money, List Rank eksklusif, Realm & Marketplace Pass, serta Layanan Setup Server profesional.
+            </p>
+
+            <!-- Domain Pill -->
+            <div class="pt-1">
+                <span class="inline-flex items-center space-x-1.5 bg-slate-900/90 border border-slate-800 px-4 py-1.5 rounded-full text-[11px] text-indigo-400 font-mono shadow-inner">
+                    <i class="fa-solid fa-globe"></i><span>store.oblivionsmp.my.id</span>
+                </span>
+            </div>
+        </div>
+    </header>
+
+    <!-- KONTEN UTAMA STORE -->
+    <main class="container mx-auto p-4 sm:p-6 flex-grow space-y-6 max-w-4xl">
+
+        <!-- 3 KOTAK FITUR KEUNGGULAN -->
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            <div class="glass-panel p-4 rounded-2xl flex items-center space-x-3.5 shadow-lg">
+                <div class="bg-indigo-500/10 text-indigo-400 w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 text-base">
+                    <i class="fa-solid fa-bolt"></i>
+                </div>
+                <div>
+                    <h4 class="font-black text-xs text-slate-100">Proses Cepat</h4>
+                    <p class="text-[10px] text-slate-400 mt-0.5">Pesanan diproses setelah pembayaran.</p>
+                </div>
+            </div>
+
+            <div class="glass-panel p-4 rounded-2xl flex items-center space-x-3.5 shadow-lg">
+                <div class="bg-indigo-500/10 text-indigo-400 w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 text-base">
+                    <i class="fa-solid fa-wallet"></i>
+                </div>
+                <div>
+                    <h4 class="font-black text-xs text-slate-100">Pembayaran Mudah</h4>
+                    <p class="text-[10px] text-slate-400 mt-0.5">QRIS All Payment (OVO, DANA, BCA, dll).</p>
+                </div>
+            </div>
+
+            <a href="https://discord.gg/gMfqtubvQ" target="_blank" class="glass-panel p-4 rounded-2xl flex items-center space-x-3.5 shadow-lg hover:border-indigo-500 transition cursor-pointer group">
+                <div class="bg-indigo-500/10 text-indigo-400 w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 text-base group-hover:scale-110 transition">
+                    <i class="fa-brands fa-discord"></i>
+                </div>
+                <div>
+                    <h4 class="font-black text-xs text-slate-100">Order via Discord Ticket</h4>
+                    <p class="text-[10px] text-slate-400 mt-0.5">Buka ticket untuk bantuan & konfirmasi.</p>
+                </div>
+            </a>
+        </div>
+
+        <!-- TAB KATEGORI & PENCARIAN -->
+        <div class="space-y-4 pt-2">
+            <div class="flex space-x-2 overflow-x-auto pb-1 text-xs scrollbar-none w-full">
+                <button onclick="setCategory('Semua', this)" class="cat-btn bg-indigo-600 text-white font-black px-4 py-2.5 rounded-xl whitespace-nowrap transition shadow-md active:scale-95">Semua</button>
+                <button onclick="setCategory('List Rank', this)" class="cat-btn bg-slate-900 text-slate-400 border border-slate-800 px-4 py-2.5 rounded-xl whitespace-nowrap transition active:scale-95">List Rank</button>
+                <button onclick="setCategory('Top-Up Money', this)" class="cat-btn bg-slate-900 text-slate-400 border border-slate-800 px-4 py-2.5 rounded-xl whitespace-nowrap transition active:scale-95">Top-Up Money</button>
+                <button onclick="setCategory('Layanan', this)" class="cat-btn bg-slate-900 text-slate-400 border border-slate-800 px-4 py-2.5 rounded-xl whitespace-nowrap transition active:scale-95">Layanan Server</button>
+            </div>
+
+            <div class="relative">
+                <i class="fa-solid fa-magnifying-glass absolute left-4 top-3.5 text-slate-400 text-xs"></i>
+                <input type="text" id="search-input" oninput="filterProducts()" placeholder="Cari rank, money, atau layanan server..." class="w-full bg-slate-900 border border-slate-800 rounded-2xl pl-10 pr-4 py-3 text-xs focus:outline-none focus:border-indigo-500 text-slate-100 transition shadow-inner">
+            </div>
+        </div>
+
+        <!-- GRID PRODUK STORE -->
+        <div id="products-grid" class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
+            <!-- Render Otomatis via JS -->
+        </div>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="text-center py-6 text-slate-500 text-[10px] space-y-1">
+        <p>&copy; 2026 Oblivion Store. All Rights Reserved.</p>
+        <p>Official Minecraft Server Webstore</p>
+    </footer>
+
+    <!-- MODAL CHECKOUT / ISI NAMA & QRIS -->
+    <div id="checkout-modal" class="fixed inset-0 bg-slate-950/85 backdrop-blur-md hidden z-50 flex items-center justify-center p-4">
+        <div class="glass-panel w-full max-w-md rounded-3xl p-6 space-y-4 shadow-2xl animate-fade border border-indigo-500/30 max-h-[90vh] overflow-y-auto">
+            <div class="flex justify-between items-center border-b border-slate-800 pb-3">
+                <div class="flex items-center space-x-2">
+                    <span id="modal-cat" class="text-[10px] bg-indigo-500/20 text-indigo-400 px-3 py-1 rounded-xl font-black">Kategori</span>
+                    <h3 id="modal-title" class="font-black text-sm text-slate-100 truncate max-w-[200px]">Nama Produk</h3>
+                </div>
+                <button onclick="closeCheckoutModal()" class="text-slate-400 hover:text-white text-base active:scale-95"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+
+            <div class="space-y-3">
+                <div class="bg-slate-950 rounded-2xl overflow-hidden flex justify-center max-h-36 border border-slate-800">
+                    <img id="modal-img" src="" class="w-full object-contain max-h-36">
+                </div>
+                <p class="text-xs text-slate-300 leading-relaxed" id="modal-desc">Deskripsi produk...</p>
+                
+                <div class="bg-slate-950 border border-slate-800 p-3 rounded-xl flex justify-between items-center">
+                    <span class="text-xs text-slate-400 font-semibold">Harga Resmi:</span>
+                    <span id="modal-price" class="text-indigo-400 font-black text-sm">Rp 0</span>
+                </div>
+
+                <!-- Form Input Nama Minecraft -->
+                <div class="space-y-1.5 pt-1">
+                    <label class="block text-[10px] font-black uppercase text-slate-400">Username Minecraft Kamu</label>
+                    <input type="text" id="mc-username" required placeholder="Contoh: Steve_Gamer123" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 text-xs text-slate-100 outline-none focus:border-indigo-500">
+                </div>
+
+                <!-- Metode Pembayaran (QRIS All Payment) -->
+                <div class="space-y-1.5">
+                    <label class="block text-[10px] font-black uppercase text-slate-400">Metode Pembayaran</label>
+                    <div class="bg-slate-950 border border-indigo-500/40 p-3 rounded-xl flex items-center justify-between text-xs text-slate-200">
+                        <div class="flex items-center space-x-2">
+                            <i class="fa-solid fa-qrcode text-indigo-400 text-base"></i>
+                            <span class="font-bold">QRIS All Payment (BCA, DANA, OVO, GOPAY, QRIS)</span>
+                        </div>
+                        <span class="text-[10px] bg-indigo-500/20 text-indigo-400 px-2.5 py-0.5 rounded-full font-bold">Utama</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pt-2">
+                <button onclick="proceedToDiscordTicket()" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-black py-3.5 rounded-2xl text-xs transition flex items-center justify-center space-x-2 active:scale-95 shadow-lg shadow-indigo-600/30">
+                    <i class="fa-brands fa-discord text-base"></i><span>Lanjutkan ke Discord Ticket</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- SCRIPT DATA & INTERAKSI -->
+    <script>
+        const products = [
+            // LIST RANK
+            { id: 1, name: "MVP (Starter)", category: "List Rank", price: "Rp 15.000", desc: "Rank pemula starter di server Oblivion. Dapatkan kit mingguan khusus dan akses prefix chat keren.", img: "https://api.dicebear.com/7.x/identicon/svg?seed=mvp", available: true },
+            { id: 2, name: "MVP+", category: "List Rank", price: "Rp 25.000", desc: "Peningkatan dari MVP dengan tambahan hak istimewa teleport dan home lebih banyak.", img: "https://api.dicebear.com/7.x/identicon/svg?seed=mvpplus", available: true },
+            { id: 3, name: "VIP", category: "List Rank", price: "Rp 45.000", desc: "Rank VIP menengah dengan kit tempur tangguh serta fitur tambahan di economy server.", img: "https://api.dicebear.com/7.x/identicon/svg?seed=vip", available: true },
+            { id: 4, name: "VIP+ (Populer)", category: "List Rank", price: "Rp 55.000", desc: "🔥 Paling Populer! Rank favorit dengan fitur lengkap, akses command khusus, dan kit spesial.", img: "https://api.dicebear.com/7.x/identicon/svg?seed=vipplus", available: true },
+            { id: 5, name: "Premium+", category: "List Rank", price: "Rp 100.000", desc: "Rank tingkat tinggi dengan fasilitas penuh, slot khusus saat server penuh, dan prefix eksklusif.", img: "https://api.dicebear.com/7.x/identicon/svg?seed=premiumplus", available: true },
+            { id: 6, name: "Premium++", category: "List Rank", price: "Rp 200.000", desc: "Rank ultimate tertinggi di Oblivion! Nikmati seluruh akses fitur tanpa batas dan keistimewaan mutlak.", img: "https://api.dicebear.com/7.x/identicon/svg?seed=premiumplusplus", available: true },
+            
+            // RANK STAFF (TIDAK DIJUAL)
+            { id: 7, name: "Rank Owner", category: "List Rank", price: "TIDAK DIJUAL", desc: "Jabatan tertinggi pemegang kendali server. Tidak diperjualbelikan.", img: "https://api.dicebear.com/7.x/identicon/svg?seed=owner", available: false },
+            { id: 8, name: "Rank Manager", category: "List Rank", price: "TIDAK DIJUAL", desc: "Tim manajemen pengurus sistem server. Tidak diperjualbelikan.", img: "https://api.dicebear.com/7.x/identicon/svg?seed=manager", available: false },
+            { id: 9, name: "Rank Dev", category: "List Rank", price: "TIDAK DIJUAL", desc: "Tim developer pengembang plugin dan sistem server. Tidak diperjualbelikan.", img: "https://api.dicebear.com/7.x/identicon/svg?seed=dev", available: false },
+            { id: 10, name: "Rank Admin", category: "List Rank", price: "TIDAK DIJUAL", desc: "Staff pengawas dan penegak aturan in-game. Tidak diperjualbelikan.", img: "https://api.dicebear.com/7.x/identicon/svg?seed=admin", available: false },
+            { id: 11, name: "Rank Staff", category: "List Rank", price: "TIDAK DIJUAL", desc: "Moderator dan helper komunitas server. Tidak diperjualbelikan.", img: "https://api.dicebear.com/7.x/identicon/svg?seed=staff", available: false },
+
+            // TOP-UP MONEY
+            { id: 12, name: "100k Money", category: "Top-Up Money", price: "Rp 20.000", desc: "Tambahan saldo in-game sebanyak 100,000 money untuk belanja dan klaim plot.", img: "https://api.dicebear.com/7.x/identicon/svg?seed=money100k", available: true },
+            { id: 13, name: "200k Money", category: "Top-Up Money", price: "Rp 30.000", desc: "Saldo in-game sebanyak 200,000 money untuk mempercepat progres ekonomi kamu.", img: "https://api.dicebear.com/7.x/identicon/svg?seed=money200k", available: true },
+            { id: 14, name: "500k Money", category: "Top-Up Money", price: "Rp 50.000", desc: "Paket setengah juta (500,000 money) untuk modal bikin clan atau beli item sultan.", img: "https://api.dicebear.com/7.x/identicon/svg?seed=money500k", available: true },
+            { id: 15, name: "800k Money", category: "Top-Up Money", price: "Rp 75.000", desc: "Saldo besar 800,000 money untuk mendominasi pasar perdagangan di server.", img: "https://api.dicebear.com/7.x/identicon/svg?seed=money800k", available: true },
+            { id: 16, name: "1M Money", category: "Top-Up Money", price: "Rp 100.000", desc: "Paket Sultan 1 Juta Money! Jadi orang terkaya di server Oblivion seketika.", img: "https://api.dicebear.com/7.x/identicon/svg?seed=money1m", available: true },
+
+            // LAYANAN SERVER
+            { id: 17, name: "Realm Plus + Marketplace Pass (1 Bulan)", category: "Layanan", price: "Rp 50.000", desc: "Akses Realm Plus dan Marketplace Pass resmi durasi penuh selama 1 bulan.", img: "https://api.dicebear.com/7.x/identicon/svg?seed=realm", available: true },
+            { id: 18, name: "Setup Server Minecraft", category: "Layanan", price: "Diskusikan di Ticket", desc: "Jasa setup server Minecraft custom lengkap dari nol. Harga dibicarakan langsung dengan admin di ticket Discord.", img: "https://api.dicebear.com/7.x/identicon/svg?seed=setupserver", available: true },
+            { id: 19, name: "Setup Server Discord", category: "Layanan", price: "Diskusikan di Ticket", desc: "Jasa pembuatan & dekorasi server Discord rapi, bot, role, dan channel otomatis. Diskusi harga via ticket Discord.", img: "https://api.dicebear.com/7.x/identicon/svg?seed=setupdiscord", available: true }
+        ];
+
+        let currentCategory = 'Semua';
+        let currentOpenProduct = null;
+
+        renderProducts(products);
+
+        function renderProducts(list) {
+            const grid = document.getElementById('products-grid');
+            if (!grid) return;
+            if (list.length === 0) {
+                grid.innerHTML = `<div class="text-slate-500 text-xs italic glass-panel p-12 rounded-3xl text-center col-span-full shadow-inner">Tidak ada produk ditemukan.</div>`;
+                return;
+            }
+            grid.innerHTML = '';
+            list.forEach(p => {
+                let actionBtn = `<span class="bg-indigo-600 hover:bg-indigo-500 text-white font-black text-[10px] px-3.5 py-1.5 rounded-xl transition shadow">Beli / Order</span>`;
+                let clickAction = `onclick="openCheckoutModal(${p.id})"`;
+                let cardStyle = "cursor-pointer hover:border-indigo-500 active:scale-95 group";
+
+                if (!p.available) {
+                    actionBtn = `<span class="bg-slate-800 text-slate-500 font-bold text-[10px] px-3.5 py-1.5 rounded-xl cursor-not-allowed">Tidak Dijual</span>`;
+                    clickAction = "";
+                    cardStyle = "opacity-60 cursor-not-allowed border-dashed";
+                }
+
+                grid.innerHTML += `
+                    <div ${clickAction} class="glass-panel rounded-3xl overflow-hidden shadow-xl flex flex-col justify-between p-4 sm:p-5 space-y-4 transition ${cardStyle}">
+                        <div class="bg-slate-950 rounded-2xl overflow-hidden flex justify-center max-h-36 border border-slate-800">
+                            <img src="${p.img}" class="w-full object-contain max-h-36 group-hover:scale-105 transition">
+                        </div>
+                        <div class="space-y-1.5 flex-grow">
+                            <div class="flex justify-between items-center">
+                                <span class="text-[10px] bg-indigo-500/10 text-indigo-400 px-2.5 py-0.5 rounded-full font-bold">${p.category}</span>
+                            </div>
+                            <h3 class="font-black text-sm text-slate-100">${escapeHtml(p.name)}</h3>
+                            <p class="text-xs text-slate-400 line-clamp-2">${escapeHtml(p.desc)}</p>
+                        </div>
+                        <div class="pt-2 border-t border-slate-800/80 flex justify-between items-center">
+                            <span class="text-indigo-400 font-black text-xs">${escapeHtml(p.price)}</span>
+                            ${actionBtn}
+                        </div>
+                    </div>`;
+            });
+        }
+
+        function setCategory(cat, btn) {
+            currentCategory = cat;
+            document.querySelectorAll('.cat-btn').forEach(b => b.className = "cat-btn bg-slate-900 text-slate-400 border border-slate-800 px-4 py-2.5 rounded-xl whitespace-nowrap");
+            btn.className = "cat-btn bg-indigo-600 text-white font-black px-4 py-2.5 rounded-xl whitespace-nowrap shadow-md";
+            filterProducts();
+        }
+
+        function filterProducts() {
+            const kw = document.getElementById('search-input').value.toLowerCase();
+            const filtered = products.filter(p => (currentCategory === 'Semua' || p.category === currentCategory) && p.name.toLowerCase().includes(kw));
+            renderProducts(filtered);
+        }
+
+        function openCheckoutModal(id) {
+            const p = products.find(item => item.id === id);
+            if (!p || !p.available) return;
+            currentOpenProduct = p;
+
+            document.getElementById('modal-title').textContent = p.name;
+            document.getElementById('modal-cat').textContent = p.category;
+            document.getElementById('modal-img').src = p.img;
+            document.getElementById('modal-desc').textContent = p.desc;
+            document.getElementById('modal-price').textContent = p.price;
+            document.getElementById('mc-username').value = '';
+
+            document.getElementById('checkout-modal').classList.remove('hidden');
+        }
+
+        function closeCheckoutModal() {
+            document.getElementById('checkout-modal').classList.add('hidden');
+        }
+
+        function proceedToDiscordTicket() {
+            const mcName = document.getElementById('mc-username').value.trim();
+            if (!mcName) {
+                alert("⚠️ Mohon masukkan Username Minecraft kamu terlebih dahulu!");
+                document.getElementById('mc-username').focus();
+                return;
+            }
+
+            if (!currentOpenProduct) return;
+
+            // Format pesan atau arahan ke Discord Ticket
+            const discordInvite = "https://discord.gg/gMfqtubvQ"; // Ganti dengan link invite Discord server kamu
+            alert(`Halo ${mcName}! Pesanan "${currentOpenProduct.name}" (${currentOpenProduct.price}) berhasil dicatat.\n\nSelanjutnya kamu akan diarahkan ke Discord Server untuk konfirmasi pembayaran via QRIS All Payment di Ticket.`);
+            window.open(discordInvite, '_blank');
+            closeCheckoutModal();
+        }
+
+        function escapeHtml(str) {
+            return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+        }
+    </script>
+</body>
+</html>
