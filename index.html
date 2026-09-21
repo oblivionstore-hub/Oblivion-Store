@@ -1,187 +1,800 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>OBLIVION STORE</title>
-<script src="https://cdn.tailwindcss.com"></script>
-<style>
-@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&display=swap');
-body{font-family:'Space Grotesk',sans-serif;background:#060609}
-.glow:hover{box-shadow:0 0 25px rgba(168,85,247,0.4)}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>OBLIVION STORE - Minecraft Webstore</title>
+    <!-- Google Fonts & Font Awesome Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --bg-color: #121212;
+            --card-bg: #1e1e1e;
+            --card-inner: #f4f4f4;
+            --primary-red: #ff2a2a;
+            --dark-red: #cc0000;
+            --text-dark: #222222;
+            --text-light: #ffffff;
+            --gray-text: #aaaaaa;
+            --border-color: #333333;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        /* Mencegah seluruh halaman bisa digeser ke samping (Horizontal Scroll) */
+        html, body {
+            width: 100%;
+            max-width: 100%;
+            overflow-x: hidden;
+            background-color: var(--bg-color);
+            color: var(--text-light);
+            line-height: 1.5;
+        }
+
+        /* Top Header Navigation */
+        .top-bar {
+            background-color: #0a0a0a;
+            border-bottom: 2px solid var(--primary-red);
+            padding: 12px 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .logo-icon {
+            font-size: 22px;
+            color: var(--primary-red);
+        }
+
+        .logo-text {
+            font-size: 18px;
+            font-weight: 800;
+            letter-spacing: 0.5px;
+            color: var(--text-light);
+        }
+
+        .logo-text span {
+            color: var(--primary-red);
+        }
+
+        .btn-voucher {
+            background-color: var(--primary-red);
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            font-weight: 600;
+            font-size: 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            white-space: nowrap;
+        }
+
+        .btn-voucher:hover {
+            background-color: var(--dark-red);
+        }
+
+        /* Hero Banner */
+        .hero-banner {
+            background: linear-gradient(rgba(0,0,0,0.85), rgba(0,0,0,0.85)), url('https://images.unsplash.com/photo-1627856013091-fed6e4e30025?q=80&w=1200&auto=format&fit=crop') center/cover;
+            padding: 25px 15px;
+            text-align: center;
+            border-bottom: 1px solid var(--border-color);
+            width: 100%;
+        }
+
+        .hero-banner h1 {
+            font-size: 24px;
+            font-weight: 800;
+            margin-bottom: 5px;
+            text-transform: uppercase;
+        }
+
+        .hero-banner p {
+            color: var(--gray-text);
+            font-size: 12px;
+            max-width: 600px;
+            margin: 0 auto 10px auto;
+        }
+
+        .hero-banner .store-url {
+            display: inline-block;
+            background: rgba(255, 42, 42, 0.2);
+            color: var(--primary-red);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 12px;
+            border: 1px solid var(--primary-red);
+            word-break: break-all;
+        }
+
+        /* Main Container Layout */
+        .main-container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 0 15px;
+            display: grid;
+            grid-template-columns: 220px 1fr;
+            gap: 20px;
+        }
+
+        /* Sidebar / Filter Categories */
+        .sidebar {
+            background-color: #181818;
+            padding: 15px;
+            border-radius: 8px;
+            height: fit-content;
+            border: 1px solid var(--border-color);
+            width: 100%;
+        }
+
+        .sidebar h3 {
+            font-size: 14px;
+            text-transform: uppercase;
+            margin-bottom: 12px;
+            color: var(--text-light);
+            border-bottom: 2px solid var(--primary-red);
+            padding-bottom: 6px;
+        }
+
+        .category-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .category-btn {
+            width: 100%;
+            text-align: left;
+            background: none;
+            border: none;
+            color: var(--gray-text);
+            padding: 8px 10px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .category-btn:hover, .category-btn.active {
+            background-color: var(--primary-red);
+            color: white;
+        }
+
+        /* Content Area & Product Grid */
+        .content-area {
+            width: 100%;
+            min-width: 0; /* Mencegah overflow grid di flex/grid item */
+        }
+
+        .content-area h2 {
+            font-size: 18px;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            border-left: 4px solid var(--primary-red);
+            padding-left: 10px;
+        }
+
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 12px;
+            width: 100%;
+        }
+
+        /* Product Card */
+        .product-card {
+            background-color: var(--card-bg);
+            border-radius: 6px;
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.2s;
+            width: 100%;
+        }
+
+        .card-image-box {
+            background-color: var(--card-inner);
+            height: 100px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 45px;
+        }
+
+        .card-details {
+            padding: 10px;
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+            justify-content: space-between;
+        }
+
+        .product-title {
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--text-light);
+            text-transform: uppercase;
+            margin-bottom: 4px;
+            word-wrap: break-word;
+        }
+
+        .product-desc {
+            font-size: 11px;
+            color: var(--gray-text);
+            margin-bottom: 10px;
+            line-height: 1.3;
+        }
+
+        .custom-price-input {
+            width: 100%;
+            padding: 6px;
+            margin-bottom: 8px;
+            border-radius: 4px;
+            border: 1px solid var(--border-color);
+            background: #2b2b2b;
+            color: white;
+            font-size: 11px;
+        }
+
+        .card-action {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: auto;
+            gap: 5px;
+        }
+
+        .product-price {
+            background-color: var(--primary-red);
+            color: white;
+            padding: 5px 6px;
+            font-weight: 700;
+            font-size: 11px;
+            border-radius: 3px;
+            flex-grow: 1;
+            text-align: center;
+            white-space: nowrap;
+        }
+
+        .btn-buy {
+            background-color: #333333;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            cursor: pointer;
+            font-weight: 600;
+            border-radius: 3px;
+            transition: 0.3s;
+            font-size: 11px;
+            white-space: nowrap;
+        }
+
+        .btn-buy:hover {
+            background-color: #555555;
+        }
+
+        /* Modal / Pop-Up Styles */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            padding: 15px;
+        }
+
+        .modal-box {
+            background-color: #1a1a1a;
+            border: 2px solid var(--primary-red);
+            border-radius: 8px;
+            width: 100%;
+            max-width: 360px;
+            padding: 20px;
+            box-shadow: 0 0 20px rgba(255, 42, 42, 0.4);
+        }
+
+        .modal-header {
+            font-size: 16px;
+            font-weight: 700;
+            margin-bottom: 12px;
+            color: var(--text-light);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .close-btn {
+            cursor: pointer;
+            color: var(--gray-text);
+            font-size: 18px;
+        }
+
+        .modal-body {
+            margin-bottom: 15px;
+        }
+
+        .form-group {
+            margin-bottom: 12px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 12px;
+            color: var(--gray-text);
+            margin-bottom: 4px;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 8px;
+            background-color: #2b2b2b;
+            border: 1px solid var(--border-color);
+            color: white;
+            border-radius: 4px;
+            font-size: 13px;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary-red);
+        }
+
+        .btn-confirm {
+            width: 100%;
+            background-color: #25d366;
+            color: white;
+            border: none;
+            padding: 10px;
+            font-weight: 700;
+            font-size: 13px;
+            border-radius: 4px;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 6px;
+        }
+
+        /* Footer */
+        footer {
+            background-color: #0a0a0a;
+            border-top: 1px solid var(--border-color);
+            padding: 20px 15px;
+            text-align: center;
+            margin-top: 30px;
+            font-size: 11px;
+            color: var(--gray-text);
+            width: 100%;
+        }
+
+        footer strong {
+            color: var(--text-light);
+        }
+
+        /* PERBAIKAN KHUSUS TAMPILAN HP (MOBILE OPTIMIZATION) */
+        @media (max-width: 768px) {
+            .main-container {
+                grid-template-columns: 1fr; /* Ubah layout jadi 1 kolom ke bawah */
+                gap: 15px;
+                margin: 15px auto;
+                padding: 0 10px;
+            }
+
+            .sidebar {
+                padding: 10px;
+            }
+
+            .sidebar h3 {
+                font-size: 12px;
+                margin-bottom: 8px;
+            }
+
+            /* Menu Kategori di HP dibuat scrollable secara terisolasi tanpa menggeser body */
+            .category-list {
+                flex-direction: row;
+                overflow-x: auto;
+                white-space: nowrap;
+                padding-bottom: 5px;
+                -webkit-overflow-scrolling: touch;
+            }
+
+            .category-list::-webkit-scrollbar {
+                height: 3px;
+            }
+
+            .category-list::-webkit-scrollbar-thumb {
+                background: var(--primary-red);
+                border-radius: 10px;
+            }
+
+            .category-btn {
+                padding: 6px 12px;
+                font-size: 12px;
+                width: auto;
+            }
+
+            .product-grid {
+                /* Tampilan 2 Kolom Rapi di Layar HP */
+                grid-template-columns: repeat(2, 1fr);
+                gap: 10px;
+            }
+
+            .card-image-box {
+                height: 80px;
+                font-size: 35px;
+            }
+
+            .card-details {
+                padding: 8px;
+            }
+
+            .product-title {
+                font-size: 12px;
+            }
+
+            .product-desc {
+                font-size: 10px;
+                margin-bottom: 8px;
+            }
+
+            .product-price, .btn-buy {
+                font-size: 10px;
+                padding: 4px 6px;
+            }
+        }
+
+        /* Penyesuaian HP Layar Kecil (Dibawah 360px) */
+        @media (max-width: 360px) {
+            .product-grid {
+                grid-template-columns: 1fr; /* Jika layar terlalu kecil, tampilkan 1 kartu per baris */
+            }
+        }
+    </style>
 </head>
-<body class="text-white">
+<body>
 
-<!-- TOPBAR -->
-<div class="flex justify-between items-center px-5 py-4 border-b border-zinc-900 sticky top-0 bg-[#060609]/90 backdrop-blur z-40">
-  <div class="font-black text-xl tracking-widest">OBLIVION<span class="text-purple-500">.STORE</span></div>
-  <a href="#transfer" class="text-[11px] px-3 py-2 rounded-full bg-zinc-900 border border-zinc-800">TRANSFER RANK</a>
-</div>
-
-<div class="max-w-6xl mx-auto p-4 md:p-8">
-  <!-- TABS -->
-  <div class="flex gap-2 mb-6 overflow-x-auto">
-    <button onclick="switchCat('ranks')" id="tab-ranks" class="tab active px-5 py-2.5 rounded-full text-xs font-bold bg-purple-600 text-black">RANKS</button>
-    <button onclick="switchCat('money')" id="tab-money" class="tab px-5 py-2.5 rounded-full text-xs font-bold bg-zinc-900 border border-zinc-800 text-zinc-400">MONEY</button>
-    <button onclick="switchCat('key')" id="tab-key" class="tab px-5 py-2.5 rounded-full text-xs font-bold bg-zinc-900 border border-zinc-800 text-zinc-400">KEYS</button>
-  </div>
-
-  <!-- RANKS SECTION -->
-  <div id="sec-ranks" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-    <!-- Script will fill via JS biar rapi -->
-  </div>
-
-  <!-- MONEY SECTION -->
-  <div id="sec-money" class="hidden grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"></div>
-
-  <!-- KEY SECTION -->
-  <div id="sec-key" class="hidden grid grid-cols-1 sm:grid-cols-3 gap-4"></div>
-
-  <!-- TRANSFER RANK -->
-  <div id="transfer" class="mt-16 border border-purple-900/50 bg-gradient-to-b from-zinc-900/50 to-black rounded-[20px] p-6">
-    <h2 class="text-2xl font-black">TRANSFER RANK</h2>
-    <p class="text-xs text-zinc-500 mt-1">Pindahkan rank kamu ke player lain. Biaya admin gratis.</p>
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-3 mt-5">
-      <input id="t-from" placeholder="Nama Pemain Awal (Kamu)" class="bg-black border border-zinc-800 rounded-xl px-4 py-3 text-sm outline-none focus:border-purple-600">
-      <input id="t-to" placeholder="Transfer Ke Pemain" class="bg-black border border-zinc-800 rounded-xl px-4 py-3 text-sm outline-none focus:border-purple-600">
-      <select id="t-rank" class="bg-black border border-zinc-800 rounded-xl px-4 py-3 text-sm outline-none">
-        <option>VIPER - Rp 15.000</option>
-        <option>REVENANT - Rp 35.000</option>
-        <option>SPECTER - Rp 65.000</option>
-        <option>PHANTOM - Rp 90.000</option>
-        <option>OBLIVION - Rp 120.000</option>
-      </select>
-    </div>
-    <button onclick="doTransfer()" class="mt-4 w-full md:w-auto px-8 py-3 rounded-xl bg-purple-600 text-black font-bold text-sm">KONFIRMASI TRANSFER</button>
-  </div>
-</div>
-
-<!-- POPUP -->
-<div id="popup" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-[100] hidden items-center justify-center p-4">
-  <div class="bg-[#121218] border border-zinc-800 rounded-[20px] w-full max-w-sm p-6">
-    <div class="flex justify-between items-center">
-      <h3 id="pop-title" class="font-bold text-lg">Checkout</h3>
-      <button onclick="closePop()" class="w-8 h-8 rounded-full bg-zinc-900">✕</button>
-    </div>
-    <p id="pop-desc" class="text-xs text-zinc-500 mt-1">Isi data dengan benar</p>
-
-    <div class="mt-5 space-y-3">
-      <input id="mc-name" placeholder="Nama Minecraft Asli" class="w-full bg-black border border-zinc-800 rounded-xl px-4 py-3 text-sm outline-none focus:border-purple-600">
-      <div class="bg-black border border-zinc-800 rounded-xl px-4 py-3 flex justify-between items-center">
-        <span class="text-sm">Metode Pembayaran</span>
-        <span class="text-xs px-3 py-1 rounded-full bg-purple-600 text-black font-bold">QRIS ALL PAYMENT</span>
-      </div>
-      <div id="pop-qty-wrap" class="hidden">
-        <div class="flex justify-between items-center bg-black border border-zinc-800 rounded-xl px-4 py-3">
-          <span class="text-sm">Quantity</span>
-          <div class="flex items-center gap-3">
-            <button onclick="chgQty(-1)" class="w-7 h-7 rounded-full bg-zinc-800">-</button>
-            <span id="pop-qty" class="text-sm font-bold">1</span>
-            <button onclick="chgQty(1)" class="w-7 h-7 rounded-full bg-zinc-800">+</button>
-          </div>
+    <!-- Top Header Navigation -->
+    <header class="top-bar">
+        <div class="logo-container">
+            <i class="fa-solid fa-cube logo-icon"></i>
+            <div class="logo-text">OBLIVION <span>STORE</span></div>
         </div>
-      </div>
-      <div class="flex justify-between text-sm pt-2">
-        <span class="text-zinc-500">Total:</span>
-        <span id="pop-total" class="font-black text-purple-400">Rp 0</span>
-      </div>
-      <button onclick="goWA()" class="w-full py-3.5 rounded-xl bg-purple-600 text-black font-black text-sm mt-2">LANJUTKAN KE WHATSAPP</button>
+        <button class="btn-voucher" onclick="openVoucherModal()">
+            <i class="fa-solid fa-ticket"></i> Voucher
+        </button>
+    </header>
+
+    <!-- Hero Banner / Store Info -->
+    <section class="hero-banner">
+        <h1>OBLIVION STORE</h1>
+        <p>Rank, Key Gacha, In-Game Money, & Layanan Server Minecraft Terpercaya.</p>
+        <span class="store-url"><i class="fa-solid fa-globe"></i> store.oblivion.my.id</span>
+    </section>
+
+    <!-- Main Content Area -->
+    <main class="main-container">
+        
+        <!-- Sidebar Navigation / Category Filter -->
+        <aside class="sidebar">
+            <h3>Kategori</h3>
+            <ul class="category-list">
+                <li><button class="category-btn active" onclick="filterCategory('all', this)"><i class="fa-solid fa-border-all"></i> Semua</button></li>
+                <li><button class="category-btn" onclick="filterCategory('rank', this)"><i class="fa-solid fa-crown"></i> Rank</button></li>
+                <li><button class="category-btn" onclick="filterCategory('key', this)"><i class="fa-solid fa-key"></i> Key Gacha</button></li>
+                <li><button class="category-btn" onclick="filterCategory('money', this)"><i class="fa-solid fa-coins"></i> Money</button></li>
+                <li><button class="category-btn" onclick="filterCategory('lainnya', this)"><i class="fa-solid fa-ellipsis"></i> Lainnya</button></li>
+            </ul>
+        </aside>
+
+        <!-- Product Cards Grid -->
+        <section class="content-area">
+            <h2 id="category-title">Semua Produk</h2>
+            <div class="product-grid" id="product-grid">
+                <!-- Data Produk Diinject via JavaScript -->
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2026 <strong>OBLIVION STORE</strong> - Minecraft Webstore.</p>
+        <p style="margin-top: 3px;">Domain: <strong>store.oblivion.my.id</strong></p>
+    </footer>
+
+    <!-- Modal 1: Buy Form (Username Input) -->
+    <div class="modal-overlay" id="buyModal">
+        <div class="modal-box">
+            <div class="modal-header">
+                <span>Konfirmasi Pembelian</span>
+                <i class="fa-solid fa-xmark close-btn" onclick="closeModal('buyModal')"></i>
+            </div>
+            <div class="modal-body">
+                <p style="font-size: 12px; color: var(--gray-text); margin-bottom: 12px;" id="modalProductSummary"></p>
+                <div class="form-group">
+                    <label for="mcUsername">Nama Minecraft (IGN):</label>
+                    <input type="text" id="mcUsername" class="form-control" placeholder="Contoh: Steve_21" required>
+                </div>
+                <div class="form-group">
+                    <label for="voucherCodeApplied">Kode Voucher (Opsional):</label>
+                    <input type="text" id="voucherCodeApplied" class="form-control" placeholder="Masukkan kode voucher">
+                </div>
+            </div>
+            <button class="btn-confirm" onclick="processToWhatsapp()">
+                <i class="fa-brands fa-whatsapp"></i> Lanjutkan ke WhatsApp
+            </button>
+        </div>
     </div>
-  </div>
-</div>
 
-<script>
-const WA = "6289676623406";
-let curItem = null, curQty = 1;
-
-const ranks = [
-  {name:"VIPER", price:15000, lore:"Bayangan pertama yang merayap di kegelapan. Untuk mereka yang baru memulai jejak di Oblivion, lincah dan tak terlihat."},
-  {name:"REVENANT", price:35000, lore:"Arwah yang kembali menagih janji. Langkahmu mulai menggema di lorong-lorong server, ditakuti para pemula."},
-  {name:"SPECTER", price:65000, lore:"Sosok tanpa wujud yang mengintai di antara kabut void. Keberadaanmu adalah mitos yang jadi nyata."},
-  {name:"PHANTOM", price:90000, lore:"Ketakutan itu sendiri. Namamu dibisikkan dalam gelap, sebuah legenda yang tak bisa dibunuh."},
-  {name:"OBLIVION", price:120000, lore:"Puncak dari kehampaan. Kau bukan lagi player, kau adalah akhir dari segalanya. Penguasa mutlak."}
-];
-const moneys = [
-  {name:"100K Money", price:20000},
-  {name:"300K Money", price:35000},
-  {name:"500K Money", price:50000},
-  {name:"800K Money", price:60000},
-  {name:"1M Money", price:70000}
-];
-const keys = [
-  {name:"Deluxe Key", price:10000},
-  {name:"Legend Key", price:15000},
-  {name:"Mythical Key", price:20000}
-];
-
-function render(){
-  document.getElementById('sec-ranks').innerHTML = ranks.map(r=>`
-    <div class="bg-[#121218] border border-zinc-800 rounded-[20px] p-5 glow transition">
-      <div class="text-xl">💀</div>
-      <h3 class="font-black text-xl mt-2">${r.name}</h3>
-      <p class="text-[11px] text-zinc-500 mt-2 leading-relaxed h-[54px]">${r.lore}</p>
-      <div class="text-purple-400 font-black mt-4">Rp ${r.price.toLocaleString('id-ID')}</div>
-      <button onclick="openPop('${r.name}',${r.price},'rank')" class="w-full mt-4 py-3 rounded-xl border border-purple-600/50 text-purple-300 text-xs font-bold hover:bg-purple-600 hover:text-black transition">BUY NOW</button>
+    <!-- Modal 2: Claim Voucher -->
+    <div class="modal-overlay" id="voucherModal">
+        <div class="modal-box">
+            <div class="modal-header">
+                <span>Klaim Voucher Diskon</span>
+                <i class="fa-solid fa-xmark close-btn" onclick="closeModal('voucherModal')"></i>
+            </div>
+            <div class="modal-body">
+                <p style="font-size: 12px; color: var(--gray-text); margin-bottom: 12px;">
+                    Klaim voucher diskon spesial 10% untuk transaksi kamu!
+                </p>
+                <div id="voucherStatusArea">
+                    <button class="btn-voucher" style="width: 100%; justify-content: center; padding: 10px;" onclick="claimVoucher()">
+                        Klaim Voucher Sekarang
+                    </button>
+                </div>
+            </div>
+        </div>
     </div>
-  `).join('');
-  document.getElementById('sec-money').innerHTML = moneys.map(m=>`
-    <div class="bg-[#121218] border border-zinc-800 rounded-[20px] p-5">
-      <div class="text-xl">🪙</div>
-      <h3 class="font-black mt-2">${m.name}</h3>
-      <div class="text-purple-400 font-black mt-4">Rp ${m.price.toLocaleString('id-ID')}</div>
-      <button onclick="openPop('${m.name}',${m.price},'money')" class="w-full mt-4 py-3 rounded-xl bg-zinc-900 border border-zinc-800 text-xs font-bold">BUY NOW</button>
-    </div>
-  `).join('');
-  document.getElementById('sec-key').innerHTML = keys.map(k=>`
-    <div class="bg-[#121218] border border-zinc-800 rounded-[20px] p-5">
-      <div class="text-xl">🔑</div>
-      <h3 class="font-black mt-2">${k.name}</h3>
-      <div class="text-purple-400 font-black mt-4">Rp ${k.price.toLocaleString('id-ID')} <span class="text-[10px] text-zinc-600">/pcs</span></div>
-      <button onclick="openPop('${k.name}',${k.price},'key')" class="w-full mt-4 py-3 rounded-xl bg-zinc-900 border border-zinc-800 text-xs font-bold">BUY NOW</button>
-    </div>
-  `).join('');
-}
-render();
 
-function switchCat(c){
-  ['ranks','money','key'].forEach(x=>{
-    document.getElementById('sec-'+x).classList.toggle('hidden', x!==c);
-    document.getElementById('tab-'+x).className = x===c? 'tab active px-5 py-2.5 rounded-full text-xs font-bold bg-purple-600 text-black' : 'tab px-5 py-2.5 rounded-full text-xs font-bold bg-zinc-900 border border-zinc-800 text-zinc-400';
-  });
-}
+    <!-- JavaScript Logic -->
+    <script>
+        const products = [
+            // Rank
+            { id: 1, category: 'rank', name: 'Rank Viper', price: 20000, emoji: '🐍', desc: 'Kit Viper & Prefix Keren' },
+            { id: 2, category: 'rank', name: 'Rank Revenant', price: 25000, emoji: '💀', desc: 'Kit Revenant & Fitur Fly' },
+            { id: 3, category: 'rank', name: 'Rank Spectre', price: 30000, emoji: '👻', desc: 'Kit Spectre & Extra Home' },
+            { id: 4, category: 'rank', name: 'Rank Phantom', price: 45000, emoji: '🦇', desc: 'Kit Phantom & Reserved Slot' },
+            { id: 5, category: 'rank', name: 'Rank Oblivion', price: 55000, emoji: '👑', desc: 'Rank Akses Tertinggi' },
 
-function openPop(name,price,type){
-  curItem={name,price,type}; curQty=1;
-  document.getElementById('pop-title').innerText=name;
-  document.getElementById('pop-desc').innerText= type==='key'? 'Pilih jumlah key (Max 50)' : 'QRIS All Payment - OVO, Dana, Gopay, ShopeePay';
-  document.getElementById('pop-total').innerText='Rp '+price.toLocaleString('id-ID');
-  document.getElementById('pop-qty').innerText='1';
-  document.getElementById('pop-qty-wrap').classList.toggle('hidden', type!=='key');
-  document.getElementById('popup').classList.remove('hidden');
-  document.getElementById('popup').classList.add('flex');
-}
-function closePop(){document.getElementById('popup').classList.add('hidden')}
-function chgQty(d){
-  curQty+=d; if(curQty<1)curQty=1; if(curQty>50)curQty=50;
-  document.getElementById('pop-qty').innerText=curQty;
-  document.getElementById('pop-total').innerText='Rp '+(curItem.price*curQty).toLocaleString('id-ID');
-}
-function goWA(){
-  const mc = document.getElementById('mc-name').value.trim();
-  if(!mc){alert('Isi Nama Minecraft dulu!');return;}
-  let total = curItem.price*curQty;
-  let msg = `Halo Admin Oblivion Store!%0A%0ASaya mau order:%0A- Produk: ${curItem.name}%0A${curItem.type==='key'?`- Quantity: ${curQty}%0A`:''}- Nama MC: ${mc}%0A- Metode: QRIS ALL PAYMENT%0A- Total: Rp ${total.toLocaleString('id-ID')}%0A%0AMohon diproses ya!`;
-  window.open(`https://wa.me/${WA}?text=${msg}`,'_blank');
-}
-function doTransfer(){
-  const fromV=document.getElementById('t-from').value.trim();
-  const toV=document.getElementById('t-to').value.trim();
-  const rankV=document.getElementById('t-rank').value;
-  if(!fromV||!toV){alert('Isi nama pemain awal & tujuan!');return;}
-  let msg=`Halo Admin! Saya mau TRANSFER RANK%0A%0A- Dari: ${fromV}%0A- Ke: ${toV}%0A- Rank: ${rankV}%0A%0AMohon dibantu proses transfernya. Terima kasih!`;
-  window.open(`https://wa.me/${WA}?text=${msg}`,'_blank');
-}
-</script>
+            // Key Gacha
+            { id: 6, category: 'key', name: 'Key Common', price: 5000, emoji: '🗝️', desc: 'Kunci Gacha Tier Dasar' },
+            { id: 7, category: 'key', name: 'Key Uncommon', price: 6500, emoji: '🔑', desc: 'Kunci Gacha Tier Menengah' },
+            { id: 8, category: 'key', name: 'Key Epic', price: 8000, emoji: '💜', desc: 'Kunci Gacha Item Langka' },
+            { id: 9, category: 'key', name: 'Key Deluxe', price: 12000, emoji: '💎', desc: 'Kunci Gacha Hadiah Eksklusif' },
+            { id: 10, category: 'key', name: 'Key Legend', price: 15000, emoji: '🔥', desc: 'Kunci Gacha Item Legendaris' },
+
+            // Topup Money
+            { id: 11, category: 'money', name: '150k Money', price: 10000, emoji: '💵', desc: 'Uang In-Game $150.000' },
+            { id: 12, category: 'money', name: '250k Money', price: 15000, emoji: '💵', desc: 'Uang In-Game $250.000' },
+            { id: 13, category: 'money', name: '350k Money', price: 20000, emoji: '💵', desc: 'Uang In-Game $350.000' },
+            { id: 14, category: 'money', name: '550k Money', price: 28000, emoji: '💰', desc: 'Uang In-Game $550.000' },
+            { id: 15, category: 'money', name: '850k Money', price: 35000, emoji: '💰', desc: 'Uang In-Game $850.000' },
+            { id: 16, category: 'money', name: '1,5M Money', price: 45000, emoji: '💳', desc: 'Uang In-Game $1.500.000' },
+            { id: 17, category: 'money', name: '5,5M Money', price: 60000, emoji: '💳', desc: 'Uang In-Game $5.500.000' },
+            { id: 18, category: 'money', name: '8,5M Money', price: 80000, emoji: '💎', desc: 'Uang In-Game $8.500.000' },
+            { id: 19, category: 'money', name: '10,5M Money', price: 100000, emoji: '💎', desc: 'Uang In-Game $10.500.000' },
+            { id: 20, category: 'money', name: '12,5M Money', price: 120000, emoji: '👑', desc: 'Uang In-Game $12.500.000' },
+
+            // Lainnya
+            { id: 21, category: 'lainnya', name: 'Buka Ban Server', price: 50000, emoji: '🔓', desc: 'Unban Akun Server Minecraft' },
+            { id: 22, category: 'lainnya', name: 'Bantu Bikin Base', price: 'custom', emoji: '🏰', desc: 'Jasa Bikin Base (Harga Bebas)' }
+        ];
+
+        let selectedProduct = null;
+        const WA_NUMBER = "6289676623406";
+        const COOLDOWN_TIME = 24 * 60 * 60 * 1000;
+
+        function renderProducts(items) {
+            const grid = document.getElementById('product-grid');
+            grid.innerHTML = '';
+
+            items.forEach(product => {
+                const card = document.createElement('div');
+                card.className = 'product-card';
+
+                let priceDisplay = '';
+                let actionArea = '';
+
+                if (product.price === 'custom') {
+                    priceDisplay = 'Custom';
+                    actionArea = `
+                        <input type="number" id="custom-price-${product.id}" class="custom-price-input" placeholder="Nominal Rp..." min="1000">
+                        <div class="card-action">
+                            <span class="product-price">${priceDisplay}</span>
+                            <button class="btn-buy" onclick="openBuyModal(${product.id})">Beli</button>
+                        </div>
+                    `;
+                } else {
+                    priceDisplay = `Rp${(product.price / 1000).toFixed(0)}k`;
+                    actionArea = `
+                        <div class="card-action">
+                            <span class="product-price">${priceDisplay}</span>
+                            <button class="btn-buy" onclick="openBuyModal(${product.id})">Beli</button>
+                        </div>
+                    `;
+                }
+
+                card.innerHTML = `
+                    <div class="card-image-box">
+                        <span>${product.emoji}</span>
+                    </div>
+                    <div class="card-details">
+                        <div>
+                            <div class="product-title">${product.name}</div>
+                            <div class="product-desc">${product.desc}</div>
+                        </div>
+                        ${actionArea}
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        function filterCategory(cat, btnElement) {
+            document.querySelectorAll('.category-btn').forEach(btn => btn.classList.remove('active'));
+            if(btnElement) btnElement.classList.add('active');
+
+            const title = document.getElementById('category-title');
+            if (cat === 'all') {
+                title.innerText = 'Semua Produk';
+                renderProducts(products);
+            } else {
+                const filtered = products.filter(p => p.category === cat);
+                title.innerText = `Kategori: ${cat.toUpperCase()}`;
+                renderProducts(filtered);
+            }
+        }
+
+        function openBuyModal(productId) {
+            const prod = products.find(p => p.id === productId);
+            selectedProduct = { ...prod };
+
+            if (prod.price === 'custom') {
+                const customVal = document.getElementById(`custom-price-${productId}`).value;
+                if (!customVal || customVal <= 0) {
+                    alert('Harap isi nominal harga seikhlasnya terlebih dahulu!');
+                    return;
+                }
+                selectedProduct.finalPrice = parseInt(customVal);
+            } else {
+                selectedProduct.finalPrice = prod.price;
+            }
+
+            document.getElementById('modalProductSummary').innerHTML = `
+                Item: <strong>${selectedProduct.name}</strong><br>
+                Harga: <strong>Rp${selectedProduct.finalPrice.toLocaleString('id-ID')}</strong>
+            `;
+
+            document.getElementById('buyModal').style.display = 'flex';
+        }
+
+        function openVoucherModal() {
+            checkVoucherCooldown();
+            document.getElementById('voucherModal').style.display = 'flex';
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = 'none';
+        }
+
+        function processToWhatsapp() {
+            const username = document.getElementById('mcUsername').value.trim();
+            const voucher = document.getElementById('voucherCodeApplied').value.trim();
+
+            if (!username) {
+                alert('Harap isi nama Minecraft (IGN) kamu!');
+                return;
+            }
+
+            let message = `Halo OBLIVION STORE, saya ingin membeli:\n\n`;
+            message += `📌 *Produk:* ${selectedProduct.name}\n`;
+            message += `💰 *Harga:* Rp${selectedProduct.finalPrice.toLocaleString('id-ID')}\n`;
+            message += `🎮 *Nama Minecraft:* ${username}\n`;
+            
+            if (voucher) {
+                message += `🎟️ *Kode Voucher:* ${voucher}\n`;
+            }
+            
+            message += `\nMohon diproses, terima kasih!`;
+
+            const encodedMessage = encodeURIComponent(message);
+            const waUrl = `https://wa.me/${WA_NUMBER}?text=${encodedMessage}`;
+
+            window.open(waUrl, '_blank');
+            closeModal('buyModal');
+        }
+
+        function claimVoucher() {
+            const now = new Date().getTime();
+            localStorage.setItem('oblivion_voucher_time', now);
+            checkVoucherCooldown();
+        }
+
+        function checkVoucherCooldown() {
+            const lastClaim = localStorage.getItem('oblivion_voucher_time');
+            const statusArea = document.getElementById('voucherStatusArea');
+            const now = new Date().getTime();
+
+            if (lastClaim && (now - lastClaim < COOLDOWN_TIME)) {
+                startCooldownTimer(COOLDOWN_TIME - (now - lastClaim));
+            } else {
+                statusArea.innerHTML = `
+                    <button class="btn-voucher" style="width: 100%; justify-content: center; padding: 10px;" onclick="claimVoucher()">
+                        Klaim Voucher Sekarang
+                    </button>
+                `;
+            }
+        }
+
+        function startCooldownTimer(duration) {
+            const statusArea = document.getElementById('voucherStatusArea');
+            
+            function updateTimer() {
+                const now = new Date().getTime();
+                const lastClaim = parseInt(localStorage.getItem('oblivion_voucher_time'));
+                const distance = COOLDOWN_TIME - (now - lastClaim);
+
+                if (distance <= 0) {
+                    clearInterval(timerInterval);
+                    statusArea.innerHTML = `
+                        <button class="btn-voucher" style="width: 100%; justify-content: center; padding: 10px;" onclick="claimVoucher()">
+                            Klaim Voucher Sekarang
+                        </button>
+                    `;
+                    return;
+                }
+
+                const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+                statusArea.innerHTML = `
+                    <div style="text-align: center; background: #222; padding: 12px; border-radius: 6px;">
+                        <p style="color: #25d366; font-weight: bold; font-size: 13px; margin-bottom: 4px;">🎉 Kode Voucher: OBLIVION10</p>
+                        <p style="font-size: 11px; color: var(--gray-text);">Bisa diklaim lagi dalam:</p>
+                        <p style="font-size: 16px; font-weight: bold; color: var(--primary-red);">${hours}j ${minutes}m ${seconds}s</p>
+                    </div>
+                `;
+            }
+
+            updateTimer();
+            const timerInterval = setInterval(updateTimer, 1000);
+        }
+
+        window.onload = function() {
+            renderProducts(products);
+        };
+    </script>
 </body>
 </html>
