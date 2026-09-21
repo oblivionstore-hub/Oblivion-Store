@@ -1,0 +1,1019 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>OBLIVION STORE - Webstore Resmi Minecraft</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg-dark: #070b14;
+            --card-bg: #0d1527;
+            --card-inner: #131e36;
+            --primary-blue: #2563eb;
+            --glow-blue: #3b82f6;
+            --accent-cyan: #38bdf8;
+            --accent-green: #22c55e;
+            --text-main: #ffffff;
+            --text-muted: #94a3b8;
+            --border-color: rgba(255, 255, 255, 0.08);
+            --radius-card: 16px;
+            --radius-btn: 12px;
+        }
+
+        *, *::before, *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box !important;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        html, body {
+            width: 100%;
+            max-width: 100vw;
+            min-height: 100vh;
+            overflow-x: hidden !important;
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            line-height: 1.4;
+        }
+
+        /* SVG Icon General Styling */
+        .svg-icon {
+            width: 18px;
+            height: 18px;
+            fill: currentColor;
+            display: inline-block;
+            vertical-align: middle;
+        }
+
+        /* HEADER NAVBAR */
+        .top-bar {
+            width: 100%;
+            background: rgba(7, 11, 20, 0.85);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-bottom: 1px solid var(--border-color);
+            padding: 14px 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo-box {
+            width: 36px;
+            height: 36px;
+            background: linear-gradient(135deg, var(--glow-blue), var(--primary-blue));
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            box-shadow: 0 0 12px rgba(37, 99, 235, 0.5);
+        }
+
+        .logo-box .svg-icon {
+            width: 20px;
+            height: 20px;
+        }
+
+        .logo-text {
+            font-size: 16px;
+            font-weight: 800;
+            letter-spacing: 0.5px;
+        }
+
+        .logo-text span {
+            color: var(--accent-cyan);
+        }
+
+        .btn-voucher {
+            background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            font-weight: 700;
+            font-size: 12px;
+            border-radius: var(--radius-btn);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+            transition: all 0.2s;
+        }
+
+        .btn-voucher:active {
+            transform: scale(0.96);
+        }
+
+        /* HERO BANNER */
+        .hero-wrapper {
+            width: 100%;
+            padding: 20px 16px 10px 16px;
+        }
+
+        .hero-banner {
+            width: 100%;
+            padding: 30px 20px;
+            text-align: center;
+            background: radial-gradient(circle at top, #132247 0%, var(--card-bg) 100%);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-card);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        .hero-logo-box {
+            width: 65px;
+            height: 65px;
+            background: linear-gradient(135deg, #60a5fa, #1d4ed8);
+            border-radius: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            margin-bottom: 14px;
+            box-shadow: 0 0 20px rgba(37, 99, 235, 0.6);
+        }
+
+        .hero-logo-box .svg-icon {
+            width: 32px;
+            height: 32px;
+        }
+
+        .hero-banner h1 {
+            font-size: 22px;
+            font-weight: 800;
+            letter-spacing: 0.5px;
+            margin-bottom: 6px;
+            background: linear-gradient(to right, #ffffff, var(--accent-cyan));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero-banner p {
+            color: var(--text-muted);
+            font-size: 12px;
+            max-width: 480px;
+            margin: 0 auto 16px auto;
+            line-height: 1.5;
+        }
+
+        .hero-banner .store-url {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(37, 99, 235, 0.15);
+            color: var(--accent-cyan);
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-weight: 700;
+            font-size: 11px;
+            border: 1px solid rgba(56, 189, 248, 0.3);
+        }
+
+        /* FEATURES BADGES INFO */
+        .features-grid {
+            padding: 0 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .feature-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-btn);
+            padding: 12px 16px;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .feature-icon-box {
+            width: 38px;
+            height: 38px;
+            background: rgba(37, 99, 235, 0.2);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--glow-blue);
+            flex-shrink: 0;
+        }
+
+        .feature-icon-box .svg-icon {
+            width: 20px;
+            height: 20px;
+        }
+
+        .feature-title {
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+        .feature-desc {
+            font-size: 11px;
+            color: var(--text-muted);
+        }
+
+        /* MAIN CONTAINER & SEARCH */
+        .main-container {
+            width: 100%;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .category-list {
+            list-style: none;
+            display: flex;
+            gap: 8px;
+            overflow-x: auto;
+            width: 100%;
+            padding-bottom: 4px;
+        }
+
+        .category-list::-webkit-scrollbar {
+            display: none;
+        }
+
+        .category-btn {
+            white-space: nowrap;
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            color: var(--text-muted);
+            padding: 10px 18px;
+            font-size: 12px;
+            font-weight: 700;
+            border-radius: var(--radius-btn);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s;
+        }
+
+        .category-btn.active {
+            background: var(--primary-blue);
+            border-color: var(--glow-blue);
+            color: #ffffff;
+            box-shadow: 0 4px 15px rgba(37, 99, 235, 0.4);
+        }
+
+        .category-btn .svg-icon {
+            width: 16px;
+            height: 16px;
+        }
+
+        .search-box {
+            position: relative;
+            width: 100%;
+        }
+
+        .search-box .svg-icon {
+            position: absolute;
+            left: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+            width: 16px;
+            height: 16px;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 12px 14px 12px 40px;
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-btn);
+            color: white;
+            font-size: 12px;
+            outline: none;
+        }
+
+        .search-input:focus {
+            border-color: var(--primary-blue);
+        }
+
+        .content-area h2 {
+            font-size: 16px;
+            font-weight: 800;
+            margin-bottom: 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* PRODUCT GRID CARD */
+        .product-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            width: 100%;
+        }
+
+        .product-card {
+            width: 100%;
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-card);
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            position: relative;
+            transition: all 0.25s ease;
+        }
+
+        .product-card:hover {
+            border-color: rgba(59, 130, 246, 0.4);
+            transform: translateY(-2px);
+        }
+
+        .badge-tag {
+            position: absolute;
+            top: 14px;
+            right: 14px;
+            background: rgba(37, 99, 235, 0.2);
+            color: var(--accent-cyan);
+            border: 1px solid rgba(56, 189, 248, 0.3);
+            font-size: 9px;
+            font-weight: 800;
+            padding: 3px 8px;
+            border-radius: 6px;
+            text-transform: uppercase;
+        }
+
+        .card-header-area {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .icon-square {
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, #1e293b, var(--card-inner));
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--accent-cyan);
+            flex-shrink: 0;
+            box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5);
+        }
+
+        .icon-square .svg-icon {
+            width: 24px;
+            height: 24px;
+        }
+
+        .product-title {
+            font-size: 15px;
+            font-weight: 800;
+            color: #ffffff;
+        }
+
+        .product-desc {
+            font-size: 11px;
+            color: var(--text-muted);
+            margin-top: 2px;
+        }
+
+        .price-box {
+            background: rgba(0, 0, 0, 0.25);
+            padding: 10px 12px;
+            border-radius: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .price-label {
+            font-size: 11px;
+            color: var(--text-muted);
+        }
+
+        .price-value {
+            font-size: 14px;
+            font-weight: 800;
+            color: var(--accent-green);
+        }
+
+        .custom-price-input {
+            width: 100%;
+            padding: 8px 12px;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            background: #090e1a;
+            color: white;
+            font-size: 11px;
+            outline: none;
+            margin-top: 6px;
+        }
+
+        .btn-buy {
+            width: 100%;
+            background: linear-gradient(135deg, var(--glow-blue), var(--primary-blue));
+            color: white;
+            border: none;
+            padding: 12px;
+            cursor: pointer;
+            font-weight: 800;
+            border-radius: var(--radius-btn);
+            font-size: 12px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 4px 15px rgba(37, 99, 235, 0.3);
+            transition: all 0.2s;
+        }
+
+        .btn-buy:active {
+            transform: scale(0.97);
+        }
+
+        /* MODAL POPUP */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(3, 7, 18, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            padding: 16px;
+        }
+
+        .modal-box {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-card);
+            width: 100%;
+            max-width: 350px;
+            padding: 20px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8);
+        }
+
+        .modal-header {
+            font-size: 15px;
+            font-weight: 800;
+            margin-bottom: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: #ffffff;
+        }
+
+        .close-btn {
+            cursor: pointer;
+            color: var(--text-muted);
+            font-size: 16px;
+        }
+
+        .form-group {
+            margin-bottom: 12px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 10px;
+            font-weight: 800;
+            color: var(--text-muted);
+            margin-bottom: 4px;
+            text-transform: uppercase;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 10px 12px;
+            background-color: #080d19;
+            border: 1px solid var(--border-color);
+            color: white;
+            border-radius: 8px;
+            font-size: 12px;
+            outline: none;
+        }
+
+        .form-control:focus {
+            border-color: var(--primary-blue);
+        }
+
+        .voucher-msg {
+            font-size: 10px;
+            font-weight: 700;
+            margin-top: 4px;
+            display: none;
+        }
+
+        .voucher-msg.success {
+            color: #22c55e;
+        }
+
+        .voucher-msg.error {
+            color: #ef4444;
+        }
+
+        .btn-confirm {
+            width: 100%;
+            background: linear-gradient(135deg, #22c55e, #15803d);
+            color: white;
+            border: none;
+            padding: 12px;
+            font-weight: 800;
+            font-size: 12px;
+            border-radius: var(--radius-btn);
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 6px;
+            margin-top: 10px;
+            box-shadow: 0 4px 15px rgba(34, 197, 94, 0.3);
+        }
+
+        footer {
+            background-color: #04070d;
+            border-top: 1px solid var(--border-color);
+            padding: 20px 16px;
+            text-align: center;
+            margin-top: 30px;
+            font-size: 11px;
+            color: var(--text-muted);
+        }
+
+        @media (min-width: 769px) {
+            .hero-wrapper, .features-grid, .main-container {
+                max-width: 1000px;
+                margin-left: auto;
+                margin-right: auto;
+            }
+
+            .features-grid {
+                display: grid;
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+            .product-grid {
+                display: grid;
+                grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header Navbar -->
+    <header class="top-bar">
+        <div class="logo-container">
+            <div class="logo-box">
+                <svg class="svg-icon" viewBox="0 0 24 24"><path d="M21 16.5C21 16.88 20.79 17.21 20.47 17.38L12.57 21.82C12.4 21.92 12.2 21.97 12 21.97C11.8 21.97 11.6 21.92 11.43 21.82L3.53 17.38C3.21 17.21 3 16.88 3 16.5V7.5C3 7.12 3.21 6.79 3.53 6.62L11.43 2.18C11.6 2.08 11.8 2.03 12 2.03C12.2 2.03 12.4 2.08 12.57 2.18L20.47 6.62C20.79 6.79 21 7.12 21 7.5V16.5Z"/></svg>
+            </div>
+            <div class="logo-text">OBLIVION <span>STORE</span></div>
+        </div>
+        <button class="btn-voucher" onclick="openVoucherModal()">
+            <svg class="svg-icon" viewBox="0 0 24 24"><path d="M13 3C13 2.45 12.55 2 12 2C11.45 2 11 2.45 11 3V4.07C7.39 4.56 4.56 7.39 4.07 11H3C2.45 11 2 11.45 2 12C2 12.55 2.45 13 3 13H4.07C4.56 16.61 7.39 19.44 11 19.93V21C11 21.55 11.45 22 12 22C12.55 22 13 21.55 13 21V19.93C16.61 19.44 19.44 16.61 19.93 13H21C21.55 13 22 12.55 22 12C22 11.45 21.55 11 21 11H19.93C19.44 7.39 16.61 4.56 13 4.07V3ZM12 6C15.31 6 18 8.69 18 12C18 15.31 15.31 18 12 18C8.69 18 6 15.31 6 12C6 8.69 8.69 6 12 6Z"/></svg> Voucher
+        </button>
+    </header>
+
+    <!-- Hero Banner Wrapper -->
+    <div class="hero-wrapper">
+        <section class="hero-banner">
+            <div class="hero-logo-box">
+                <svg class="svg-icon" viewBox="0 0 24 24"><path d="M19 3H5C3.9 3 3 3.9 3 5V19C3 20.1 3.9 21 5 21H19C20.1 21 21 20.1 21 19V5C21 3.9 20.1 3 19 3ZM19 19H5V5H19V19ZM17 12H15V17H17V12ZM13 7H11V17H13V7ZM9 10H7V17H9V10Z"/></svg>
+            </div>
+            <h1>OBLIVION STORE</h1>
+            <p>Webstore resmi untuk kebutuhan Minecraft. Tersedia Top-Up Money, berbagai Rank, Key Gacha, dan layanan server.</p>
+            <span class="store-url"><svg class="svg-icon" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12C2 17.52 6.48 22 12 22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 12 2ZM11 19.93C7.05 19.44 4 16.08 4 12C4 11.38 4.08 10.79 4.21 10.21L9 15V16C9 17.1 9.9 18 11 18V19.93ZM17.9 17.39C17.64 16.58 16.9 16 16 16H15V13C15 12.45 14.55 12 14 12H8V10H10C10.55 10 11 9.55 11 9V7H13C14.1 7 15 6.1 15 5V4.59C17.93 5.77 20 8.65 20 12C20 14.08 19.2 15.97 17.9 17.39Z"/></svg> store.oblivion.my.id</span>
+        </section>
+    </div>
+
+    <!-- Feature Info Badges -->
+    <div class="features-grid">
+        <div class="feature-card">
+            <div class="feature-icon-box"><svg class="svg-icon" viewBox="0 0 24 24"><path d="M11 21H5C3.9 21 3 20.1 3 19V5C3 3.9 3.9 3 5 3H19C20.1 3 21 3.9 21 5V11H19V5H5V19H11V21ZM7 7H17V9H7V7ZM7 11H14V13H7V11ZM7 15H11V17H7V15ZM20.5 13.5L22 15L17.5 19.5L14.5 16.5L16 15L17.5 16.5L20.5 13.5Z"/></svg></div>
+            <div>
+                <div class="feature-title">Proses Cepat</div>
+                <div class="feature-desc">Pesanan diproses otomatis/langsung setelah konfirmasi.</div>
+            </div>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon-box"><svg class="svg-icon" viewBox="0 0 24 24"><path d="M21 18V19C21 20.1 20.1 21 19 21H5C3.89 21 3 20.1 3 19V5C3 3.9 3.89 3 5 3H19C20.1 3 21 3.9 21 5V6H12C10.89 6 10 6.9 10 8V16C10 17.1 10.89 18 12 18H21ZM12 16H22V8H12V16ZM16 13.5C15.17 13.5 14.5 12.83 14.5 12C14.5 11.17 15.17 10.5 16 10.5C16.83 10.5 17.5 11.17 17.5 12C17.5 12.83 16.83 13.5 16 13.5Z"/></svg></div>
+            <div>
+                <div class="feature-title">Pembayaran Mudah</div>
+                <div class="feature-desc">QRIS, DANA, GoPay, OVO, ShopeePay & Bank.</div>
+            </div>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon-box"><svg class="svg-icon" viewBox="0 0 24 24"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91C2.13 13.66 2.59 15.36 3.45 16.86L2.05 22L7.3 20.62C8.75 21.41 10.38 21.83 12.04 21.83C17.5 21.83 21.95 17.38 21.95 11.92C21.95 6.46 17.5 2 12.04 2Z"/></svg></div>
+            <div>
+                <div class="feature-title">Order via WhatsApp</div>
+                <div class="feature-desc">Otomatis terhubung dengan admin toko.</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Container -->
+    <main class="main-container">
+        <!-- Filter Tabs -->
+        <ul class="category-list">
+            <li><button class="category-btn active" onclick="filterCategory('all', this)"><svg class="svg-icon" viewBox="0 0 24 24"><path d="M4 11H9V4H4V11ZM4 20H9V13H4V20ZM11 20H16V13H11V20ZM11 11H16V4H11V11ZM18 4V11H23V4H18ZM18 20H23V13H18V20Z"/></svg> Semua</button></li>
+            <li><button class="category-btn" onclick="filterCategory('rank', this)"><svg class="svg-icon" viewBox="0 0 24 24"><path d="M5 16L3 5L8.5 10L12 4L15.5 10L21 5L19 16H5ZM19 19C19 19.55 18.55 20 18 20H6C5.45 20 5 19.55 5 19V18H19V19Z"/></svg> List Rank</button></li>
+            <li><button class="category-btn" onclick="filterCategory('key', this)"><svg class="svg-icon" viewBox="0 0 24 24"><path d="M12.65 10C11.83 7.67 9.61 6 7 6C3.69 6 1 8.69 1 12C1 15.31 3.69 18 7 18C9.61 18 11.83 16.33 12.65 14H17V18H21V14H23V10H12.65ZM7 14C5.9 14 5 13.1 5 12C5 10.9 5.9 10 7 10C8.1 10 9 10.9 9 12C9 13.1 8.1 14 7 14Z"/></svg> Key Gacha</button></li>
+            <li><button class="category-btn" onclick="filterCategory('money', this)"><svg class="svg-icon" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12C2 17.52 6.48 22 12 22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 12 2ZM13.41 18.09V20H10.6V18.09C8.68 17.73 7.2 16.32 7.12 14.36H9.14C9.23 15.38 10.02 16.27 12.01 16.27C13.91 16.27 14.77 15.42 14.77 14.42C14.77 13.33 13.88 12.82 11.84 12.31C9.44 11.71 7.42 10.82 7.42 8.5C7.42 6.55 9.02 5.22 10.6 4.88V3H13.41V4.85C15.15 5.19 16.48 6.42 16.63 8.24H14.61C14.49 7.37 13.78 6.64 12.01 6.64C10.37 6.64 9.44 7.39 9.44 8.35C9.44 9.38 10.32 9.8 12.37 10.33C14.73 10.94 16.79 11.8 16.79 14.28C16.79 16.37 15.18 17.72 13.41 18.09Z"/></svg> Top-Up Money</button></li>
+            <li><button class="category-btn" onclick="filterCategory('lainnya', this)"><svg class="svg-icon" viewBox="0 0 24 24"><path d="M12 3C6.95 3 3 6.95 3 12C3 17.05 6.95 21 12 21 C17.05 21 21 17.05 21 12C21 6.95 17.05 3 12 3ZM12 19C8.14 19 5 15.86 5 12C5 8.14 8.14 5 12 5C15.86 5 19 8.14 19 12C19 15.86 15.86 19 12 19ZM7 13H17V11H7V13Z"/></svg> Layanan</button></li>
+        </ul>
+
+        <!-- Search Bar -->
+        <div class="search-box">
+            <svg class="svg-icon" viewBox="0 0 24 24"><path d="M15.5 14H14.71L14.43 13.73C15.41 12.59 16 11.11 16 9.5C16 5.91 13.09 3 9.5 3C5.91 3 3 5.91 3 9.5C3 13.09 5.91 16 9.5 16C11.11 16 12.59 15.41 13.73 14.43L14 14.71V15.5L19 20.49L20.49 19L15.5 14ZM9.5 14C7.01 14 5 11.99 5 9.5C5 7.01 7.01 5 9.5 5C11.99 5 14 7.01 14 9.5C14 11.99 11.99 14 9.5 14Z"/></svg>
+            <input type="text" id="searchInput" class="search-input" placeholder="Cari paket, rank, layanan..." oninput="searchProducts()">
+        </div>
+
+        <!-- Product Area -->
+        <section class="content-area">
+            <h2 id="category-title">Semua Produk</h2>
+            <div class="product-grid" id="product-grid"></div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2026 <strong>OBLIVION STORE</strong> - Minecraft Webstore.</p>
+        <p style="margin-top: 4px; color: var(--accent-cyan);">store.oblivion.my.id</p>
+    </footer>
+
+    <!-- Buy Modal -->
+    <div class="modal-overlay" id="buyModal">
+        <div class="modal-box">
+            <div class="modal-header">
+                <span>Konfirmasi Pesanan</span>
+                <span class="close-btn" onclick="closeModal('buyModal')">✖</span>
+            </div>
+            <div class="modal-body">
+                <p style="font-size: 11px; color: var(--text-muted); margin-bottom: 12px;" id="modalProductSummary"></p>
+                <div class="form-group">
+                    <label for="mcUsername">NAMA MINECRAFT (IGN)</label>
+                    <input type="text" id="mcUsername" class="form-control" placeholder="Contoh: Steve_21" required>
+                </div>
+                <div class="form-group">
+                    <label for="voucherCodeApplied">KODE VOUCHER (OPSIONAL)</label>
+                    <input type="text" id="voucherCodeApplied" class="form-control" placeholder="Contoh: OBLIVION10" oninput="applyVoucherDiscount()">
+                    <div id="voucherMessage" class="voucher-msg"></div>
+                </div>
+            </div>
+            <button class="btn-confirm" onclick="processToWhatsapp()">
+                Lanjutkan ke WhatsApp
+            </button>
+        </div>
+    </div>
+
+    <!-- Voucher Modal -->
+    <div class="modal-overlay" id="voucherModal">
+        <div class="modal-box">
+            <div class="modal-header">
+                <span>Klaim Voucher Diskon</span>
+                <span class="close-btn" onclick="closeModal('voucherModal')">✖</span>
+            </div>
+            <div class="modal-body">
+                <p style="font-size: 11px; color: var(--text-muted); margin-bottom: 12px;">
+                    Dapatkan diskon potongan harga 10% untuk transaksi kamu!
+                </p>
+                <div id="voucherStatusArea">
+                    <button class="btn-voucher" style="width: 100%; justify-content: center; padding: 12px; border-radius: var(--radius-btn);" onclick="claimVoucher()">
+                        Klaim Voucher Sekarang
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript Logic -->
+    <script>
+        const svgIcons = {
+            shield: `<svg class="svg-icon" viewBox="0 0 24 24"><path d="M12 1L3 5V11C3 16.55 6.84 21.74 12 23C17.16 21.74 21 16.55 21 11V5L12 1Z"/></svg>`,
+            skull: `<svg class="svg-icon" viewBox="0 0 24 24"><path d="M12 2C7.58 2 4 5.58 4 10C4 12.24 4.92 14.27 6.41 15.72C6.79 16.09 7 16.6 7 17.13V19C7 20.1 7.9 21 9 21H15C16.1 21 17 20.1 17 19V17.13C17 16.6 17.21 16.09 17.59 15.72C19.08 14.27 20 12.24 20 10C20 5.58 16.42 2 12 2ZM9 11C8.17 11 7.5 10.33 7.5 9.5C7.5 8.67 8.17 8 9 8C9.83 8 10.5 8.67 10.5 9.5C10.5 10.33 9.83 11 9 11ZM15 11C14.17 11 13.5 10.33 13.5 9.5C13.5 8.67 14.17 8 15 8C15.83 8 16.5 8.67 16.5 9.5C16.5 10.33 15.83 11 15 11Z"/></svg>`,
+            crown: `<svg class="svg-icon" viewBox="0 0 24 24"><path d="M5 16L3 5L8.5 10L12 4L15.5 10L21 5L19 16H5ZM19 19C19 19.55 18.55 20 18 20H6C5.45 20 5 19.55 5 19V18H19V19Z"/></svg>`,
+            key: `<svg class="svg-icon" viewBox="0 0 24 24"><path d="M12.65 10C11.83 7.67 9.61 6 7 6C3.69 6 1 8.69 1 12C1 15.31 3.69 18 7 18C9.61 18 11.83 16.33 12.65 14H17V18H21V14H23V10H12.65ZM7 14C5.9 14 5 13.1 5 12C5 10.9 5.9 10 7 10C8.1 10 9 10.9 9 12C9 13.1 8.1 14 7 14Z"/></svg>`,
+            gem: `<svg class="svg-icon" viewBox="0 0 24 24"><path d="M16 2H8L3 9L12 22L21 9L16 2ZM11 4H13V7H11V4ZM6.8 5H8.7L10 8H5.1L6.8 5ZM12 18.5L6.3 10H17.7L12 18.5Z"/></svg>`,
+            money: `<svg class="svg-icon" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12C2 17.52 6.48 22 12 22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 12 2ZM13.41 18.09V20H10.6V18.09C8.68 17.73 7.2 16.32 7.12 14.36H9.14C9.23 15.38 10.02 16.27 12.01 16.27C13.91 16.27 14.77 15.42 14.77 14.42C14.77 13.33 13.88 12.82 11.84 12.31C9.44 11.71 7.42 10.82 7.42 8.5C7.42 6.55 9.02 5.22 10.6 4.88V3H13.41V4.85C15.15 5.19 16.48 6.42 16.63 8.24H14.61C14.49 7.37 13.78 6.64 12.01 6.64C10.37 6.64 9.44 7.39 9.44 8.35C9.44 9.38 10.32 9.8 12.37 10.33C14.73 10.94 16.79 11.8 16.79 14.28C16.79 16.37 15.18 17.72 13.41 18.09Z"/></svg>`,
+            service: `<svg class="svg-icon" viewBox="0 0 24 24"><path d="M12 1L3 5V11C3 16.55 6.84 21.74 12 23C17.16 21.74 21 16.55 21 11V5L12 1ZM12 11.99H19C18.47 16.11 15.72 19.78 12 20.93V12H5V6.3L12 3.19V11.99Z"/></svg>`
+        };
+
+        const products = [
+            // Rank
+            { id: 1, category: 'rank', name: 'Rank Viper', price: 25000, icon: svgIcons.shield, tag: 'STARTER', desc: 'Akses Kit Viper & Prefix Keren.' },
+            { id: 2, category: 'rank', name: 'Rank Revenant', price: 30000, icon: svgIcons.skull, tag: 'POPULAR', desc: 'Akses Kit Revenant & Fitur Fly.' },
+            { id: 3, category: 'rank', name: 'Rank Spectre', price: 50000, icon: svgIcons.gem, tag: 'FEATURED', desc: 'Akses Kit Spectre & Extra Set Home.' },
+            { id: 4, category: 'rank', name: 'Rank Phantom', price: 80000, icon: svgIcons.shield, tag: 'VIP', desc: 'Akses Kit Phantom & Reserved Slot.' },
+            { id: 5, category: 'rank', name: 'Rank Oblivion', price: 120000, icon: svgIcons.crown, tag: 'ULTIMATE', desc: 'Rank Akses Tertinggi Server.' },
+
+            // Key Gacha
+            { id: 6, category: 'key', name: 'Key Common', price: 5000, icon: svgIcons.key, tag: 'GACHA', desc: 'Kunci Gacha Tier Dasar.' },
+            { id: 7, category: 'key', name: 'Key Uncommon', price: 6500, icon: svgIcons.key, tag: 'GACHA', desc: 'Kunci Gacha Tier Menengah.' },
+            { id: 8, category: 'key', name: 'Key Epic', price: 8000, icon: svgIcons.gem, tag: 'EPIC', desc: 'Kunci Gacha Berisi Item Langka.' },
+            { id: 9, category: 'key', name: 'Key Deluxe', price: 12000, icon: svgIcons.gem, tag: 'DELUXE', desc: 'Kunci Gacha Hadiah Eksklusif.' },
+            { id: 10, category: 'key', name: 'Key Legend', price: 15000, icon: svgIcons.crown, tag: 'LEGENDARY', desc: 'Chance Berhadiah Item Legendaris.' },
+
+            // Topup Money
+            { id: 11, category: 'money', name: '150k Money', price: 10000, icon: svgIcons.money, tag: 'MONEY', desc: 'Mendapatkan $150,000 In-Game Money.' },
+            { id: 12, category: 'money', name: '250k Money', price: 15000, icon: svgIcons.money, tag: 'MONEY', desc: 'Mendapatkan $250,000 In-Game Money.' },
+            { id: 13, category: 'money', name: '350k Money', price: 20000, icon: svgIcons.money, tag: 'MONEY', desc: 'Mendapatkan $350,000 In-Game Money.' },
+            { id: 14, category: 'money', name: '550k Money', price: 28000, icon: svgIcons.money, tag: 'BEST', desc: 'Mendapatkan $550,000 In-Game Money.' },
+            { id: 15, category: 'money', name: '850k Money', price: 35000, icon: svgIcons.money, tag: 'MONEY', desc: 'Mendapatkan $850,000 In-Game Money.' },
+            { id: 16, category: 'money', name: '1,5M Money', price: 45000, icon: svgIcons.money, tag: 'BIG', desc: 'Mendapatkan $1.500,000 In-Game Money.' },
+            { id: 17, category: 'money', name: '5,5M Money', price: 60000, icon: svgIcons.money, tag: 'MEGA', desc: 'Mendapatkan $5.500,000 In-Game Money.' },
+            { id: 18, category: 'money', name: '8,5M Money', price: 80000, icon: svgIcons.money, tag: 'SUPER', desc: 'Mendapatkan $8.500,000 In-Game Money.' },
+            { id: 19, category: 'money', name: '10,5M Money', price: 100000, icon: svgIcons.money, tag: 'RICH', desc: 'Mendapatkan $10.500,000 In-Game Money.' },
+            { id: 20, category: 'money', name: '12,5M Money', price: 120000, icon: svgIcons.money, tag: 'MAX', desc: 'Mendapatkan $12.500,000 In-Game Money.' },
+
+            // Lainnya
+            { id: 21, category: 'lainnya', name: 'Buka Ban Server', price: 250000, icon: svgIcons.service, tag: 'SERVICE', desc: 'Layanan Unban Akun Server Minecraft.' },
+            { id: 22, category: 'lainnya', name: 'Bantu Bikin Base', price: 'custom', icon: '🏰', tag: 'BUILD', desc: 'Jasa Pembuatan Base (Minimal Rp 5.000).' }
+        ];
+
+        let selectedProduct = null;
+        let calculatedPrice = 0;
+        let appliedDiscount = 0;
+        let currentCategory = 'all';
+        const WA_NUMBER = "6289676623406";
+        const COOLDOWN_TIME = 24 * 60 * 60 * 1000;
+
+        function renderProducts(items) {
+            const grid = document.getElementById('product-grid');
+            grid.innerHTML = '';
+
+            if (items.length === 0) {
+                grid.innerHTML = '<p style="color:var(--text-muted); font-size:12px; text-align:center; padding:20px;">Produk tidak ditemukan.</p>';
+                return;
+            }
+
+            items.forEach((product) => {
+                const card = document.createElement('div');
+                card.className = 'product-card';
+
+                let priceBox = '';
+
+                if (product.price === 'custom') {
+                    priceBox = `
+                        <div class="price-box">
+                            <span class="price-label">Harga</span>
+                            <span class="price-value">Bebas (Min. 5k)</span>
+                        </div>
+                        <input type="number" id="custom-price-${product.id}" class="custom-price-input" placeholder="Isi nominal Rp (Min. 5000)...">
+                    `;
+                } else {
+                    priceBox = `
+                        <div class="price-box">
+                            <span class="price-label">Harga</span>
+                            <span class="price-value">Rp ${product.price.toLocaleString('id-ID')}</span>
+                        </div>
+                    `;
+                }
+
+                card.innerHTML = `
+                    <span class="badge-tag">${product.tag}</span>
+                    <div class="card-header-area">
+                        <div class="icon-square">
+                            ${product.icon}
+                        </div>
+                        <div>
+                            <div class="product-title">${product.name}</div>
+                            <div class="product-desc">${product.desc}</div>
+                        </div>
+                    </div>
+                    ${priceBox}
+                    <button class="btn-buy" onclick="openBuyModal(${product.id})">
+                        Beli Paket
+                    </button>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        function filterCategory(cat, btnElement) {
+            currentCategory = cat;
+            document.querySelectorAll('.category-btn').forEach(btn => btn.classList.remove('active'));
+            if(btnElement) btnElement.classList.add('active');
+
+            document.getElementById('searchInput').value = '';
+            const title = document.getElementById('category-title');
+            
+            if (cat === 'all') {
+                title.innerText = 'Semua Produk';
+                renderProducts(products);
+            } else {
+                const filtered = products.filter(p => p.category === cat);
+                title.innerText = `Kategori: ${cat.toUpperCase()}`;
+                renderProducts(filtered);
+            }
+        }
+
+        function searchProducts() {
+            const query = document.getElementById('searchInput').value.toLowerCase().trim();
+            let baseList = currentCategory === 'all' ? products : products.filter(p => p.category === currentCategory);
+            
+            const searchResults = baseList.filter(p => 
+                p.name.toLowerCase().includes(query) || 
+                p.desc.toLowerCase().includes(query)
+            );
+
+            renderProducts(searchResults);
+        }
+
+        function openBuyModal(productId) {
+            const prod = products.find(p => p.id === productId);
+            selectedProduct = { ...prod };
+
+            if (prod.price === 'custom') {
+                const customVal = document.getElementById(`custom-price-${productId}`).value;
+                if (!customVal || parseInt(customVal) < 5000) {
+                    alert('Nominal harga minimal adalah Rp 5.000!');
+                    return;
+                }
+                selectedProduct.finalPrice = parseInt(customVal);
+            } else {
+                selectedProduct.finalPrice = prod.price;
+            }
+
+            document.getElementById('voucherCodeApplied').value = '';
+            document.getElementById('voucherMessage').style.display = 'none';
+            appliedDiscount = 0;
+            calculatedPrice = selectedProduct.finalPrice;
+
+            updateModalPriceDisplay();
+            document.getElementById('buyModal').style.display = 'flex';
+        }
+
+        function applyVoucherDiscount() {
+            const voucherInput = document.getElementById('voucherCodeApplied').value.trim().toUpperCase();
+            const msgBox = document.getElementById('voucherMessage');
+
+            if (voucherInput === "OBLIVION10") {
+                appliedDiscount = Math.round(selectedProduct.finalPrice * 0.10);
+                calculatedPrice = selectedProduct.finalPrice - appliedDiscount;
+                
+                msgBox.className = "voucher-msg success";
+                msgBox.innerText = "✓ Voucher OBLIVION10 Aktif! Diskon 10%";
+                msgBox.style.display = "block";
+            } else if (voucherInput.length > 0) {
+                appliedDiscount = 0;
+                calculatedPrice = selectedProduct.finalPrice;
+                
+                msgBox.className = "voucher-msg error";
+                msgBox.innerText = "✕ Kode voucher tidak valid";
+                msgBox.style.display = "block";
+            } else {
+                appliedDiscount = 0;
+                calculatedPrice = selectedProduct.finalPrice;
+                msgBox.style.display = "none";
+            }
+
+            updateModalPriceDisplay();
+        }
+
+        function updateModalPriceDisplay() {
+            const summaryBox = document.getElementById('modalProductSummary');
+            
+            if (appliedDiscount > 0) {
+                summaryBox.innerHTML = `
+                    Produk: <strong style="color:#ffffff;">${selectedProduct.name}</strong><br>
+                    Harga Normal: <span style="text-decoration: line-through; color: var(--text-muted);">Rp ${selectedProduct.finalPrice.toLocaleString('id-ID')}</span><br>
+                    Total Bayar: <strong style="color:var(--accent-green); font-size:13px;">Rp ${calculatedPrice.toLocaleString('id-ID')}</strong> <span style="color:#22c55e; font-size:10px;">(Hemat Rp ${appliedDiscount.toLocaleString('id-ID')})</span>
+                `;
+            } else {
+                summaryBox.innerHTML = `
+                    Produk: <strong style="color:#ffffff;">${selectedProduct.name}</strong><br>
+                    Total Bayar: <strong style="color:var(--accent-green); font-size:13px;">Rp ${selectedProduct.finalPrice.toLocaleString('id-ID')}</strong>
+                `;
+            }
+        }
+
+        function openVoucherModal() {
+            checkVoucherCooldown();
+            document.getElementById('voucherModal').style.display = 'flex';
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = 'none';
+        }
+
+        function processToWhatsapp() {
+            const username = document.getElementById('mcUsername').value.trim();
+            const voucher = document.getElementById('voucherCodeApplied').value.trim();
+
+            if (!username) {
+                alert('Harap isi nama Minecraft (IGN) kamu!');
+                return;
+            }
+
+            let message = `Halo OBLIVION STORE, saya mau beli:\n\n`;
+            message += `📌 *Produk:* ${selectedProduct.name}\n`;
+            
+            if (appliedDiscount > 0) {
+                message += `💰 *Harga Normal:* Rp ${selectedProduct.finalPrice.toLocaleString('id-ID')}\n`;
+                message += `🎟️ *Voucher:* ${voucher} (Diskon 10%)\n`;
+                message += `✅ *Total Bayar:* Rp ${calculatedPrice.toLocaleString('id-ID')}\n`;
+            } else {
+                message += `💰 *Total Bayar:* Rp ${selectedProduct.finalPrice.toLocaleString('id-ID')}\n`;
+                if (voucher) {
+                    message += `🎟️ *Voucher:* ${voucher}\n`;
+                }
+            }
+            
+            message += `🎮 *IGN Minecraft:* ${username}\n`;
+            message += `\nMohon diproses, terima kasih!`;
+
+            const encodedMessage = encodeURIComponent(message);
+            window.open(`https://wa.me/${WA_NUMBER}?text=${encodedMessage}`, '_blank');
+            closeModal('buyModal');
+        }
+
+        function claimVoucher() {
+            const now = new Date().getTime();
+            localStorage.setItem('oblivion_voucher_time', now);
+            checkVoucherCooldown();
+        }
+
+        function checkVoucherCooldown() {
+            const lastClaim = localStorage.getItem('oblivion_voucher_time');
+            const statusArea = document.getElementById('voucherStatusArea');
+            const now = new Date().getTime();
+
+            if (lastClaim && (now - lastClaim < COOLDOWN_TIME)) {
+                startCooldownTimer(COOLDOWN_TIME - (now - lastClaim));
+            } else {
+                statusArea.innerHTML = `
+                    <button class="btn-voucher" style="width: 100%; justify-content: center; padding: 10px; border-radius: var(--radius-btn);" onclick="claimVoucher()">
+                        Klaim Voucher Sekarang
+                    </button>
+                `;
+            }
+        }
+
+        function startCooldownTimer(duration) {
+            const statusArea = document.getElementById('voucherStatusArea');
+            
+            function updateTimer() {
+                const now = new Date().getTime();
+                const lastClaim = parseInt(localStorage.getItem('oblivion_voucher_time'));
+                const distance = COOLDOWN_TIME - (now - lastClaim);
+
+                if (distance <= 0) {
+                    clearInterval(timerInterval);
+                    statusArea.innerHTML = `
+                        <button class="btn-voucher" style="width: 100%; justify-content: center; padding: 10px; border-radius: var(--radius-btn);" onclick="claimVoucher()">
+                            Klaim Voucher Sekarang
+                        </button>
+                    `;
+                    return;
+                }
+
+                const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+                statusArea.innerHTML = `
+                    <div style="text-align: center; background: rgba(0,0,0,0.4); padding: 12px; border-radius: 10px; border: 1px solid var(--border-color);">
+                        <p style="color: #22c55e; font-weight: bold; font-size: 11px; margin-bottom: 4px;">🎉 Kode Voucher: OBLIVION10</p>
+                        <p style="font-size: 10px; color: var(--text-muted);">Dapat diklaim kembali dalam:</p>
+                        <p style="font-size: 15px; font-weight: 800; color: var(--accent-cyan); margin-top: 4px;">${hours}j ${minutes}m ${seconds}s</p>
+                    </div>
+                `;
+            }
+
+            updateTimer();
+            const timerInterval = setInterval(updateTimer, 1000);
+        }
+
+        window.onload = function() {
+            renderProducts(products);
+        };
+    </script>
+</body>
+</html>
