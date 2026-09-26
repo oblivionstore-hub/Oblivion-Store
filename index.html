@@ -1,0 +1,983 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Oblivion SMP - Official Website</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --bg-main: #070a13;
+            --sidebar-bg: rgba(13, 20, 38, 0.85);
+            --card-bg: rgba(20, 30, 55, 0.6);
+            --card-glow: rgba(45, 115, 255, 0.25);
+            --accent-blue: #2d73ff;
+            --accent-glow: #1e52d8;
+            --text-primary: #ffffff;
+            --text-secondary: #9aa8bc;
+            --border-color: rgba(255, 255, 255, 0.08);
+            --success-color: #2ed573;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-main);
+            background-image: 
+                radial-gradient(circle at 15% 20%, rgba(45, 115, 255, 0.15) 0%, transparent 40%),
+                radial-gradient(circle at 85% 80%, rgba(30, 82, 216, 0.12) 0%, transparent 40%);
+            color: var(--text-primary);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+        }
+
+        /* Mobile Header Toggle */
+        .mobile-header {
+            display: none;
+            background: var(--sidebar-bg);
+            padding: 16px 20px;
+            border-bottom: 1px solid var(--border-color);
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(15px);
+        }
+
+        .hamburger {
+            font-size: 22px;
+            cursor: pointer;
+            color: var(--text-primary);
+            background: none;
+            border: none;
+        }
+
+        /* App Container */
+        .app-container {
+            display: flex;
+            flex: 1;
+            min-height: 100vh;
+        }
+
+        /* Sidebar Navigation */
+        .sidebar {
+            width: 250px;
+            background: var(--sidebar-bg);
+            backdrop-filter: blur(20px);
+            border-right: 1px solid var(--border-color);
+            padding: 24px 16px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            position: fixed;
+            height: 100vh;
+            z-index: 99;
+            transition: transform 0.3s ease;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 32px;
+            padding-left: 8px;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .logo i {
+            color: var(--accent-blue);
+            font-size: 24px;
+            animation: pulse-glow 2s infinite alternate;
+        }
+
+        .nav-menu {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .nav-item a {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 12px 16px;
+            color: var(--text-secondary);
+            text-decoration: none;
+            border-radius: 12px;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        .nav-item.active a, .nav-item a:hover {
+            background: var(--accent-blue);
+            color: #fff;
+            box-shadow: 0 4px 20px rgba(45, 115, 255, 0.4);
+            transform: translateX(4px);
+        }
+
+        .admin-nav-item { display: none; }
+        .admin-nav-item.show { display: block; }
+
+        /* Main Content Layout Optimization for Desktop */
+        .main-content {
+            margin-left: 250px;
+            flex: 1;
+            padding: 40px;
+            transition: all 0.3s ease;
+            max-width: 1400px;
+        }
+
+        .header {
+            margin-bottom: 32px;
+            animation: fadeInDown 0.8s ease;
+        }
+
+        .header h1 {
+            font-size: 32px;
+            font-weight: 700;
+            background: linear-gradient(90deg, #ffffff, #82b1ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .header p {
+            color: var(--text-secondary);
+            font-size: 15px;
+            margin-top: 6px;
+        }
+
+        /* Hero Container (2 Columns Desktop Grid) */
+        .hero-grid {
+            display: grid;
+            grid-template-columns: 1.2fr 0.8fr;
+            gap: 24px;
+            margin-bottom: 32px;
+        }
+
+        /* Glassmorphism Cards with Animations */
+        .glass-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 24px;
+            padding: 28px;
+            backdrop-filter: blur(16px);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
+            transition: all 0.3s ease;
+            animation: fadeInUp 0.8s ease;
+        }
+
+        .glass-card:hover {
+            border-color: rgba(45, 115, 255, 0.3);
+            box-shadow: 0 12px 40px var(--card-glow);
+        }
+
+        /* Server Features Grid */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            margin-top: 24px;
+        }
+
+        .feature-item {
+            background: rgba(11, 16, 30, 0.6);
+            border: 1px solid var(--border-color);
+            padding: 16px;
+            border-radius: 16px;
+            transition: transform 0.3s, border-color 0.3s;
+        }
+
+        .feature-item:hover {
+            transform: translateY(-5px);
+            border-color: var(--accent-blue);
+        }
+
+        .feature-item i {
+            font-size: 22px;
+            color: var(--accent-blue);
+            margin-bottom: 8px;
+        }
+
+        /* Server IP Copy Box */
+        .ip-card {
+            background: linear-gradient(135deg, rgba(45, 115, 255, 0.15), rgba(16, 24, 48, 0.7));
+            border: 1px solid rgba(45, 115, 255, 0.3);
+            border-radius: 20px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .ip-box {
+            background: rgba(11, 16, 30, 0.8);
+            padding: 12px 18px;
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .ip-box code {
+            color: #4cd964;
+            font-weight: 700;
+            font-size: 16px;
+            letter-spacing: 0.5px;
+        }
+
+        /* Interactive Buttons */
+        .btn {
+            background: var(--accent-blue);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        .btn:hover {
+            background: var(--accent-glow);
+            box-shadow: 0 0 20px var(--accent-blue);
+            transform: translateY(-2px);
+        }
+
+        .btn-discord { background: #5865F2; }
+        .btn-discord:hover { background: #4752C4; box-shadow: 0 0 20px #5865F2; }
+
+        .btn-wa { background: #25D366; }
+        .btn-wa:hover { background: #1EBE5D; box-shadow: 0 0 20px #25D366; }
+
+        /* Social Community Grid */
+        .community-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 16px;
+            margin-top: 16px;
+        }
+
+        /* Store Grid & Tab Filter */
+        .store-filter {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        .filter-btn {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border-color);
+            color: var(--text-secondary);
+            padding: 10px 20px;
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: 0.3s;
+        }
+
+        .filter-btn.active, .filter-btn:hover {
+            background: var(--accent-blue);
+            color: #fff;
+            border-color: var(--accent-blue);
+        }
+
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            gap: 20px;
+        }
+
+        .product-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 20px;
+            backdrop-filter: blur(10px);
+            transition: transform 0.3s, box-shadow 0.3s;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            position: relative;
+        }
+
+        .product-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 10px 30px var(--card-glow);
+            border-color: rgba(45, 115, 255, 0.4);
+        }
+
+        .badge-tag {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            background: rgba(45, 115, 255, 0.2);
+            color: var(--accent-blue);
+            font-size: 11px;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-weight: bold;
+        }
+
+        .product-title {
+            font-size: 18px;
+            font-weight: 700;
+            margin-top: 10px;
+            margin-bottom: 8px;
+        }
+
+        .product-price {
+            font-size: 18px;
+            font-weight: 700;
+            color: #2ed573;
+            margin-bottom: 16px;
+        }
+
+        /* Voucher Box */
+        .voucher-box {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 24px;
+            max-width: 450px;
+        }
+
+        input, textarea, select {
+            background: rgba(11, 16, 30, 0.8);
+            border: 1px solid var(--border-color);
+            padding: 12px 16px;
+            border-radius: 12px;
+            color: var(--text-primary);
+            outline: none;
+            width: 100%;
+        }
+
+        input:focus, textarea:focus, select:focus {
+            border-color: var(--accent-blue);
+        }
+
+        /* Modal Overlay */
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0, 0, 0, 0.75);
+            backdrop-filter: blur(8px);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .modal-box {
+            background: var(--sidebar-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 28px;
+            width: 90%;
+            max-width: 420px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        .view-section { display: none; }
+        .view-section.active { display: block; }
+
+        /* Animations Keyframes */
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes pulse-glow {
+            from { filter: drop-shadow(0 0 2px var(--accent-blue)); }
+            to { filter: drop-shadow(0 0 10px var(--accent-blue)); }
+        }
+
+        /* Responsive Breakpoints */
+        @media (max-width: 1024px) {
+            .hero-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .mobile-header { display: flex; }
+            .sidebar { transform: translateX(-100%); }
+            .sidebar.open { transform: translateX(0); }
+            .main-content { margin-left: 0; padding: 20px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header Mobile Toggle (Garis 3) -->
+    <div class="mobile-header">
+        <div class="logo" style="margin-bottom:0;" onclick="handleLogoClick()">
+            <i class="fa-solid fa-cube"></i>
+            <span>Oblivion SMP</span>
+        </div>
+        <button class="hamburger" onclick="toggleSidebar()"><i class="fa-solid fa-bars"></i></button>
+    </div>
+
+    <div class="app-container">
+        <!-- Sidebar Navigation (Desktop Left Menu) -->
+        <div class="sidebar" id="sidebar">
+            <div>
+                <div class="logo" onclick="handleLogoClick()">
+                    <i class="fa-solid fa-cube"></i>
+                    <span>Oblivion SMP</span>
+                </div>
+                <ul class="nav-menu">
+                    <li class="nav-item active" onclick="switchTab('home', this)"><a href="#"><i class="fa-solid fa-house"></i> Home</a></li>
+                    <li class="nav-item" onclick="switchTab('changelog', this)"><a href="#"><i class="fa-solid fa-list-check"></i> Changelog</a></li>
+                    <li class="nav-item" onclick="switchTab('store', this)"><a href="#"><i class="fa-solid fa-cart-shopping"></i> Store</a></li>
+                    <li class="nav-item" onclick="switchTab('partnership', this)"><a href="#"><i class="fa-solid fa-handshake"></i> Partnership</a></li>
+                    <li class="nav-item admin-nav-item" id="admin-menu-btn" onclick="switchTab('admin', this)"><a href="#"><i class="fa-solid fa-user-shield"></i> Admin Panel</a></li>
+                </ul>
+            </div>
+            <div style="font-size: 12px; color: var(--text-secondary); text-align: center;">
+                &copy; 2026 Oblivion SMP
+            </div>
+        </div>
+
+        <!-- Main Content Area -->
+        <div class="main-content">
+            
+            <!-- SECTION 1: HOME -->
+            <div id="home-section" class="view-section active">
+                <div class="header">
+                    <h1>Selamat Datang di Oblivion SMP</h1>
+                    <p>Komunitas Survival Minecraft paling seru, ramah, dan bebas berkreasi!</p>
+                </div>
+
+                <!-- 2-Column Responsive Layout for Desktop View -->
+                <div class="hero-grid">
+                    <div class="glass-card">
+                        <h2 style="font-size: 22px; margin-bottom: 12px;"><i class="fa-solid fa-compass" style="color: var(--accent-blue);"></i> Jelajahi Dunia Oblivion</h2>
+                        <p style="line-height: 1.7; color: #d0dbe8; font-size: 15px; margin-bottom: 16px;">
+                            Selamat datang di server <strong>Oblivion SMP</strong>! Di sini kalian bisa bermain santai, cari teman sampai cari pacar, dan buat project besar karna sudah ada claim land nya. Ayo ajak teman mu main di server Oblivion SMP!
+                        </p>
+
+                        <!-- Highlights Features Grid -->
+                        <div class="features-grid">
+                            <div class="feature-item">
+                                <i class="fa-solid fa-shield-halved"></i>
+                                <h4 style="font-size: 14px; margin-bottom: 4px;">Land Claim</h4>
+                                <p style="font-size: 12px; color: var(--text-secondary);">Bangunan & item aman dari griefing player lain.</p>
+                            </div>
+                            <div class="feature-item">
+                                <i class="fa-solid fa-users"></i>
+                                <h4 style="font-size: 14px; margin-bottom: 4px;">Komunitas Ramah</h4>
+                                <p style="font-size: 12px; color: var(--text-secondary);">Cari teman mabar hingga bikin guild/project besar.</p>
+                            </div>
+                            <div class="feature-item">
+                                <i class="fa-solid fa-bolt"></i>
+                                <h4 style="font-size: 14px; margin-bottom: 4px;">Server TPS Stabil</h4>
+                                <p style="font-size: 12px; color: var(--text-secondary);">Pengalaman bermain lancar tanpa lag berlebih.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Server Connection Card -->
+                    <div class="glass-card" style="display: flex; flex-direction: column; justify-content: space-between;">
+                        <div>
+                            <h2 style="font-size: 20px; margin-bottom: 8px;"><i class="fa-solid fa-network-wired" style="color: var(--accent-blue);"></i> Koneksi Server</h2>
+                            <p style="font-size: 13px; color: var(--text-secondary); margin-bottom: 16px;">Gunakan IP dan Port di bawah ini untuk bergabung dari Bedrock / Java Edition.</p>
+                        </div>
+
+                        <div class="ip-card">
+                            <div class="ip-box">
+                                <div>
+                                    <span style="color: var(--text-secondary); font-size: 12px; display: block;">IP ADDRESS</span>
+                                    <code>play.oblivion.my.id</code>
+                                </div>
+                                <button class="btn" style="padding: 6px 12px; font-size: 12px;" onclick="copyText('play.oblivion.my.id')"><i class="fa-regular fa-copy"></i> Salin</button>
+                            </div>
+                            <div class="ip-box">
+                                <div>
+                                    <span style="color: var(--text-secondary); font-size: 12px; display: block;">PORT</span>
+                                    <code>25583</code>
+                                </div>
+                                <button class="btn" style="padding: 6px 12px; font-size: 12px;" onclick="copyText('25583')"><i class="fa-regular fa-copy"></i> Salin</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Community Section -->
+                <h2 style="font-size: 20px; margin-bottom: 16px;"><i class="fa-solid fa-comments" style="color: var(--accent-blue);"></i> Join Komunitas Kami</h2>
+                <div class="community-grid">
+                    <a href="https://discord.gg/zcznZ58KJ" target="_blank" class="btn btn-discord" style="justify-content: center; padding: 16px;">
+                        <i class="fa-brands fa-discord" style="font-size: 22px;"></i> Join Discord Server
+                    </a>
+                    <a href="https://chat.whatsapp.com/BhyezPUMmdt01Uvzmk0YfT" target="_blank" class="btn btn-wa" style="justify-content: center; padding: 16px;">
+                        <i class="fa-brands fa-whatsapp" style="font-size: 22px;"></i> Join WhatsApp Group
+                    </a>
+                </div>
+            </div>
+
+            <!-- SECTION 2: CHANGELOG -->
+            <div id="changelog-section" class="view-section">
+                <div class="header">
+                    <h1>Server Changelog</h1>
+                    <p>Informasi pembaruan, update fitur, dan maintenance server Oblivion SMP.</p>
+                </div>
+
+                <div class="glass-card" style="margin-bottom: 24px;">
+                    <p style="font-size: 14px; color: var(--text-secondary);">
+                        <i class="fa-solid fa-circle-info" style="color: var(--accent-blue);"></i> 
+                        Fitur changelog ini berfungsi untuk melihat histori update dan info penting seputar server. Hanya akun dengan <strong>Akses Admin</strong> yang dapat menambahkan pesan update baru.
+                    </p>
+                </div>
+
+                <div id="changelog-list"></div>
+            </div>
+
+            <!-- SECTION 3: STORE -->
+            <div id="store-section" class="view-section">
+                <div class="header">
+                    <h1>Oblivion Store</h1>
+                    <p>Beli Rank eksklusif dan Topup In-Game Money untuk server Oblivion SMP.</p>
+                </div>
+
+                <!-- Input Voucher Diskon -->
+                <div class="glass-card" style="padding: 20px;">
+                    <span style="font-size: 13px; color: var(--text-secondary); display: block; margin-bottom: 8px;">Punya Kode Voucher Diskon?</span>
+                    <div class="voucher-box">
+                        <input type="text" id="voucher-code-input" placeholder="Masukkan Kode Voucher">
+                        <button class="btn" onclick="applyVoucher()">Gunakan</button>
+                    </div>
+                    <p id="voucher-status" style="font-size: 12px; margin-top: -12px;"></p>
+                </div>
+
+                <!-- Kategori Filter -->
+                <div class="store-filter">
+                    <button class="filter-btn active" onclick="filterStore('all', this)">Semua Produk</button>
+                    <button class="filter-btn" onclick="filterStore('Rank', this)">Rank</button>
+                    <button class="filter-btn" onclick="filterStore('Topup', this)">Topup Money</button>
+                </div>
+
+                <div class="products-grid" id="products-container"></div>
+            </div>
+
+            <!-- SECTION 4: PARTNERSHIP -->
+            <div id="partnership-section" class="view-section">
+                <div class="header">
+                    <h1>Server Partnership</h1>
+                    <p>Informasi server partner resmi Oblivion SMP.</p>
+                </div>
+
+                <div id="partnership-content"></div>
+            </div>
+
+            <!-- SECTION 5: ADMIN PANEL (Tersembunyi) -->
+            <div id="admin-section" class="view-section">
+                <div class="header">
+                    <h1>Admin Control Panel</h1>
+                    <p>Halaman khusus manajemen Admin untuk mengelola server.</p>
+                </div>
+
+                <!-- Tambah Changelog -->
+                <div class="glass-card">
+                    <h3 style="margin-bottom: 16px;"><i class="fa-solid fa-plus-circle"></i> Tambah Changelog Baru</h3>
+                    <form onsubmit="addChangelog(event)">
+                        <input type="text" id="cl-title" placeholder="Judul Update" style="margin-bottom: 12px;" required>
+                        <textarea id="cl-desc" rows="3" placeholder="Deskripsi pembaruan fitur server..." style="margin-bottom: 12px;" required></textarea>
+                        <button type="submit" class="btn"><i class="fa-solid fa-paper-plane"></i> Kirim Update</button>
+                    </form>
+                </div>
+
+                <!-- Tambah Server Partnership -->
+                <div class="glass-card">
+                    <h3 style="margin-bottom: 16px;"><i class="fa-solid fa-handshake"></i> Isi Informasi Server Partnership</h3>
+                    <form onsubmit="addPartnership(event)">
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px;">
+                            <input type="text" id="partner-name" placeholder="Nama Server Partner" required>
+                            <input type="text" id="partner-theme" placeholder="Tema Server (ex: Survival / Anarchy)" required>
+                            <input type="text" id="partner-ip" placeholder="IP Server" required>
+                            <input type="text" id="partner-port" placeholder="Port Server" required>
+                            <input type="url" id="partner-img" placeholder="URL Gambar Logo Server" required>
+                            <input type="url" id="partner-dc" placeholder="Link Grup Discord">
+                            <input type="url" id="partner-wa" placeholder="Link Grup WhatsApp">
+                        </div>
+                        <button type="submit" class="btn"><i class="fa-solid fa-plus"></i> Simpan Partner</button>
+                    </form>
+                </div>
+
+                <!-- Buat Voucher Diskon -->
+                <div class="glass-card">
+                    <h3 style="margin-bottom: 16px;"><i class="fa-solid fa-ticket"></i> Buat Voucher Diskon Baru</h3>
+                    <form onsubmit="createVoucher(event)">
+                        <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin-bottom: 12px;">
+                            <input type="text" id="vc-code" placeholder="Kode Voucher (ex: DISKON10)" required>
+                            <select id="vc-type" required>
+                                <option value="percent">Persentase (%)</option>
+                                <option value="nominal">Nominal Potongan (Rp)</option>
+                            </select>
+                            <input type="number" id="vc-value" placeholder="Nilai (ex: 10 atau 5000)" required>
+                        </div>
+                        <button type="submit" class="btn"><i class="fa-solid fa-save"></i> Buat Voucher</button>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Modal Admin Auth -->
+    <div class="modal-overlay" id="admin-modal">
+        <div class="modal-box">
+            <div class="modal-header">
+                <h3>Akses Admin Panel</h3>
+                <i class="fa-solid fa-xmark" style="cursor: pointer;" onclick="closeAdminModal()"></i>
+            </div>
+            <p style="font-size: 13px; color: var(--text-secondary); margin-bottom: 16px;">Masukkan kode rahasia admin untuk membuka panel kontrol.</p>
+            <input type="password" id="admin-pass-input" placeholder="Masukkan Kode Admin" style="margin-bottom: 16px;">
+            <button class="btn" style="width: 100%; justify-content: center;" onclick="verifyAdminCode()">Masuk Admin</button>
+        </div>
+    </div>
+
+    <!-- Modal Checkout WA -->
+    <div class="modal-overlay" id="checkout-modal">
+        <div class="modal-box">
+            <div class="modal-header">
+                <h3>Konfirmasi Pembelian</h3>
+                <i class="fa-solid fa-xmark" style="cursor: pointer;" onclick="closeCheckoutModal()"></i>
+            </div>
+            <div id="checkout-details" style="margin-bottom: 16px; font-size: 14px; line-height: 1.6;"></div>
+            <input type="text" id="buyer-nickname" placeholder="Masukkan Nickname Minecraft Anda" style="margin-bottom: 16px;" required>
+            <button class="btn btn-wa" style="width: 100%; justify-content: center;" onclick="proceedToWhatsApp()">
+                <i class="fa-brands fa-whatsapp"></i> Lanjutkan Pembayaran WA
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // State Awal Application
+        let isAdmin = false;
+        let logoClickCount = 0;
+        let logoClickTimer = null;
+        let activeVoucher = null;
+        let selectedProduct = null;
+
+        const storeProducts = [
+            { id: 1, name: "Viper Rank", category: "Rank", price: 15000, tag: "Rank" },
+            { id: 2, name: "Revenant Rank", category: "Rank", price: 25000, tag: "Rank" },
+            { id: 3, name: "Spectre Rank", category: "Rank", price: 40000, tag: "Rank" },
+            { id: 4, name: "Phantom Rank", category: "Rank", price: 80000, tag: "Rank" },
+            { id: 5, name: "Oblivion Rank", category: "Rank", price: 100000, tag: "ULTIMATE" },
+            { id: 6, name: "150k Money", category: "Topup", price: 10000, tag: "Topup" },
+            { id: 7, name: "350k Money", category: "Topup", price: 20000, tag: "Topup" },
+            { id: 8, name: "550k Money", category: "Topup", price: 28000, tag: "Topup" },
+            { id: 9, name: "850k Money", category: "Topup", price: 38000, tag: "Topup" },
+            { id: 10, name: "1M Money", category: "Topup", price: 49000, tag: "Topup" },
+            { id: 11, name: "2,5M Money", category: "Topup", price: 57000, tag: "Topup" },
+            { id: 12, name: "3,5M Money", category: "Topup", price: 69000, tag: "Topup" }
+        ];
+
+        let changelogs = [
+            {
+                title: "Opening Server Oblivion SMP",
+                date: "2026-09-26",
+                desc: "Server telah resmi dibuka! Sistem Claim Land, Rank VIP, dan Topup Money sudah aktif sepenuhnya."
+            }
+        ];
+
+        let partnerships = [];
+        let vouchers = [{ code: "OBLIVION10", type: "percent", value: 10 }];
+
+        function toggleSidebar() {
+            document.getElementById('sidebar').classList.toggle('open');
+        }
+
+        function switchTab(tabName, element) {
+            document.querySelectorAll('.view-section').forEach(s => s.classList.remove('active'));
+            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+
+            document.getElementById(tabName + '-section').classList.add('active');
+            if(element) element.classList.add('active');
+
+            document.getElementById('sidebar').classList.remove('open');
+        }
+
+        function handleLogoClick() {
+            logoClickCount++;
+            clearTimeout(logoClickTimer);
+            logoClickTimer = setTimeout(() => { logoClickCount = 0; }, 2000);
+
+            if (logoClickCount >= 5) {
+                logoClickCount = 0;
+                document.getElementById('admin-modal').style.display = 'flex';
+            }
+        }
+
+        function closeAdminModal() {
+            document.getElementById('admin-modal').style.display = 'none';
+        }
+
+        function verifyAdminCode() {
+            const input = document.getElementById('admin-pass-input').value;
+            if (input === 'admin123') {
+                isAdmin = true;
+                alert('Akses Admin Berhasil Diberikan!');
+                document.getElementById('admin-menu-btn').classList.add('show');
+                closeAdminModal();
+                renderChangelogs();
+                renderPartnerships();
+                switchTab('admin', document.getElementById('admin-menu-btn'));
+            } else {
+                alert('Kode Admin Salah!');
+            }
+        }
+
+        function copyText(text) {
+            navigator.clipboard.writeText(text);
+            alert('Berhasil disalin: ' + text);
+        }
+
+        function renderStore(filterCategory = 'all') {
+            const container = document.getElementById('products-container');
+            container.innerHTML = '';
+
+            const filtered = filterCategory === 'all' 
+                ? storeProducts 
+                : storeProducts.filter(p => p.category === filterCategory);
+
+            filtered.forEach(p => {
+                let finalPrice = p.price;
+                if (activeVoucher) {
+                    if (activeVoucher.type === 'percent') {
+                        finalPrice = p.price - (p.price * (activeVoucher.value / 100));
+                    } else if (activeVoucher.type === 'nominal') {
+                        finalPrice = Math.max(0, p.price - activeVoucher.value);
+                    }
+                }
+
+                const card = document.createElement('div');
+                card.className = 'product-card';
+                card.innerHTML = `
+                    <span class="badge-tag">${p.tag}</span>
+                    <div>
+                        <i class="fa-solid ${p.category === 'Rank' ? 'fa-shield-halved' : 'fa-coins'}" style="color: var(--accent-blue); font-size: 24px;"></i>
+                        <div class="product-title">${p.name}</div>
+                    </div>
+                    <div>
+                        <div class="product-price">
+                            ${activeVoucher ? `<span style="text-decoration: line-through; color: var(--text-secondary); font-size: 13px; margin-right: 6px;">Rp ${p.price.toLocaleString('id-ID')}</span>` : ''}
+                            Rp ${finalPrice.toLocaleString('id-ID')}
+                        </div>
+                        <button class="btn" style="width: 100%; justify-content: center;" onclick="openCheckout(${p.id})">Beli Sekarang</button>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        function filterStore(cat, btn) {
+            document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            renderStore(cat);
+        }
+
+        function applyVoucher() {
+            const codeInput = document.getElementById('voucher-code-input').value.trim().toUpperCase();
+            const statusText = document.getElementById('voucher-status');
+
+            const found = vouchers.find(v => v.code.toUpperCase() === codeInput);
+            if (found) {
+                activeVoucher = found;
+                statusText.style.color = '#2ed573';
+                statusText.innerText = `Voucher ${found.code} Aktif! (${found.type === 'percent' ? found.value + '%' : 'Rp ' + found.value.toLocaleString('id-ID')} Potongan)`;
+                renderStore();
+            } else {
+                activeVoucher = null;
+                statusText.style.color = '#ff4757';
+                statusText.innerText = 'Kode voucher tidak valid!';
+                renderStore();
+            }
+        }
+
+        function openCheckout(prodId) {
+            selectedProduct = storeProducts.find(p => p.id === prodId);
+            let finalPrice = selectedProduct.price;
+            if (activeVoucher) {
+                if (activeVoucher.type === 'percent') {
+                    finalPrice = selectedProduct.price - (selectedProduct.price * (activeVoucher.value / 100));
+                } else if (activeVoucher.type === 'nominal') {
+                    finalPrice = Math.max(0, selectedProduct.price - activeVoucher.value);
+                }
+            }
+            selectedProduct.calculatedPrice = finalPrice;
+
+            const detailsBox = document.getElementById('checkout-details');
+            detailsBox.innerHTML = `
+                <p><strong>Item:</strong> ${selectedProduct.name}</p>
+                <p><strong>Kategori:</strong> ${selectedProduct.category}</p>
+                <p><strong>Harga Total:</strong> Rp ${finalPrice.toLocaleString('id-ID')}</p>
+                ${activeVoucher ? `<p style="color: #2ed573; font-size: 12px;">Voucher: ${activeVoucher.code}</p>` : ''}
+            `;
+
+            document.getElementById('checkout-modal').style.display = 'flex';
+        }
+
+        function closeCheckoutModal() {
+            document.getElementById('checkout-modal').style.display = 'none';
+        }
+
+        function proceedToWhatsApp() {
+            const nickname = document.getElementById('buyer-nickname').value.trim();
+            if (!nickname) {
+                alert('Harap isi Nickname Minecraft Anda!');
+                return;
+            }
+
+            const phone = "6289676623406";
+            let message = `Halo Admin Oblivion SMP, saya ingin membeli item berikut:\n\n` +
+                          `• *Nickname MC:* ${nickname}\n` +
+                          `• *Item Pesanan:* ${selectedProduct.name}\n` +
+                          `• *Kategori:* ${selectedProduct.category}\n` +
+                          `• *Total Harga:* Rp ${selectedProduct.calculatedPrice.toLocaleString('id-ID')}\n`;
+            
+            if (activeVoucher) {
+                message += `• *Voucher Diskon:* ${activeVoucher.code}\n`;
+            }
+
+            message += `\nMohon diproses pesanan saya, terima kasih!`;
+
+            const encodedURL = `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
+            window.open(encodedURL, '_blank');
+            closeCheckoutModal();
+        }
+
+        function renderChangelogs() {
+            const container = document.getElementById('changelog-list');
+            container.innerHTML = '';
+
+            changelogs.forEach(cl => {
+                const card = document.createElement('div');
+                card.className = 'glass-card';
+                card.style.borderLeft = '4px solid var(--accent-blue)';
+                card.innerHTML = `
+                    <div style="font-size: 12px; color: var(--text-secondary); margin-bottom: 4px;"><i class="fa-regular fa-calendar"></i> ${cl.date}</div>
+                    <h3 style="margin-bottom: 8px;">${cl.title}</h3>
+                    <p style="color: var(--text-secondary); font-size: 14px; line-height: 1.5;">${cl.desc}</p>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        function addChangelog(e) {
+            e.preventDefault();
+            const title = document.getElementById('cl-title').value;
+            const desc = document.getElementById('cl-desc').value;
+            const date = new Date().toISOString().split('T')[0];
+
+            changelogs.unshift({ title, desc, date });
+            renderChangelogs();
+            alert('Update Changelog Berhasil Diterbitkan!');
+            e.target.reset();
+            switchTab('changelog', document.querySelectorAll('.nav-item')[1]);
+        }
+
+        function renderPartnerships() {
+            const container = document.getElementById('partnership-content');
+            container.innerHTML = '';
+
+            if (!isAdmin && partnerships.length === 0) {
+                container.innerHTML = `
+                    <div class="glass-card" style="text-align: center; color: var(--text-secondary); padding: 40px;">
+                        <i class="fa-solid fa-handshake-slash" style="font-size: 32px; margin-bottom: 12px; display: block;"></i>
+                        Halaman ini saat ini masih kosong. Hanya akun Admin yang dapat mengisi data server partnership.
+                    </div>
+                `;
+                return;
+            }
+
+            partnerships.forEach(p => {
+                const card = document.createElement('div');
+                card.className = 'glass-card';
+                card.style.display = 'flex';
+                card.style.gap = '20px';
+                card.style.alignItems = 'center';
+                card.innerHTML = `
+                    <img src="${p.img}" style="width: 80px; height: 80px; border-radius: 16px; object-fit: cover; background: #101830;" alt="${p.name}">
+                    <div style="flex: 1;">
+                        <h3 style="margin-bottom: 4px;">${p.name}</h3>
+                        <span style="font-size: 12px; color: var(--accent-blue); background: rgba(45,115,255,0.2); padding: 2px 8px; border-radius: 6px;">${p.theme}</span>
+                        <p style="font-size: 13px; color: var(--text-secondary); margin-top: 8px;">
+                            <strong>IP:</strong> ${p.ip} | <strong>Port:</strong> ${p.port}
+                        </p>
+                        <div style="margin-top: 10px; display: flex; gap: 8px;">
+                            ${p.dc ? `<a href="${p.dc}" target="_blank" class="btn btn-discord" style="padding: 6px 12px; font-size: 12px;"><i class="fa-brands fa-discord"></i> Discord</a>` : ''}
+                            ${p.wa ? `<a href="${p.wa}" target="_blank" class="btn btn-wa" style="padding: 6px 12px; font-size: 12px;"><i class="fa-brands fa-whatsapp"></i> WA Group</a>` : ''}
+                        </div>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        function addPartnership(e) {
+            e.preventDefault();
+            const partner = {
+                name: document.getElementById('partner-name').value,
+                theme: document.getElementById('partner-theme').value,
+                ip: document.getElementById('partner-ip').value,
+                port: document.getElementById('partner-port').value,
+                img: document.getElementById('partner-img').value,
+                dc: document.getElementById('partner-dc').value,
+                wa: document.getElementById('partner-wa').value
+            };
+
+            partnerships.push(partner);
+            renderPartnerships();
+            alert('Server Partner Berhasil Ditambahkan!');
+            e.target.reset();
+            switchTab('partnership', document.querySelectorAll('.nav-item')[3]);
+        }
+
+        function createVoucher(e) {
+            e.preventDefault();
+            const code = document.getElementById('vc-code').value.trim();
+            const type = document.getElementById('vc-type').value;
+            const value = parseFloat(document.getElementById('vc-value').value);
+
+            vouchers.push({ code, type, value });
+            alert(`Voucher ${code} berhasil dibuat!`);
+            e.target.reset();
+        }
+
+        renderStore();
+        renderChangelogs();
+        renderPartnerships();
+    </script>
+</body>
+</html>
