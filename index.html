@@ -3,345 +3,332 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Oblivion SMP - Official Website</title>
+    <title>Oblivion SMP - Official Portal</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Teko:wght@600;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-main: #070a13;
-            --sidebar-bg: rgba(13, 20, 38, 0.85);
-            --card-bg: rgba(20, 30, 55, 0.6);
-            --card-glow: rgba(45, 115, 255, 0.25);
-            --accent-blue: #2d73ff;
-            --accent-glow: #1e52d8;
-            --text-primary: #ffffff;
-            --text-secondary: #9aa8bc;
-            --border-color: rgba(255, 255, 255, 0.08);
-            --success-color: #2ed573;
+            /* Tema Meteor / Oblivion Space */
+            --bg-body: #05020a; /* Hitam keunguan luar angkasa */
+            --bg-sidebar: rgba(10, 5, 20, 0.95);
+            --bg-card: rgba(18, 9, 30, 0.6);
+            
+            --border-light: rgba(255, 87, 34, 0.15);
+            --border-glow: rgba(255, 87, 34, 0.5);
+            
+            --brand-primary: #ff5722; /* Meteor Orange */
+            --brand-secondary: #e64a19; /* Deep Fire */
+            --brand-accent: #ffb74d; /* Bright Flare */
+            --brand-success: #10b981;
+            
+            --text-main: #f8fafc;
+            --text-muted: #a89fba;
+            --text-dark: #645a7a;
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; }
+        html { scroll-behavior: smooth; }
+        
+        body { 
+            background-color: var(--bg-body); 
+            background-image: radial-gradient(circle at 50% 0%, #1a0b2e 0%, var(--bg-body) 70%);
+            color: var(--text-main); 
+            min-height: 100vh; 
+            display: flex; 
+            flex-direction: column; 
+            overflow-x: hidden; 
+            -webkit-font-smoothing: antialiased;
         }
 
-        body {
-            background-color: var(--bg-main);
-            background-image: 
-                radial-gradient(circle at 15% 20%, rgba(45, 115, 255, 0.15) 0%, transparent 40%),
-                radial-gradient(circle at 85% 80%, rgba(30, 82, 216, 0.12) 0%, transparent 40%);
-            color: var(--text-primary);
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            overflow-x: hidden;
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: var(--bg-body); }
+        ::-webkit-scrollbar-thumb { background: var(--brand-secondary); border-radius: 4px; }
+
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
-        /* Mobile Header Toggle */
+        /* Mobile Header */
         .mobile-header {
-            display: none;
-            background: var(--sidebar-bg);
-            padding: 16px 20px;
-            border-bottom: 1px solid var(--border-color);
-            align-items: center;
-            justify-content: space-between;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            backdrop-filter: blur(15px);
+            display: none; background: rgba(5, 2, 10, 0.85); backdrop-filter: blur(12px);
+            padding: 14px 20px; border-bottom: 1px solid var(--border-light);
+            align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100;
         }
+        .header-actions { display: flex; align-items: center; gap: 14px; }
 
-        .hamburger {
-            font-size: 22px;
-            cursor: pointer;
-            color: var(--text-primary);
-            background: none;
-            border: none;
+        .voucher-badge-btn {
+            background: rgba(255, 87, 34, 0.1); color: var(--brand-accent);
+            border: 1px solid rgba(255, 87, 34, 0.3); padding: 6px 14px; border-radius: 8px;
+            font-size: 13px; font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 8px;
+            transition: all 0.3s; box-shadow: 0 0 10px rgba(255, 87, 34, 0.2);
         }
+        .voucher-badge-btn:hover { background: rgba(255, 87, 34, 0.25); transform: scale(1.05); }
 
-        /* App Container */
-        .app-container {
-            display: flex;
-            flex: 1;
-            min-height: 100vh;
+        .hamburger { font-size: 22px; cursor: pointer; color: var(--text-main); background: none; border: none; }
+
+        .app-container { display: flex; flex: 1; width: 100%; position: relative; }
+
+        .sidebar-overlay {
+            display: none; position: fixed; inset: 0; background: rgba(0, 0, 0, 0.8); 
+            z-index: 150; backdrop-filter: blur(4px); opacity: 0; transition: opacity 0.3s ease;
         }
+        .sidebar-overlay.open { display: block; opacity: 1; }
 
-        /* Sidebar Navigation */
+        /* Premium Sidebar */
         .sidebar {
-            width: 250px;
-            background: var(--sidebar-bg);
-            backdrop-filter: blur(20px);
-            border-right: 1px solid var(--border-color);
-            padding: 24px 16px;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            position: fixed;
-            height: 100vh;
-            z-index: 99;
-            transition: transform 0.3s ease;
+            width: 280px; background: var(--bg-sidebar); backdrop-filter: blur(15px);
+            border-right: 1px solid var(--border-light); padding: 32px 24px; 
+            display: flex; flex-direction: column; justify-content: space-between;
+            position: fixed; top: 0; left: 0; height: 100vh; z-index: 200; 
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
-        .logo {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            font-size: 20px;
-            font-weight: 700;
-            color: var(--text-primary);
-            margin-bottom: 32px;
-            padding-left: 8px;
-            cursor: pointer;
-            user-select: none;
+        .logo { 
+            display: flex; align-items: center; gap: 14px; font-family: 'Teko', sans-serif; font-size: 28px; 
+            color: var(--text-main); margin-bottom: 40px; cursor: pointer; letter-spacing: 1px;
+            text-shadow: 0 0 15px rgba(255, 87, 34, 0.5);
         }
+        .logo-icon { 
+            width: 42px; height: 42px; background: linear-gradient(135deg, var(--brand-primary), var(--brand-secondary)); 
+            border-radius: 12px; display: flex; align-items: center; justify-content: center; 
+            color: #fff; font-size: 20px; box-shadow: 0 4px 15px rgba(255, 87, 34, 0.4);
+            transform: rotate(45deg);
+        }
+        .logo-icon i { transform: rotate(-45deg); }
 
-        .logo i {
-            color: var(--accent-blue);
-            font-size: 24px;
-            animation: pulse-glow 2s infinite alternate;
-        }
-
-        .nav-menu {
-            list-style: none;
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-        }
+        .nav-label { font-size: 11px; font-weight: 800; color: var(--brand-primary); text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 16px; padding-left: 10px; opacity: 0.8; }
+        .nav-menu { list-style: none; display: flex; flex-direction: column; gap: 8px; }
 
         .nav-item a {
-            display: flex;
-            align-items: center;
-            gap: 14px;
-            padding: 12px 16px;
-            color: var(--text-secondary);
-            text-decoration: none;
-            border-radius: 12px;
-            font-size: 14px;
-            transition: all 0.3s ease;
+            display: flex; align-items: center; gap: 14px; padding: 14px 16px; color: var(--text-muted); 
+            text-decoration: none; border-radius: 12px; font-size: 14px; font-weight: 600; transition: all 0.3s ease;
         }
-
-        .nav-item.active a, .nav-item a:hover {
-            background: var(--accent-blue);
-            color: #fff;
-            box-shadow: 0 4px 20px rgba(45, 115, 255, 0.4);
-            transform: translateX(4px);
+        .nav-item.active a { 
+            background: linear-gradient(90deg, rgba(255, 87, 34, 0.15), transparent); 
+            color: var(--brand-accent); border-left: 3px solid var(--brand-primary);
+            box-shadow: inset 10px 0 20px -10px rgba(255, 87, 34, 0.3);
         }
-
+        .nav-item a:hover:not(.active a) { background: rgba(255, 255, 255, 0.05); color: var(--text-main); transform: translateX(5px); }
+        
         .admin-nav-item { display: none; }
         .admin-nav-item.show { display: block; }
 
-        /* Main Content Layout Optimization for Desktop */
-        .main-content {
-            margin-left: 250px;
-            flex: 1;
-            padding: 40px;
-            transition: all 0.3s ease;
-            max-width: 1400px;
+        .main-content { margin-left: 280px; flex: 1; padding: 40px; width: calc(100% - 280px); max-width: 1400px; margin-right: auto; }
+
+        /* UI Kartu Kaca Futuristik */
+        .card { 
+            background: var(--bg-card); border: 1px solid var(--border-light); 
+            border-radius: 16px; padding: 24px; margin-bottom: 24px; 
+            backdrop-filter: blur(10px); box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s;
+        }
+        .card:hover { border-color: var(--brand-primary); box-shadow: 0 8px 32px rgba(255, 87, 34, 0.15); }
+
+        .card-header-title { font-family: 'Teko', sans-serif; font-size: 24px; color: var(--text-main); margin-bottom: 16px; display: flex; align-items: center; gap: 10px; letter-spacing: 1px; }
+        .card-header-title i { color: var(--brand-primary); font-size: 18px; text-shadow: 0 0 10px var(--brand-primary); }
+
+        .gradient-text {
+            background: linear-gradient(to right, #fff, var(--brand-accent));
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
         }
 
-        .header {
-            margin-bottom: 32px;
-            animation: fadeInDown 0.8s ease;
+        /* Hero Banner dengan Video Meteor yang Menyatu (Blend-Mode) */
+        .hero-banner {
+            position: relative; border-radius: 20px; overflow: hidden;
+            background: linear-gradient(to bottom, rgba(13, 6, 20, 0.8), var(--bg-body));
+            border: 1px solid var(--border-light); box-shadow: 0 0 40px rgba(255, 87, 34, 0.1);
+            margin-bottom: 30px;
+        }
+        
+        .meteor-video {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: 1;
+            /* Trik agar hitam di video jadi transparan & menyatu dengan background */
+            mix-blend-mode: screen; 
+            /* Filter untuk mengubah warna putih/biru video menjadi warna api/meteor oranye */
+            filter: sepia(1) hue-rotate(-50deg) saturate(4) brightness(1.2);
+            opacity: 0.6;
+            /* Gradient Mask agar ujung bawah video memudar perlahan */
+            -webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 30%, rgba(0,0,0,0) 100%);
+            mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 30%, rgba(0,0,0,0) 100%);
         }
 
-        .header h1 {
-            font-size: 32px;
-            font-weight: 700;
-            background: linear-gradient(90deg, #ffffff, #82b1ff);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+        .hero-content {
+            position: relative; z-index: 2; padding: 40px; display: flex; 
+            justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 20px;
         }
 
-        .header p {
-            color: var(--text-secondary);
-            font-size: 15px;
-            margin-top: 6px;
-        }
-
-        /* Hero Container (2 Columns Desktop Grid) */
-        .hero-grid {
-            display: grid;
-            grid-template-columns: 1.2fr 0.8fr;
-            gap: 24px;
-            margin-bottom: 32px;
-        }
-
-        /* Glassmorphism Cards with Animations */
-        .glass-card {
-            background: var(--card-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 24px;
-            padding: 28px;
-            backdrop-filter: blur(16px);
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
-            transition: all 0.3s ease;
-            animation: fadeInUp 0.8s ease;
-        }
-
-        .glass-card:hover {
-            border-color: rgba(45, 115, 255, 0.3);
-            box-shadow: 0 12px 40px var(--card-glow);
-        }
-
-        /* Server Features Grid */
-        .features-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 16px;
-            margin-top: 24px;
-        }
-
-        .feature-item {
-            background: rgba(11, 16, 30, 0.6);
-            border: 1px solid var(--border-color);
-            padding: 16px;
-            border-radius: 16px;
-            transition: transform 0.3s, border-color 0.3s;
-        }
-
-        .feature-item:hover {
-            transform: translateY(-5px);
-            border-color: var(--accent-blue);
-        }
-
-        .feature-item i {
-            font-size: 22px;
-            color: var(--accent-blue);
-            margin-bottom: 8px;
-        }
-
-        /* Server IP Copy Box */
-        .ip-card {
-            background: linear-gradient(135deg, rgba(45, 115, 255, 0.15), rgba(16, 24, 48, 0.7));
-            border: 1px solid rgba(45, 115, 255, 0.3);
-            border-radius: 20px;
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }
-
-        .ip-box {
-            background: rgba(11, 16, 30, 0.8);
-            padding: 12px 18px;
-            border-radius: 12px;
-            border: 1px solid var(--border-color);
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-
-        .ip-box code {
-            color: #4cd964;
-            font-weight: 700;
-            font-size: 16px;
-            letter-spacing: 0.5px;
-        }
-
-        /* Interactive Buttons */
+        /* Buttons */
         .btn {
-            background: var(--accent-blue);
-            color: white;
-            border: none;
-            padding: 12px 24px;
-            border-radius: 12px;
-            cursor: pointer;
-            font-weight: 600;
-            transition: all 0.3s ease;
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-            text-decoration: none;
-            font-size: 14px;
+            background: linear-gradient(135deg, var(--brand-primary), var(--brand-secondary)); 
+            color: #fff; border: none; padding: 12px 24px; border-radius: 10px; cursor: pointer; 
+            font-weight: 700; font-size: 13px; text-transform: uppercase; letter-spacing: 1px;
+            display: inline-flex; align-items: center; gap: 8px; text-decoration: none; 
+            transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(255, 87, 34, 0.3);
+        }
+        .btn:hover { transform: translateY(-3px); box-shadow: 0 8px 25px rgba(255, 87, 34, 0.5); filter: brightness(1.1); }
+        .btn:active { transform: scale(0.97); }
+        
+        .btn-outline { background: rgba(255, 87, 34, 0.1); color: var(--brand-accent); border: 1px solid var(--brand-primary); backdrop-filter: blur(4px); }
+        .btn-outline:hover { background: var(--brand-primary); color: #fff; }
+
+        .btn-discord { background: linear-gradient(135deg, #5865F2, #4752C4); box-shadow: 0 4px 15px rgba(88, 101, 242, 0.3); }
+        .btn-wa { background: linear-gradient(135deg, #10b981, #059669); box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3); }
+
+        /* Store Elements */
+        .store-nav { display: flex; gap: 12px; margin-bottom: 20px; border-bottom: 1px solid var(--border-light); padding-bottom: 12px; }
+        .mode-btn { background: transparent; border: none; color: var(--text-muted); font-family: 'Teko', sans-serif; font-size: 22px; letter-spacing: 1px; padding: 6px 16px; border-radius: 8px 8px 0 0; cursor: pointer; transition: all 0.3s; }
+        .mode-btn.active { background: rgba(255, 87, 34, 0.1); color: var(--brand-accent); border-bottom: 3px solid var(--brand-primary); text-shadow: 0 0 10px rgba(255,87,34,0.5); }
+
+        .sub-nav { display: flex; gap: 10px; margin-bottom: 24px; flex-wrap: wrap; }
+        .sub-btn { background: rgba(10, 5, 20, 0.8); border: 1px solid var(--border-light); color: var(--text-muted); padding: 8px 18px; border-radius: 8px; font-size: 12px; font-weight: 700; text-transform: uppercase; cursor: pointer; transition: all 0.2s; }
+        .sub-btn.active, .sub-btn:hover { background: var(--brand-primary); color: #fff; border-color: var(--brand-primary); box-shadow: 0 0 15px rgba(255, 87, 34, 0.4); }
+
+        /* Grid Produk yang lebih dinamis */
+        .products-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 20px; }
+        .product-card { 
+            background: linear-gradient(180deg, rgba(18, 9, 30, 0.8) 0%, rgba(10, 5, 20, 0.9) 100%); 
+            border: 1px solid var(--border-light); border-radius: 16px; padding: 20px; 
+            display: flex; flex-direction: column; justify-content: space-between; position: relative;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .product-card:hover { transform: translateY(-8px); border-color: var(--brand-accent); box-shadow: 0 15px 30px rgba(0, 0, 0, 0.5), 0 0 15px rgba(255, 183, 77, 0.2); }
+        
+        .discount-badge {
+            position: absolute; top: -12px; right: 16px;
+            background: linear-gradient(135deg, #ff5722, #e64a19); color: #fff; 
+            font-size: 11px; font-weight: 800; padding: 4px 12px; border-radius: 20px;
+            box-shadow: 0 4px 10px rgba(255, 87, 34, 0.4);
         }
 
-        .btn:hover {
-            background: var(--accent-glow);
-            box-shadow: 0 0 20px var(--accent-blue);
-            transform: translateY(-2px);
+        .product-icon {
+            width: 48px; height: 48px; background: rgba(255, 87, 34, 0.1); color: var(--brand-accent);
+            border-radius: 12px; display: flex; align-items: center; justify-content: center; 
+            font-size: 20px; margin-bottom: 16px; transition: transform 0.4s;
+            box-shadow: inset 0 0 10px rgba(255,87,34,0.2);
+        }
+        .product-card:hover .product-icon { transform: scale(1.1) rotate(10deg); background: var(--brand-primary); color: #fff; }
+
+        .product-title { font-size: 17px; font-weight: 700; margin-bottom: 6px; color: var(--text-main); }
+        .product-price { font-family: 'Teko', sans-serif; font-size: 26px; font-weight: 600; color: var(--brand-accent); margin-bottom: 16px; text-shadow: 0 0 8px rgba(255, 183, 77, 0.3); }
+
+        .quantity-control { display: flex; align-items: center; justify-content: space-between; background: rgba(0,0,0,0.3); border: 1px solid var(--border-light); border-radius: 8px; padding: 4px 8px; margin-bottom: 12px; }
+        .qty-btn { background: rgba(255, 87, 34, 0.15); color: var(--brand-accent); border: none; width: 26px; height: 26px; border-radius: 6px; cursor: pointer; font-weight: bold; transition: 0.2s; }
+        .qty-btn:hover { background: var(--brand-primary); color: #fff; }
+
+        /* Form Inputs */
+        input, textarea, select { 
+            background: rgba(10, 5, 20, 0.6); border: 1px solid var(--border-light); 
+            padding: 14px 18px; border-radius: 10px; color: var(--text-main); 
+            outline: none; width: 100%; font-size: 14px; transition: border-color 0.3s;
+        }
+        input:focus, textarea:focus, select:focus { border-color: var(--brand-accent); box-shadow: 0 0 15px rgba(255, 183, 77, 0.15); }
+
+        /* Quest Box */
+        .quest-box { background: rgba(0, 0, 0, 0.2); border-radius: 12px; padding: 8px; }
+        .quest-item { display: flex; align-items: center; justify-content: space-between; padding: 16px; border-bottom: 1px dashed var(--border-light); transition: background 0.3s; border-radius: 8px; }
+        .quest-item:last-child { border-bottom: none; }
+        .quest-item:hover { background: rgba(255, 87, 34, 0.05); }
+
+        /* Modals */
+        .modal-overlay { 
+            position: fixed; inset: 0; background: rgba(3, 1, 7, 0.85); backdrop-filter: blur(8px); 
+            display: none; justify-content: center; align-items: center; z-index: 1000; 
+        }
+        .modal-box { 
+            background: rgba(18, 9, 30, 0.95); border: 1px solid var(--border-glow); 
+            border-radius: 20px; padding: 32px; width: 90%; max-width: 480px; position: relative;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.8), 0 0 30px rgba(255, 87, 34, 0.15);
+            animation: fadeUp 0.3s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
-        .btn-discord { background: #5865F2; }
-        .btn-discord:hover { background: #4752C4; box-shadow: 0 0 20px #5865F2; }
-
-        .btn-wa { background: #25D366; }
-        .btn-wa:hover { background: #1EBE5D; box-shadow: 0 0 20px #25D366; }
-
-        /* Social Community Grid */
-        .community-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 16px;
-            margin-top: 16px;
+        .close-modal-btn {
+            position: absolute; top: 20px; right: 20px; background: rgba(255, 255, 255, 0.05);
+            border: 1px solid transparent; color: var(--text-muted); width: 34px; height: 34px;
+            border-radius: 10px; display: flex; align-items: center; justify-content: center; 
+            cursor: pointer; transition: all 0.2s; font-size: 16px;
         }
+        .close-modal-btn:hover { background: rgba(255, 87, 34, 0.1); color: var(--brand-primary); border-color: var(--brand-primary); transform: rotate(90deg); }
 
-        /* Store Grid & Tab Filter */
-        .store-filter {
-            display: flex;
-            gap: 12px;
-            margin-bottom: 24px;
+        .view-section { display: none; }
+        .view-section.active { display: block; animation: fadeUp 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+
+        @media (max-width: 900px) {
+            .mobile-header { display: flex; }
+            .sidebar { transform: translateX(-100%); }
+            .sidebar.open { transform: translateX(0); }
+            .main-content { margin-left: 0; width: 100%; padding: 20px; }
+            .hero-content h1 { font-size: 32px !important; }
         }
+    </style>
+</head>
+<body>
 
-        .filter-btn {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid var(--border-color);
-            color: var(--text-secondary);
-            padding: 10px 20px;
-            border-radius: 12px;
-            cursor: pointer;
-            font-weight: 600;
-            transition: 0.3s;
-        }
+    <!-- Mobile Header -->
+    <div class="mobile-header">
+        <div class="logo" style="margin-bottom:0;" onclick="handleLogoClick()">
+            <div class="logo-icon" style="width:32px; height:32px; font-size:14px;"><i class="fa-solid fa-meteor"></i></div>
+            <span style="font-size: 20px;">Oblivion SMP</span>
+        </div>
+        <div class="header-actions">
+            <button class="voucher-badge-btn" onclick="openQuestModal()">
+                <i class="fa-solid fa-ticket"></i> <span id="header-voucher-count">0</span>
+            </button>
+            <button class="hamburger" onclick="toggleSidebar()"><i class="fa-solid fa-bars-staggered"></i></button>
+        </div>
+    </div>
 
-        .filter-btn.active, .filter-btn:hover {
-            background: var(--accent-blue);
-            color: #fff;
-            border-color: var(--accent-blue);
-        }
+    <div class="app-container">
+        <div class="sidebar-overlay" id="sidebar-overlay" onclick="toggleSidebar()"></div>
 
-        .products-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-            gap: 20px;
-        }
+        <!-- Sidebar -->
+        <div class="sidebar" id="sidebar">
+            <div>
+                <div class="logo" onclick="handleLogoClick()">
+                    <div class="logo-icon"><i class="fa-solid fa-meteor"></i></div>
+                    <span>Oblivion SMP</span>
+                </div>
 
-        .product-card {
-            background: var(--card-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 20px;
-            padding: 20px;
-            backdrop-filter: blur(10px);
-            transition: transform 0.3s, box-shadow 0.3s;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            position: relative;
-        }
+                <div class="nav-label">Menu Utama</div>
+                <ul class="nav-menu">
+                    <li class="nav-item active" onclick="switchTab('home', this)"><a href="javascript:void(0)"><i class="fa-solid fa-house"></i> Beranda</a></li>
+                    <li class="nav-item" onclick="switchTab('changelog', this)"><a href="javascript:void(0)"><i class="fa-solid fa-timeline"></i> Changelog</a></li>
+                    <li class="nav-item" onclick="switchTab('store', this)"><a href="javascript:void(0)"><i class="fa-solid fa-bag-shopping"></i> Web Store</a></li>
+                    <li class="nav-item" onclick="openQuestModal()"><a href="javascript:void(0)"><i class="fa-solid fa-gift"></i> Quest & Reward</a></li>
+                    <li class="nav-item" onclick="switchTab('partnership', this)"><a href="javascript:void(0)"><i class="fa-solid fa-handshake"></i> Partnership</a></li>
+                    
+                    <div class="nav-label" style="margin-top: 24px;" id="admin-label">Manajemen</div>
+                    <li class="nav-item admin-nav-item" id="admin-menu-btn" onclick="switchTab('admin', this)"><a href="javascript:void(0)"><i class="fa-solid fa-shield-halved"></i> Admin Panel</a></li>
+                </ul>
+            </div>
+            <div style="font-size: 11px; color: var(--text-dark); text-align: center; font-weight: 600;">
+                &copy; 2026 Oblivion SMP<br>
+                <span style="font-size: 10px; font-weight: 400; color: var(--brand-primary);">Survive The Apocalypse</span>
+            </div>
+        </div>
 
-        .product-card:hover {
-            transform: translateY(-6px);
-            box-shadow: 0 10px 30px var(--card-glow);
-            border-color: rgba(45, 115, 255, 0.4);
-        }
-
-        .badge-tag {
-            position: absolute;
-            top: 16px;
-            right: 16px;
-            background: rgba(45, 115, 255, 0.2);
-            color: var(--accent-blue);
-            font-size: 11px;
-            padding: 4px 10px;
-            border-radius: 20px;
-            font-weight: bold;
-        }
-
-        .product-title {
-            font-size: 18px;
-            font-weight: 700;
-            margin-top: 10px;
-            margin-bottom: 8px;
+        <!-- Main Workspace -->
+        <div class="main-content">
+            
+            <!-- SECTION 1: HOME -->
+            <div id="home-section" class="view-section active">
+                
+                <!-- HERO BANNER DENGAN VIDEO METEOR -->
+                <div class="hero-banner">
+                    <!-- Video Partikel yang diubah menjadi Meteor Shower menggunakan CSS Filter -->
+                    <video autoplay loop muted playsinline class="meteor-video">
+                        <source src="https://cdn.pixabay.com/video/2021/08/04/83864-584705391_tiny.mp4" type="video/mp4">
+                        <!-- Jika video pixabay gagal, fallback video bintang dari mixkit -->
+                        <source src="https://assets.mixkit.co/videos/preview/mixkit-stars-in-space-1610-large.mp4" type="video/mp4">
+                    </video>
+                    
+                    <div class="hero-content">
+                        <div style="max-width: 650px;">
+                            <div style="display: inline-flex; align-items: center; gap: 8px; background: rgba(16, 185, 129, 0.15); color: var(--brand-success); padding: 6px 14px; border-radius: 20px; font-size: 12px; font-weight: 800; margin-bottom: 16px; border: 1px solid rgba(16, 185, 129, 0.3);">
+                                <span style="width: 8px; height: 8px; background: var(--brand-success); border-radius: 50%; box-shadow: 0 0 8px var(--brand-success);"></span> SERVER STATUS: ONLINE
+                            </div>
+                            <h1 class="gradient-text" style="font-family: 'Teko', sans-serif; font-size: 48px; margin-bottom: 12px; line-height: 1.1; letter-spacing: 1px;">OBLIVION SMP OFFICIAL PORTAL</h1>
+                            <p style="color: var(--text-main); font-size: 15px; line-height: 1.6; text-shadow: 0 2px 4px rgba(0,0,0,0.8);bottom: 8px;
         }
 
         .product-price {
