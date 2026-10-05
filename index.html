@@ -8,19 +8,15 @@
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Teko:wght@600;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            /* Tema Meteor / Oblivion Space */
-            --bg-body: #05020a; /* Hitam keunguan luar angkasa */
+            --bg-body: #05020a;
             --bg-sidebar: rgba(10, 5, 20, 0.95);
             --bg-card: rgba(18, 9, 30, 0.6);
-            
             --border-light: rgba(255, 87, 34, 0.15);
             --border-glow: rgba(255, 87, 34, 0.5);
-            
-            --brand-primary: #ff5722; /* Meteor Orange */
-            --brand-secondary: #e64a19; /* Deep Fire */
-            --brand-accent: #ffb74d; /* Bright Flare */
+            --brand-primary: #ff5722;
+            --brand-secondary: #e64a19;
+            --brand-accent: #ffb74d;
             --brand-success: #10b981;
-            
             --text-main: #f8fafc;
             --text-muted: #a89fba;
             --text-dark: #645a7a;
@@ -49,7 +45,6 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* Mobile Header */
         .mobile-header {
             display: none; background: rgba(5, 2, 10, 0.85); backdrop-filter: blur(12px);
             padding: 14px 20px; border-bottom: 1px solid var(--border-light);
@@ -75,7 +70,6 @@
         }
         .sidebar-overlay.open { display: block; opacity: 1; }
 
-        /* Premium Sidebar */
         .sidebar {
             width: 280px; background: var(--bg-sidebar); backdrop-filter: blur(15px);
             border-right: 1px solid var(--border-light); padding: 32px 24px; 
@@ -116,7 +110,6 @@
 
         .main-content { margin-left: 280px; flex: 1; padding: 40px; width: calc(100% - 280px); max-width: 1400px; margin-right: auto; }
 
-        /* UI Kartu Kaca Futuristik */
         .card { 
             background: var(--bg-card); border: 1px solid var(--border-light); 
             border-radius: 16px; padding: 24px; margin-bottom: 24px; 
@@ -133,7 +126,6 @@
             -webkit-background-clip: text; -webkit-text-fill-color: transparent;
         }
 
-        /* Hero Banner dengan Video Meteor yang Menyatu (Blend-Mode) */
         .hero-banner {
             position: relative; border-radius: 20px; overflow: hidden;
             background: linear-gradient(to bottom, rgba(13, 6, 20, 0.8), var(--bg-body));
@@ -143,12 +135,9 @@
         
         .meteor-video {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: 1;
-            /* Trik agar hitam di video jadi transparan & menyatu dengan background */
             mix-blend-mode: screen; 
-            /* Filter untuk mengubah warna putih/biru video menjadi warna api/meteor oranye */
             filter: sepia(1) hue-rotate(-50deg) saturate(4) brightness(1.2);
             opacity: 0.6;
-            /* Gradient Mask agar ujung bawah video memudar perlahan */
             -webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 30%, rgba(0,0,0,0) 100%);
             mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 30%, rgba(0,0,0,0) 100%);
         }
@@ -158,7 +147,6 @@
             justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 20px;
         }
 
-        /* Buttons */
         .btn {
             background: linear-gradient(135deg, var(--brand-primary), var(--brand-secondary)); 
             color: #fff; border: none; padding: 12px 24px; border-radius: 10px; cursor: pointer; 
@@ -175,7 +163,6 @@
         .btn-discord { background: linear-gradient(135deg, #5865F2, #4752C4); box-shadow: 0 4px 15px rgba(88, 101, 242, 0.3); }
         .btn-wa { background: linear-gradient(135deg, #10b981, #059669); box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3); }
 
-        /* Store Elements */
         .store-nav { display: flex; gap: 12px; margin-bottom: 20px; border-bottom: 1px solid var(--border-light); padding-bottom: 12px; }
         .mode-btn { background: transparent; border: none; color: var(--text-muted); font-family: 'Teko', sans-serif; font-size: 22px; letter-spacing: 1px; padding: 6px 16px; border-radius: 8px 8px 0 0; cursor: pointer; transition: all 0.3s; }
         .mode-btn.active { background: rgba(255, 87, 34, 0.1); color: var(--brand-accent); border-bottom: 3px solid var(--brand-primary); text-shadow: 0 0 10px rgba(255,87,34,0.5); }
@@ -184,7 +171,6 @@
         .sub-btn { background: rgba(10, 5, 20, 0.8); border: 1px solid var(--border-light); color: var(--text-muted); padding: 8px 18px; border-radius: 8px; font-size: 12px; font-weight: 700; text-transform: uppercase; cursor: pointer; transition: all 0.2s; }
         .sub-btn.active, .sub-btn:hover { background: var(--brand-primary); color: #fff; border-color: var(--brand-primary); box-shadow: 0 0 15px rgba(255, 87, 34, 0.4); }
 
-        /* Grid Produk yang lebih dinamis */
         .products-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 20px; }
         .product-card { 
             background: linear-gradient(180deg, rgba(18, 9, 30, 0.8) 0%, rgba(10, 5, 20, 0.9) 100%); 
@@ -216,7 +202,6 @@
         .qty-btn { background: rgba(255, 87, 34, 0.15); color: var(--brand-accent); border: none; width: 26px; height: 26px; border-radius: 6px; cursor: pointer; font-weight: bold; transition: 0.2s; }
         .qty-btn:hover { background: var(--brand-primary); color: #fff; }
 
-        /* Form Inputs */
         input, textarea, select { 
             background: rgba(10, 5, 20, 0.6); border: 1px solid var(--border-light); 
             padding: 14px 18px; border-radius: 10px; color: var(--text-main); 
@@ -224,13 +209,11 @@
         }
         input:focus, textarea:focus, select:focus { border-color: var(--brand-accent); box-shadow: 0 0 15px rgba(255, 183, 77, 0.15); }
 
-        /* Quest Box */
         .quest-box { background: rgba(0, 0, 0, 0.2); border-radius: 12px; padding: 8px; }
         .quest-item { display: flex; align-items: center; justify-content: space-between; padding: 16px; border-bottom: 1px dashed var(--border-light); transition: background 0.3s; border-radius: 8px; }
         .quest-item:last-child { border-bottom: none; }
         .quest-item:hover { background: rgba(255, 87, 34, 0.05); }
 
-        /* Modals */
         .modal-overlay { 
             position: fixed; inset: 0; background: rgba(3, 1, 7, 0.85); backdrop-filter: blur(8px); 
             display: none; justify-content: center; align-items: center; z-index: 1000; 
@@ -264,7 +247,6 @@
 </head>
 <body>
 
-    <!-- Mobile Header -->
     <div class="mobile-header">
         <div class="logo" style="margin-bottom:0;" onclick="handleLogoClick()">
             <div class="logo-icon" style="width:32px; height:32px; font-size:14px;"><i class="fa-solid fa-meteor"></i></div>
@@ -281,7 +263,6 @@
     <div class="app-container">
         <div class="sidebar-overlay" id="sidebar-overlay" onclick="toggleSidebar()"></div>
 
-        <!-- Sidebar -->
         <div class="sidebar" id="sidebar">
             <div>
                 <div class="logo" onclick="handleLogoClick()">
@@ -307,19 +288,14 @@
             </div>
         </div>
 
-        <!-- Main Workspace -->
         <div class="main-content">
             
-            <!-- SECTION 1: HOME -->
             <div id="home-section" class="view-section active">
                 
-                <!-- HERO BANNER DENGAN VIDEO METEOR -->
                 <div class="hero-banner">
-                    <!-- Video Partikel yang diubah menjadi Meteor Shower menggunakan CSS Filter -->
+                    <!-- Video Background yang Stabil dan Kompatibel -->
                     <video autoplay loop muted playsinline class="meteor-video">
-                        <source src="https://cdn.pixabay.com/video/2021/08/04/83864-584705391_tiny.mp4" type="video/mp4">
-                        <!-- Jika video pixabay gagal, fallback video bintang dari mixkit -->
-                        <source src="https://assets.mixkit.co/videos/preview/mixkit-stars-in-space-1610-large.mp4" type="video/mp4">
+                        <source src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4" type="video/mp4">
                     </video>
                     
                     <div class="hero-content">
@@ -362,13 +338,11 @@
                 </div>
             </div>
 
-            <!-- SECTION 2: CHANGELOG -->
             <div id="changelog-section" class="view-section">
                 <div class="card"><div class="card-header-title"><i class="fa-solid fa-timeline"></i> Catatan Pembaruan (Changelog)</div></div>
                 <div id="changelog-list" style="display: grid; gap: 16px;"></div>
             </div>
 
-            <!-- SECTION 3: STORE -->
             <div id="store-section" class="view-section">
                 <div class="card" style="padding: 20px; margin-bottom: 24px; background: rgba(255, 87, 34, 0.05);">
                     <div style="display: flex; gap: 12px; max-width: 500px;">
@@ -387,13 +361,11 @@
                 <div class="products-grid" id="products-container"></div>
             </div>
 
-            <!-- SECTION 4: PARTNERSHIP -->
             <div id="partnership-section" class="view-section">
                 <div class="card"><div class="card-header-title"><i class="fa-solid fa-handshake"></i> Aliansi & Partnership</div></div>
                 <div id="partnership-content" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 20px;"></div>
             </div>
 
-            <!-- SECTION 5: ADMIN PANEL -->
             <div id="admin-section" class="view-section">
                 <h2 class="gradient-text" style="font-family: 'Teko', sans-serif; font-size: 32px; margin-bottom: 24px; letter-spacing: 1px;">ADMIN CONTROL CENTER</h2>
                 <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 24px;">
@@ -465,7 +437,6 @@
         </div>
     </div>
 
-    <!-- Modals (Tetap mempertahankan semua script logic) -->
     <div class="modal-overlay" id="quest-modal" onclick="closeOnOverlayClick(event, 'quest-modal')">
         <div class="modal-box">
             <button class="close-modal-btn" onclick="closeQuestModal()"><i class="fa-solid fa-xmark"></i></button>
@@ -502,7 +473,6 @@
         </div>
     </div>
 
-    <!-- JAVASCRIPT: LOGIKA DIBIARKAN 100% SAMA, TIDAK ADA FITUR YANG HILANG -->
     <script>
         let isAdmin = false; 
         let logoClickCount = 0;
