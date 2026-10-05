@@ -10,7 +10,7 @@
         :root {
             --bg-body: #05020a;
             --bg-sidebar: rgba(10, 5, 20, 0.95);
-            --bg-card: rgba(18, 9, 30, 0.6);
+            --bg-card: rgba(18, 9, 30, 0.65);
             --border-light: rgba(255, 87, 34, 0.15);
             --border-glow: rgba(255, 87, 34, 0.5);
             --brand-primary: #ff5722;
@@ -126,25 +126,19 @@
             -webkit-background-clip: text; -webkit-text-fill-color: transparent;
         }
 
+        /* HERO BANNER DENGAN BACKGROUND GALAKSI YANG JAUH LEBIH TERANG & JELAS */
         .hero-banner {
             position: relative; border-radius: 20px; overflow: hidden;
-            background: linear-gradient(to bottom, rgba(13, 6, 20, 0.8), var(--bg-body));
-            border: 1px solid var(--border-light); box-shadow: 0 0 40px rgba(255, 87, 34, 0.1);
+            background: url('https://images.unsplash.com/photo-1506703719100-a0f3a48c0f86?q=80&w=1200&auto=format&fit=crop') center/cover no-repeat;
+            border: 1px solid var(--border-light); box-shadow: 0 0 40px rgba(255, 87, 34, 0.2);
             margin-bottom: 30px;
-        }
-        
-        .meteor-video {
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: 1;
-            mix-blend-mode: screen; 
-            filter: sepia(1) hue-rotate(-50deg) saturate(4) brightness(1.2);
-            opacity: 0.6;
-            -webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 30%, rgba(0,0,0,0) 100%);
-            mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 30%, rgba(0,0,0,0) 100%);
         }
 
         .hero-content {
-            position: relative; z-index: 2; padding: 40px; display: flex; 
+            position: relative; z-index: 2; padding: 45px; display: flex; 
             justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 20px;
+            background: rgba(5, 2, 10, 0.35); /* Transparansi ditingkatkan agar galaksi sangat terlihat */
+            backdrop-filter: blur(1px);
         }
 
         .btn {
@@ -293,11 +287,6 @@
             <div id="home-section" class="view-section active">
                 
                 <div class="hero-banner">
-                    <!-- Video Background yang Stabil dan Kompatibel -->
-                    <video autoplay loop muted playsinline class="meteor-video">
-                        <source src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4" type="video/mp4">
-                    </video>
-                    
                     <div class="hero-content">
                         <div style="max-width: 650px;">
                             <div style="display: inline-flex; align-items: center; gap: 8px; background: rgba(16, 185, 129, 0.15); color: var(--brand-success); padding: 6px 14px; border-radius: 20px; font-size: 12px; font-weight: 800; margin-bottom: 16px; border: 1px solid rgba(16, 185, 129, 0.3);">
@@ -474,7 +463,7 @@
     </div>
 
     <script>
-        let isAdmin = false; 
+        let isAdmin = localStorage.getItem('oblivion_is_admin') === 'true';
         let logoClickCount = 0;
         let logoClickTimer = null;
         let activeVoucher = null;
@@ -536,7 +525,12 @@
         let partnerships = JSON.parse(localStorage.getItem('oblivion_partnerships')) || [];
         let vouchers = JSON.parse(localStorage.getItem('oblivion_vouchers')) || [];
 
-        document.getElementById('admin-label').style.display = 'none';
+        if (isAdmin) {
+            document.getElementById('admin-menu-btn').classList.add('show');
+            document.getElementById('admin-label').style.display = 'block';
+        } else {
+            document.getElementById('admin-label').style.display = 'none';
+        }
 
         function toggleSidebar() { document.getElementById('sidebar').classList.toggle('open'); document.getElementById('sidebar-overlay').classList.toggle('open'); }
 
@@ -564,8 +558,11 @@
         function verifyAdminCode() {
             const input = document.getElementById('admin-pass-input').value;
             if (input === 'admin123') {
-                isAdmin = true; alert('Akses Admin Disetujui!');
-                document.getElementById('admin-menu-btn').classList.add('show'); document.getElementById('admin-label').style.display = 'block';
+                isAdmin = true;
+                localStorage.setItem('oblivion_is_admin', 'true');
+                alert('Akses Admin Disetujui!');
+                document.getElementById('admin-menu-btn').classList.add('show'); 
+                document.getElementById('admin-label').style.display = 'block';
                 closeAdminModal(); populateAdminSelects(); renderChangelogs(); renderPartnerships();
                 switchTab('admin', document.getElementById('admin-menu-btn'));
             } else { alert('Kode Enkripsi Salah!'); }
@@ -801,6 +798,10 @@
             });
             localStorage.setItem('oblivion_vouchers', JSON.stringify(vouchers));
             alert('Kode Kupon berhasil digenerate!'); e.target.reset();
+        }
+
+        if (isAdmin) {
+            populateAdminSelects();
         }
 
         renderSubCategories(); renderStoreProducts(); renderChangelogs(); renderPartnerships(); renderQuests();
