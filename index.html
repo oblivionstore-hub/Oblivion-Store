@@ -1,503 +1,891 @@
 <!DOCTYPE html>
-<html lang="id" class="dark">
+<html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Oblivion SMP | Official Portal</title>
+    <title>OBLIVION OFFICIAL - Minecraft CPvP Server</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+    
     <script>
         tailwind.config = {
-            darkMode: 'class',
             theme: {
                 extend: {
                     colors: {
-                        darkbg: '#060913',
-                        surface: '#0c1222',
-                        accentblue: '#3b82f6',
-                        accentpurple: '#8b5cf6',
+                        brand: {
+                            black: '#090a0f',
+                            dark: '#0f111a',
+                            card: '#161926',
+                            purple: '#8b5cf6',
+                            blue: '#3b82f6',
+                            light: '#e2e8f0'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Plus Jakarta Sans', 'sans-serif'],
                     }
                 }
             }
         }
     </script>
-    <!-- FontAwesome & Google Fonts -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Outfit:wght@600;700;800;900&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Plus Jakarta Sans', sans-serif; }
-        h1, h2, h3, .font-outfit { font-family: 'Outfit', sans-serif; }
+        body {
+            background-color: #090a0f;
+            color: #e2e8f0;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-image: 
+                radial-gradient(circle at 15% 15%, rgba(139, 92, 246, 0.15) 0%, transparent 40%),
+                radial-gradient(circle at 85% 85%, rgba(59, 130, 246, 0.15) 0%, transparent 40%);
+            background-attachment: fixed;
+        }
+        .glass {
+            background: rgba(22, 25, 38, 0.75);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        .glass-card {
+            background: rgba(22, 25, 38, 0.6);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        .glow-purple {
+            box-shadow: 0 0 25px -5px rgba(139, 92, 246, 0.4);
+        }
+        .glow-blue {
+            box-shadow: 0 0 25px -5px rgba(59, 130, 246, 0.4);
+        }
+        .text-gradient {
+            background: linear-gradient(135deg, #a855f7 0%, #3b82f6 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #090a0f;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #2e354f;
+            border-radius: 3px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #8b5cf6;
+        }
     </style>
 </head>
-<body class="bg-darkbg text-slate-100 min-h-screen selection:bg-purple-500 selection:text-white">
+<body class="pb-28 min-h-screen relative selection:bg-purple-500 selection:text-white">
 
-    <!-- NAVBAR -->
-    <nav class="fixed top-0 w-full bg-darkbg/80 backdrop-blur-xl border-b border-white/10 z-50 px-6 py-4 flex justify-between items-center">
-        <div id="logo-trigger" class="flex items-center gap-3 cursor-pointer group">
-            <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-accentblue to-accentpurple flex items-center justify-center text-white shadow-lg shadow-purple-500/30 group-hover:scale-105 transition">
-                <i class="fa-solid fa-cube text-lg"></i>
-            </div>
-            <span class="font-outfit font-extrabold text-xl tracking-tight bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">Oblivion SMP</span>
-        </div>
-        <div class="flex items-center gap-1.5 bg-white/[0.03] p-1.5 rounded-2xl border border-white/10">
-            <button onclick="switchMainTab('home', this)" class="nav-btn px-5 py-2 rounded-xl text-xs font-semibold tracking-wide transition active bg-gradient-to-r from-accentblue to-accentpurple text-white shadow-md shadow-purple-500/20">Beranda</button>
-            <button onclick="switchMainTab('store', this)" class="nav-btn px-5 py-2 rounded-xl text-xs font-semibold tracking-wide text-slate-400 hover:text-white transition">Store</button>
-            <button onclick="switchMainTab('quest', this)" class="nav-btn px-5 py-2 rounded-xl text-xs font-semibold tracking-wide text-slate-400 hover:text-white transition">Quest</button>
-            <button id="admin-nav-btn" onclick="switchMainTab('admin', this)" class="nav-btn px-5 py-2 rounded-xl text-xs font-semibold tracking-wide text-purple-400 hover:text-white transition hidden">Admin</button>
-        </div>
-    </nav>
+    <!-- Toast Notification -->
+    <div id="toast" class="fixed top-5 right-5 z-50 transform translate-y-[-100px] opacity-0 transition-all duration-300 glass px-5 py-3 rounded-xl border-l-4 border-purple-500 flex items-center space-x-3 shadow-2xl">
+        <i id="toast-icon" class="fas fa-check-circle text-purple-400 text-lg"></i>
+        <span id="toast-msg" class="text-sm font-semibold text-white">Notifikasi</span>
+    </div>
 
-    <!-- VIEW: HOME -->
-    <div id="view-home" class="view-section pt-32 pb-16 px-6 max-w-7xl mx-auto">
-        <section class="text-center py-12 relative">
-            <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs font-bold mb-6 shadow-lg shadow-emerald-500/10">
-                <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span> SERVER ONLINE
+    <!-- HEADER TOP -->
+    <header class="glass sticky top-0 z-40 border-b border-white/5 py-4 px-6 mb-6">
+        <div class="max-w-6xl mx-auto flex justify-between items-center">
+            <div class="flex items-center space-x-3 cursor-pointer select-none" onclick="handleTitleClick()">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-purple-600 to-blue-500 flex items-center justify-center font-black text-xl shadow-lg glow-purple">
+                    O
+                </div>
+                <div>
+                    <h1 id="brand-title" class="text-xl font-extrabold tracking-wider text-white flex items-center gap-2">
+                        OBLIVION OFFICIAL
+                        <span class="text-[10px] bg-purple-500/20 text-purple-300 border border-purple-500/30 px-2 py-0.5 rounded-full font-bold">CPvP</span>
+                    </h1>
+                    <p id="header-slogan" class="text-xs text-gray-400">Arena CPvP Paling Asik & Solid!</p>
+                </div>
             </div>
-            <h1 class="font-outfit text-4xl sm:text-6xl font-black tracking-tight mb-4 bg-gradient-to-b from-white to-slate-400 bg-clip-text text-transparent">Survive The Apocalypse</h1>
-            <p class="text-slate-400 max-w-xl mx-auto text-sm sm:text-base leading-relaxed mb-8">Hadapi tantangan kompetitif, kumpulkan sumber daya, dan bangun dominasi tanpa takut kehilangan base berkat sistem keamanan Land Claim tingkat tinggi.</p>
+
+            <!-- Server Status Badge -->
+            <div class="flex items-center gap-2 bg-black/40 border border-white/10 px-3 py-1.5 rounded-full">
+                <span id="status-indicator" class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                <span id="status-text" class="text-xs font-bold text-gray-200">SERVER ONLINE</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- MAIN CONTAINER -->
+    <main class="max-w-5xl mx-auto px-4">
+
+        <!-- TAB 1: HOME -->
+        <section id="tab-home" class="space-y-8">
+            <!-- Hero Banner -->
+            <div class="glass-card rounded-3xl p-6 md:p-10 relative overflow-hidden border border-purple-500/20 glow-purple">
+                <div class="absolute -right-10 -bottom-10 w-64 h-64 bg-purple-600/10 rounded-full blur-3xl pointer-events-none"></div>
+                <div class="relative z-10 max-w-2xl">
+                    <span class="inline-block bg-blue-500/10 border border-blue-500/30 text-blue-400 text-xs font-bold px-3 py-1 rounded-full mb-3">
+                        OBLIVION CPVP NETWORK
+                    </span>
+                    <h2 id="hero-slogan" class="text-3xl md:text-5xl font-black text-white leading-tight mb-4">
+                        Asah Skill CPvP Kamu Di Sini!
+                    </h2>
+                    <p class="text-gray-400 text-sm md:text-base mb-6 leading-relaxed">
+                        Nikmati pengalaman Crystal PvP paling optimal, no-lag, komunitas ramah, dan event rutin berhadiah. Bergabung sekarang bersama ratusan player lainnya!
+                    </p>
+                    
+                    <!-- IP Box -->
+                    <div class="flex flex-col sm:flex-row gap-3 items-stretch">
+                        <div class="flex-1 bg-black/60 border border-white/10 rounded-2xl px-4 py-3 flex items-center justify-between">
+                            <div class="flex items-center space-x-3">
+                                <i class="fas fa-server text-purple-400"></i>
+                                <div>
+                                    <p class="text-[10px] text-gray-400 font-bold uppercase">IP & Port Server</p>
+                                    <p class="text-sm font-extrabold text-white font-mono">play.oblivion.my.id : 25616</p>
+                                </div>
+                            </div>
+                            <button onclick="copyIP()" class="bg-purple-600/30 hover:bg-purple-600/50 text-purple-300 p-2.5 rounded-xl transition border border-purple-500/30">
+                                <i class="fas fa-copy"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Social Links -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <a id="discord-link" href="https://discord.gg/zcznZ58KJ" target="_blank" class="glass-card hover:bg-white/5 p-5 rounded-2xl flex items-center justify-between border border-blue-500/20 transition group">
+                    <div class="flex items-center space-x-4">
+                        <div class="w-12 h-12 rounded-xl bg-blue-600/20 border border-blue-500/30 flex items-center justify-center text-blue-400 text-2xl group-hover:scale-110 transition">
+                            <i class="fab fa-discord"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-white">Discord Community</h3>
+                            <p class="text-xs text-gray-400">Diskusi, event, & info ter-update</p>
+                        </div>
+                    </div>
+                    <i class="fas fa-chevron-right text-gray-500 group-hover:text-white transition"></i>
+                </a>
+
+                <a id="wa-link" href="https://chat.whatsapp.com/BhyezPUMmdt01Uvzmk0YfT" target="_blank" class="glass-card hover:bg-white/5 p-5 rounded-2xl flex items-center justify-between border border-emerald-500/20 transition group">
+                    <div class="flex items-center space-x-4">
+                        <div class="w-12 h-12 rounded-xl bg-emerald-600/20 border border-emerald-500/30 flex items-center justify-center text-emerald-400 text-2xl group-hover:scale-110 transition">
+                            <i class="fab fa-whatsapp"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-white">WhatsApp Group</h3>
+                            <p class="text-xs text-gray-400">Nongkrong & mabar santai</p>
+                        </div>
+                    </div>
+                    <i class="fas fa-chevron-right text-gray-500 group-hover:text-white transition"></i>
+                </a>
+            </div>
+
+            <!-- Extra Dynamic Social Media Container -->
+            <div id="dynamic-socials-wrapper" class="hidden">
+                <h3 class="text-sm font-bold text-gray-400 uppercase tracking-wider mb-3">Media Sosial Lainnya</h3>
+                <div id="dynamic-socials" class="grid grid-cols-2 sm:grid-cols-4 gap-3"></div>
+            </div>
         </section>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <!-- Server Connection -->
-            <div class="bg-white/[0.02] border border-white/10 backdrop-blur-xl p-6 rounded-3xl flex flex-col justify-between hover:border-purple-500/40 transition shadow-xl">
-                <h3 class="font-outfit text-lg font-bold mb-4 flex items-center gap-3 text-purple-300">
-                    <i class="fa-solid fa-server text-accentpurple"></i> Koneksi Server
+        <!-- TAB 2: STORE -->
+        <section id="tab-store" class="space-y-8 hidden">
+            <!-- Store Header -->
+            <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 glass-card p-6 rounded-2xl">
+                <div>
+                    <h2 class="text-2xl font-black text-white">OBLIVION WEBSTORE</h2>
+                    <p class="text-xs text-gray-400">Pilih paket bundling hemat atau kustomisasi pembelian kamu.</p>
+                </div>
+                <!-- Minecraft Username -->
+                <div class="flex items-center bg-black/50 border border-white/10 rounded-xl px-3 py-2">
+                    <i class="fas fa-user-ninja text-purple-400 mr-2"></i>
+                    <input type="text" id="store-username" placeholder="Masukkan Username In-Game..." class="bg-transparent text-sm text-white focus:outline-none w-full md:w-48">
+                </div>
+            </div>
+
+            <!-- Category 1: Bundling -->
+            <div>
+                <h3 class="text-lg font-bold text-white mb-4 flex items-center gap-2">
+                    <i class="fas fa-box-open text-purple-400"></i> Paket Bundling Spesial
                 </h3>
-                <div class="space-y-3">
-                    <div class="p-4 rounded-2xl bg-black/30 border-l-4 border-emerald-400 border-y border-r border-white/5">
-                        <span class="text-[11px] font-bold text-emerald-400 uppercase tracking-wider block mb-1">Mode Chill (Survival)</span>
-                        <code class="text-sm font-mono font-bold text-white block">play.oblivion.my.id</code>
-                        <span class="text-xs text-slate-400">Port: 25583</span>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                    <!-- Basic -->
+                    <div class="glass-card rounded-2xl p-5 border border-white/10 flex flex-col justify-between hover:border-purple-500/50 transition">
+                        <div>
+                            <span class="text-[10px] bg-gray-700 text-gray-300 font-bold px-2 py-0.5 rounded">PEMULA</span>
+                            <h4 class="text-xl font-bold text-white mt-2">Paket Basic</h4>
+                            <div class="text-2xl font-black text-purple-400 my-3">Rp 25.000</div>
+                            <ul class="text-xs text-gray-300 space-y-2 mb-6">
+                                <li><i class="fas fa-check text-emerald-400 mr-1.5"></i> Rank OBLIV</li>
+                                <li><i class="fas fa-check text-emerald-400 mr-1.5"></i> Money 25.000</li>
+                                <li><i class="fas fa-check text-emerald-400 mr-1.5"></i> Shards 1.500</li>
+                                <li><i class="fas fa-check text-emerald-400 mr-1.5"></i> Kit OBLIV</li>
+                                <li><i class="fas fa-check text-emerald-400 mr-1.5"></i> Key Gold 5x</li>
+                            </ul>
+                        </div>
+                        <button onclick="checkoutItem('Paket Basic', 25000)" class="w-full bg-purple-600 hover:bg-purple-500 text-white font-bold py-2.5 rounded-xl text-xs transition">Beli Sekarang</button>
                     </div>
-                    <div class="p-4 rounded-2xl bg-black/30 border-l-4 border-accentblue border-y border-r border-white/5">
-                        <span class="text-[11px] font-bold text-accentblue uppercase tracking-wider block mb-1">Mode Eco CPVP</span>
-                        <code class="text-sm font-mono font-bold text-white block">pvp.oblivion.my.id</code>
-                        <span class="text-xs text-slate-400">Port: 25616</span>
+
+                    <!-- Medium -->
+                    <div class="glass-card rounded-2xl p-5 border border-blue-500/30 flex flex-col justify-between hover:border-blue-500 transition relative overflow-hidden">
+                        <div class="absolute top-3 right-3 text-[10px] bg-blue-500/20 text-blue-300 font-bold px-2 py-0.5 rounded border border-blue-500/40">EKONOMIS</div>
+                        <div>
+                            <h4 class="text-xl font-bold text-white mt-2">Paket Medium</h4>
+                            <div class="text-2xl font-black text-blue-400 my-3">Rp 50.000</div>
+                            <ul class="text-xs text-gray-300 space-y-2 mb-6">
+                                <li><i class="fas fa-check text-emerald-400 mr-1.5"></i> Rank OBLIV+</li>
+                                <li><i class="fas fa-check text-emerald-400 mr-1.5"></i> Money 50.000</li>
+                                <li><i class="fas fa-check text-emerald-400 mr-1.5"></i> Shards 2.500</li>
+                                <li><i class="fas fa-check text-emerald-400 mr-1.5"></i> Amethysth Pickaxe</li>
+                                <li><i class="fas fa-check text-emerald-400 mr-1.5"></i> Kit OBLIV+</li>
+                                <li><i class="fas fa-check text-emerald-400 mr-1.5"></i> Key Prime 5x</li>
+                            </ul>
+                        </div>
+                        <button onclick="checkoutItem('Paket Medium', 50000)" class="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold py-2.5 rounded-xl text-xs transition">Beli Sekarang</button>
+                    </div>
+
+                    <!-- High -->
+                    <div class="glass-card rounded-2xl p-5 border border-purple-500/50 flex flex-col justify-between hover:border-purple-400 transition relative shadow-lg glow-purple">
+                        <div class="absolute top-3 right-3 text-[10px] bg-purple-500 text-white font-black px-2 py-0.5 rounded shadow">BEST SELLER</div>
+                        <div>
+                            <h4 class="text-xl font-bold text-white mt-2">Paket High</h4>
+                            <div class="text-2xl font-black text-purple-300 my-3">Rp 60.000</div>
+                            <ul class="text-xs text-gray-300 space-y-2 mb-6">
+                                <li><i class="fas fa-check text-emerald-400 mr-1.5"></i> Rank OBLIV++</li>
+                                <li><i class="fas fa-check text-emerald-400 mr-1.5"></i> Money 150.000</li>
+                                <li><i class="fas fa-check text-emerald-400 mr-1.5"></i> Shards 3.500</li>
+                                <li><i class="fas fa-check text-emerald-400 mr-1.5"></i> Amethysth Pickaxe</li>
+                                <li><i class="fas fa-check text-emerald-400 mr-1.5"></i> Kit OBLIV++</li>
+                                <li><i class="fas fa-check text-emerald-400 mr-1.5"></i> Key Crimson 2x & Prime 5x</li>
+                                <li><i class="fas fa-check text-emerald-400 mr-1.5"></i> Spawner Golem 2x</li>
+                            </ul>
+                        </div>
+                        <button onclick="checkoutItem('Paket High', 60000)" class="w-full bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-500 hover:to-blue-500 text-white font-bold py-2.5 rounded-xl text-xs transition shadow-lg">Beli Sekarang</button>
+                    </div>
+
+                    <!-- Extreme -->
+                    <div class="glass-card rounded-2xl p-5 border border-amber-500/40 flex flex-col justify-between hover:border-amber-400 transition">
+                        <div class="absolute top-3 right-3 text-[10px] bg-amber-500/20 text-amber-300 font-bold px-2 py-0.5 rounded border border-amber-500/40">REKOMENDASI</div>
+                        <div>
+                            <h4 class="text-xl font-bold text-white mt-2">Paket Extreme</h4>
+                            <div class="text-2xl font-black text-amber-400 my-3">Rp 125.000</div>
+                            <ul class="text-xs text-gray-300 space-y-2 mb-6">
+                                <li><i class="fas fa-check text-emerald-400 mr-1.5"></i> Rank OBLIV+++</li>
+                                <li><i class="fas fa-check text-emerald-400 mr-1.5"></i> Money 250.000</li>
+                                <li><i class="fas fa-check text-emerald-400 mr-1.5"></i> Shards 5.000</li>
+                                <li><i class="fas fa-check text-emerald-400 mr-1.5"></i> Amethysth Pickaxe</li>
+                                <li><i class="fas fa-check text-emerald-400 mr-1.5"></i> Kit OBLIV+++</li>
+                                <li><i class="fas fa-check text-emerald-400 mr-1.5"></i> Key Amethyst 5x & Crimson 5x</li>
+                                <li><i class="fas fa-check text-emerald-400 mr-1.5"></i> Spawner Golem 5x</li>
+                            </ul>
+                        </div>
+                        <button onclick="checkoutItem('Paket Extreme', 125000)" class="w-full bg-amber-600 hover:bg-amber-500 text-white font-bold py-2.5 rounded-xl text-xs transition">Beli Sekarang</button>
                     </div>
                 </div>
             </div>
 
-            <!-- Community -->
-            <div class="bg-white/[0.02] border border-white/10 backdrop-blur-xl p-6 rounded-3xl flex flex-col justify-between hover:border-purple-500/40 transition shadow-xl">
-                <div>
-                    <h3 class="font-outfit text-lg font-bold mb-4 flex items-center gap-3 text-purple-300">
-                        <i class="fa-solid fa-satellite-dish text-accentpurple"></i> Komunitas Resmi
-                    </h3>
-                    <p class="text-slate-400 text-sm leading-relaxed mb-6">Jangan lewatkan event dadakan dan giveaway spesial. Bergabunglah ke markas komunitas kami sekarang!</p>
-                </div>
-                <div class="space-y-3">
-                    <a href="https://discord.gg/zcznZ58KJ" target="_blank" class="w-full py-3 px-5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-3 shadow-lg shadow-indigo-600/30 transition">
-                        <i class="fa-brands fa-discord text-base"></i> Join Discord
-                    </a>
-                    <a href="https://chat.whatsapp.com/BhyezPUMmdt01Uvzmk0YfT" target="_blank" class="w-full py-3 px-5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-3 shadow-lg shadow-emerald-600/30 transition">
-                        <i class="fa-brands fa-whatsapp text-base"></i> Join WhatsApp
-                    </a>
-                </div>
-            </div>
-        </div>
-    </div>
+            <!-- Category 2: Dynamic Topup Currency -->
+            <div>
+                <h3 class="text-lg font-bold text-white mb-4 flex items-center gap-2">
+                    <i class="fas fa-coins text-amber-400"></i> Topup Money & Shards
+                </h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <!-- Money Card -->
+                    <div class="glass-card rounded-2xl p-5 border border-white/10 space-y-4">
+                        <div class="flex items-center space-x-3">
+                            <div class="w-10 h-10 rounded-xl bg-amber-500/20 border border-amber-500/30 flex items-center justify-center text-amber-400 font-bold">
+                                <i class="fas fa-money-bill-wave"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-white">In-Game Money</h4>
+                                <p class="text-xs text-gray-400">Rp 1.000 = 5.000 Money</p>
+                            </div>
+                        </div>
+                        <div>
+                            <label class="text-xs text-gray-400 mb-1 block">Jumlah Money:</label>
+                            <input type="number" id="money-qty" value="10000" step="5000" min="5000" oninput="updateMoneyPrice()" class="w-full bg-black/50 border border-white/10 rounded-xl px-3 py-2 text-sm text-white font-mono focus:outline-none focus:border-purple-500">
+                        </div>
+                        <div class="flex justify-between items-center pt-2">
+                            <span class="text-xs text-gray-400">Total Harga:</span>
+                            <span id="money-total-price" class="text-lg font-extrabold text-emerald-400">Rp 2.000</span>
+                        </div>
+                        <button onclick="checkoutMoney()" class="w-full bg-purple-600 hover:bg-purple-500 text-white font-bold py-2.5 rounded-xl text-xs transition">Beli Money</button>
+                    </div>
 
-    <!-- VIEW: STORE -->
-    <div id="view-store" class="view-section pt-32 pb-16 px-6 max-w-7xl mx-auto hidden">
-        <div class="flex gap-3 overflow-x-auto pb-4 mb-8 border-b border-white/10 scrollbar-none">
-            <button onclick="switchCategory('bundling', this)" class="cat-tab px-6 py-3 rounded-xl font-bold text-xs tracking-wider uppercase transition bg-gradient-to-r from-accentblue to-accentpurple text-white shadow-lg shadow-purple-500/25 whitespace-nowrap">Bundling Packages</button>
-            <button onclick="switchCategory('topup', this)" class="cat-tab px-6 py-3 rounded-xl font-bold text-xs tracking-wider uppercase transition bg-white/[0.03] text-slate-400 hover:text-white border border-white/10 whitespace-nowrap">Topup Money & Shards</button>
-            <button onclick="switchCategory('keys', this)" class="cat-tab px-6 py-3 rounded-xl font-bold text-xs tracking-wider uppercase transition bg-white/[0.03] text-slate-400 hover:text-white border border-white/10 whitespace-nowrap">Crates Keys</button>
-        </div>
-
-        <!-- BUNDLING TAB -->
-        <div id="cat-bundling" class="products-grid grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6"></div>
-
-        <!-- TOPUP TAB -->
-        <div id="cat-topup" class="products-grid grid grid-cols-1 md:grid-cols-2 gap-6 hidden">
-            <div class="bg-white/[0.02] border border-white/10 backdrop-blur-xl p-6 rounded-3xl flex flex-col justify-between">
-                <div>
-                    <h2 class="font-outfit text-xl font-bold mb-2">Topup Money</h2>
-                    <p class="text-xs text-slate-400 mb-6">Mata uang utama server.</p>
-                    <div class="mb-6">
-                        <label class="block text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-2">Jumlah Money</label>
-                        <input type="number" id="input-money-qty" min="10000" step="10000" value="10000" oninput="calcDynamicPrice('money')" class="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-purple-500 transition">
+                    <!-- Shards Card -->
+                    <div class="glass-card rounded-2xl p-5 border border-white/10 space-y-4">
+                        <div class="flex items-center space-x-3">
+                            <div class="w-10 h-10 rounded-xl bg-cyan-500/20 border border-cyan-500/30 flex items-center justify-center text-cyan-400 font-bold">
+                                <i class="fas fa-gem"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-white">In-Game Shards</h4>
+                                <p class="text-xs text-gray-400">Rp 1.000 = 100 Shards</p>
+                            </div>
+                        </div>
+                        <div>
+                            <label class="text-xs text-gray-400 mb-1 block">Jumlah Shards:</label>
+                            <input type="number" id="shards-qty" value="500" step="100" min="100" oninput="updateShardsPrice()" class="w-full bg-black/50 border border-white/10 rounded-xl px-3 py-2 text-sm text-white font-mono focus:outline-none focus:border-purple-500">
+                        </div>
+                        <div class="flex justify-between items-center pt-2">
+                            <span class="text-xs text-gray-400">Total Harga:</span>
+                            <span id="shards-total-price" class="text-lg font-extrabold text-emerald-400">Rp 5.000</span>
+                        </div>
+                        <button onclick="checkoutShards()" class="w-full bg-purple-600 hover:bg-purple-500 text-white font-bold py-2.5 rounded-xl text-xs transition">Beli Shards</button>
                     </div>
                 </div>
-                <div>
-                    <div class="font-outfit text-2xl font-black bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent mb-4" id="price-money-display">Rp 0</div>
-                    <button onclick="openCheckout('Topup Money', document.getElementById('input-money-qty').value + ' Money', getDynamicPrice('money'))" class="w-full py-3 rounded-xl bg-gradient-to-r from-accentblue to-accentpurple text-white font-bold text-xs uppercase tracking-wider shadow-lg shadow-purple-500/30 hover:brightness-115 transition">Beli Money</button>
+            </div>
+
+            <!-- Category 3: Dynamic Crate Keys -->
+            <div>
+                <h3 class="text-lg font-bold text-white mb-4 flex items-center gap-2">
+                    <i class="fas fa-key text-blue-400"></i> Crate Key Selector
+                </h3>
+                <div class="glass-card rounded-2xl p-6 border border-white/10 max-w-2xl mx-auto space-y-4">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label class="text-xs text-gray-400 mb-1 block">Pilih Tipe Key:</label>
+                            <select id="key-type" onchange="updateKeyPrice()" class="w-full bg-black/50 border border-white/10 rounded-xl px-3 py-2 text-sm text-white focus:outline-none focus:border-purple-500">
+                                <option value="common" data-price="2000">Common Key (Rp 2.000)</option>
+                                <option value="gold" data-price="5000">Gold Key (Rp 5.000)</option>
+                                <option value="prime" data-price="8000">Prime Key (Rp 8.000)</option>
+                                <option value="crimson" data-price="12000">Crimson Key (Rp 12.000)</option>
+                                <option value="amethyst" data-price="18000">Amethyst Key (Rp 18.000)</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="text-xs text-gray-400 mb-1 block">Jumlah (Kuantitas):</label>
+                            <input type="number" id="key-qty" value="1" min="1" max="99" oninput="updateKeyPrice()" class="w-full bg-black/50 border border-white/10 rounded-xl px-3 py-2 text-sm text-white font-mono focus:outline-none focus:border-purple-500">
+                        </div>
+                    </div>
+                    <div class="flex justify-between items-center pt-3 border-t border-white/10">
+                        <span class="text-xs text-gray-400">Total Harga Key:</span>
+                        <span id="key-total-price" class="text-xl font-extrabold text-emerald-400">Rp 2.000</span>
+                    </div>
+                    <button onclick="checkoutKey()" class="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold py-2.5 rounded-xl text-xs transition">Beli Key</button>
                 </div>
             </div>
 
-            <div class="bg-white/[0.02] border border-white/10 backdrop-blur-xl p-6 rounded-3xl flex flex-col justify-between">
-                <div>
-                    <h2 class="font-outfit text-xl font-bold mb-2">Topup Shards</h2>
-                    <p class="text-xs text-slate-400 mb-6">Mata uang premium server.</p>
-                    <div class="mb-6">
-                        <label class="block text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-2">Jumlah Shards</label>
-                        <input type="number" id="input-shards-qty" min="100" step="100" value="100" oninput="calcDynamicPrice('shards')" class="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-purple-500 transition">
+            <!-- Category 4: Standalone Ranks -->
+            <div>
+                <h3 class="text-lg font-bold text-white mb-4 flex items-center gap-2">
+                    <i class="fas fa-crown text-amber-400"></i> Individual Ranks
+                </h3>
+                <p class="text-xs text-gray-400 -mt-3 mb-4">*Disarankan memilih paket bundling untuk keuntungan yang lebih banyak dengan harga sama!</p>
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                    <div class="glass-card p-4 rounded-xl border border-white/10 text-center space-y-2">
+                        <h4 class="font-black text-purple-400">OBLIV</h4>
+                        <p class="text-sm font-bold text-white">Rp 25.000</p>
+                        <button onclick="checkoutItem('Rank OBLIV', 25000)" class="w-full bg-white/10 hover:bg-white/20 text-white text-xs py-2 rounded-lg transition">Beli Rank</button>
+                    </div>
+                    <div class="glass-card p-4 rounded-xl border border-white/10 text-center space-y-2">
+                        <h4 class="font-black text-blue-400">OBLIV+</h4>
+                        <p class="text-sm font-bold text-white">Rp 50.000</p>
+                        <button onclick="checkoutItem('Rank OBLIV+', 50000)" class="w-full bg-white/10 hover:bg-white/20 text-white text-xs py-2 rounded-lg transition">Beli Rank</button>
+                    </div>
+                    <div class="glass-card p-4 rounded-xl border border-white/10 text-center space-y-2">
+                        <h4 class="font-black text-indigo-400">OBLIV++</h4>
+                        <p class="text-sm font-bold text-white">Rp 60.000</p>
+                        <button onclick="checkoutItem('Rank OBLIV++', 60000)" class="w-full bg-white/10 hover:bg-white/20 text-white text-xs py-2 rounded-lg transition">Beli Rank</button>
+                    </div>
+                    <div class="glass-card p-4 rounded-xl border border-white/10 text-center space-y-2">
+                        <h4 class="font-black text-amber-400">OBLIV+++</h4>
+                        <p class="text-sm font-bold text-white">Rp 125.000</p>
+                        <button onclick="checkoutItem('Rank OBLIV+++', 125000)" class="w-full bg-white/10 hover:bg-white/20 text-white text-xs py-2 rounded-lg transition">Beli Rank</button>
                     </div>
                 </div>
-                <div>
-                    <div class="font-outfit text-2xl font-black bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent mb-4" id="price-shards-display">Rp 0</div>
-                    <button onclick="openCheckout('Topup Shards', document.getElementById('input-shards-qty').value + ' Shards', getDynamicPrice('shards'))" class="w-full py-3 rounded-xl bg-gradient-to-r from-accentblue to-accentpurple text-white font-bold text-xs uppercase tracking-wider shadow-lg shadow-purple-500/30 hover:brightness-115 transition">Beli Shards</button>
-                </div>
             </div>
-        </div>
+        </section>
 
-        <!-- KEYS TAB -->
-        <div id="cat-keys" class="products-grid hidden max-w-md mx-auto">
-            <div class="bg-white/[0.02] border border-white/10 backdrop-blur-xl p-6 rounded-3xl">
-                <h2 class="font-outfit text-xl font-bold mb-2">Gacha Crates Keys</h2>
-                <p class="text-xs text-slate-400 mb-6">Pilih tipe dan jumlah kunci.</p>
-                <div class="space-y-4 mb-6">
+        <!-- TAB 3: MEDIA SOSIAL -->
+        <section id="tab-social" class="space-y-6 hidden">
+            <div class="glass-card p-6 rounded-2xl text-center max-w-xl mx-auto space-y-3">
+                <h2 class="text-2xl font-black text-white">KOMUNITAS & MEDIA SOSIAL</h2>
+                <p class="text-xs text-gray-400">Ikuti update terbaru, event mingguan, dan cuplikan gameplay seru dari server OBLIVION OFFICIAL!</p>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-2xl mx-auto">
+                <a href="https://discord.gg/zcznZ58KJ" target="_blank" class="glass-card p-5 rounded-2xl flex items-center space-x-4 border border-blue-500/30 hover:border-blue-400 transition">
+                    <div class="w-12 h-12 rounded-xl bg-blue-600/20 text-blue-400 text-2xl flex items-center justify-center">
+                        <i class="fab fa-discord"></i>
+                    </div>
                     <div>
-                        <label class="block text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-2">Tipe Key</label>
-                        <select id="input-key-type" onchange="calcDynamicPrice('keys')" class="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-purple-500 transition">
-                            <option value="common" class="bg-darkbg">Common Key</option>
-                            <option value="gold" class="bg-darkbg">Gold Key</option>
-                            <option value="prime" class="bg-darkbg">Prime Key</option>
-                            <option value="crimson" class="bg-darkbg">Crimson Key</option>
-                            <option value="amethyst" class="bg-darkbg">Amethysth Key</option>
-                        </select>
+                        <h4 class="font-bold text-white">Official Discord</h4>
+                        <p class="text-xs text-gray-400">discord.gg/zcznZ58KJ</p>
+                    </div>
+                </a>
+
+                <a href="https://chat.whatsapp.com/BhyezPUMmdt01Uvzmk0YfT" target="_blank" class="glass-card p-5 rounded-2xl flex items-center space-x-4 border border-emerald-500/30 hover:border-emerald-400 transition">
+                    <div class="w-12 h-12 rounded-xl bg-emerald-600/20 text-emerald-400 text-2xl flex items-center justify-center">
+                        <i class="fab fa-whatsapp"></i>
                     </div>
                     <div>
-                        <label class="block text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-2">Kuantitas</label>
-                        <input type="number" id="input-key-qty" min="1" value="1" oninput="calcDynamicPrice('keys')" class="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-purple-500 transition">
+                        <h4 class="font-bold text-white">WhatsApp Community</h4>
+                        <p class="text-xs text-gray-400">Grup Diskusi & Mabar</p>
                     </div>
-                </div>
-                <div class="font-outfit text-2xl font-black bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent mb-4" id="price-keys-display">Rp 0</div>
-                <button onclick="checkoutKey()" class="w-full py-3 rounded-xl bg-gradient-to-r from-accentblue to-accentpurple text-white font-bold text-xs uppercase tracking-wider shadow-lg shadow-purple-500/30 hover:brightness-115 transition">Beli Keys</button>
+                </a>
             </div>
-        </div>
-    </div>
+        </section>
 
-    <!-- VIEW: QUEST -->
-    <div id="view-quest" class="view-section pt-32 pb-16 px-6 max-w-2xl mx-auto hidden">
-        <div class="bg-white/[0.02] border border-white/10 backdrop-blur-xl p-8 rounded-3xl text-center mb-8 shadow-2xl">
-            <h2 class="font-outfit text-xl font-bold mb-2">PROGRES PEMBELIAN</h2>
-            <p class="text-xs text-slate-400">Total Transaksi Anda Saat Ini:</p>
-            <div class="font-outfit text-5xl font-black bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent mt-2" id="user-buy-count">0</div>
-        </div>
-        <h3 class="font-outfit text-lg font-bold mb-4">Reward Tersedia</h3>
-        <div id="quest-container" class="space-y-3"></div>
-    </div>
-
-    <!-- VIEW: ADMIN PANEL -->
-    <div id="view-admin" class="view-section pt-32 pb-16 px-6 max-w-5xl mx-auto hidden">
-        <h2 class="font-outfit text-2xl font-bold mb-2">ADMIN CONTROL PANEL</h2>
-        <p class="text-xs text-slate-400 mb-8">Manajemen Data Store & Quest Oblivion SMP.</p>
-        
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            <div class="bg-white/[0.02] border border-white/10 backdrop-blur-xl p-6 rounded-3xl">
-                <h3 class="font-outfit text-sm font-bold text-purple-400 uppercase tracking-wider pb-3 mb-4 border-b border-white/10">Setting Harga Bundling</h3>
-                <div id="admin-bundles-list" class="space-y-3 mb-6"></div>
-                
-                <h3 class="font-outfit text-sm font-bold text-purple-400 uppercase tracking-wider pb-3 mb-4 border-b border-white/10">Rate Topup (Per Satuan Dasar)</h3>
-                <div class="space-y-3 mb-6">
-                    <div class="flex justify-between items-center bg-black/30 px-4 py-2.5 rounded-xl border border-white/5">
-                        <span class="text-xs font-semibold">10.000 Money = Rp</span>
-                        <input type="number" id="adm-rate-money" class="w-24 bg-darkbg border border-white/10 rounded-lg px-3 py-1 text-right text-xs focus:outline-none focus:border-purple-500">
+        <!-- TAB 4: AKUN / WEB3FORMS LOGIN & SUPPORT -->
+        <section id="tab-account" class="space-y-6 hidden">
+            <div class="max-w-md mx-auto glass-card p-8 rounded-3xl border border-purple-500/20 shadow-2xl glow-purple">
+                <div class="text-center mb-6">
+                    <div class="w-14 h-14 rounded-2xl bg-purple-600/20 border border-purple-500/30 text-purple-400 text-2xl mx-auto flex items-center justify-center mb-3">
+                        <i class="fas fa-user-circle"></i>
                     </div>
-                    <div class="flex justify-between items-center bg-black/30 px-4 py-2.5 rounded-xl border border-white/5">
-                        <span class="text-xs font-semibold">100 Shards = Rp</span>
-                        <input type="number" id="adm-rate-shards" class="w-24 bg-darkbg border border-white/10 rounded-lg px-3 py-1 text-right text-xs focus:outline-none focus:border-purple-500">
-                    </div>
+                    <h2 class="text-2xl font-black text-white">AKUN & DUKUNGAN</h2>
+                    <p class="text-xs text-gray-400 mt-1">Kirimkan pesan, kendala topup, atau klaim rank via Web3Forms.</p>
                 </div>
 
-                <h3 class="font-outfit text-sm font-bold text-purple-400 uppercase tracking-wider pb-3 mb-4 border-b border-white/10">Harga Satuan Keys</h3>
-                <div id="admin-keys-list" class="space-y-3 mb-6"></div>
-                
-                <button onclick="saveAdminPrices()" class="w-full py-3 rounded-xl bg-gradient-to-r from-accentblue to-accentpurple text-white font-bold text-xs uppercase tracking-wider shadow-lg shadow-purple-500/30 hover:brightness-115 transition">Simpan Perubahan Harga</button>
-            </div>
+                <!-- FORM LOGIN / SUPPORT INTEGRATED WITH WEB3FORMS -->
+                <form action="https://api.web3forms.com/submit" method="POST" class="space-y-4">
+                    <!-- Web3Forms Access Key -->
+                    <input type="hidden" name="access_key" value="35404633-9df0-472c-b973-00ee6aedb009">
+                    
+                    <div>
+                        <label class="block text-xs font-bold text-gray-300 mb-1 uppercase tracking-wider">Nama / Username In-Game</label>
+                        <div class="relative">
+                            <i class="fas fa-user absolute left-3.5 top-3.5 text-gray-500 text-xs"></i>
+                            <input type="text" name="name" required placeholder="Contoh: Alex_CPvP" class="w-full bg-black/60 border border-white/10 rounded-xl pl-9 pr-3 py-2.5 text-sm text-white focus:outline-none focus:border-purple-500 transition">
+                        </div>
+                    </div>
 
-            <div class="bg-white/[0.02] border border-white/10 backdrop-blur-xl p-6 rounded-3xl h-fit">
-                <h3 class="font-outfit text-sm font-bold text-purple-400 uppercase tracking-wider pb-3 mb-4 border-b border-white/10">Tambah Quest Baru</h3>
-                <div class="space-y-4 mb-6">
                     <div>
-                        <label class="block text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-2">Nama / Judul Quest</label>
-                        <input type="text" id="adm-q-title" placeholder="Cth: 5x Beli Produk" class="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-purple-500 transition">
+                        <label class="block text-xs font-bold text-gray-300 mb-1 uppercase tracking-wider">Alamat Email</label>
+                        <div class="relative">
+                            <i class="fas fa-envelope absolute left-3.5 top-3.5 text-gray-500 text-xs"></i>
+                            <input type="email" name="email" required placeholder="emailku@gmail.com" class="w-full bg-black/60 border border-white/10 rounded-xl pl-9 pr-3 py-2.5 text-sm text-white focus:outline-none focus:border-purple-500 transition">
+                        </div>
                     </div>
+
                     <div>
-                        <label class="block text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-2">Target Jumlah Pembelian</label>
-                        <input type="number" id="adm-q-target" placeholder="Cth: 5" class="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-purple-500 transition">
+                        <label class="block text-xs font-bold text-gray-300 mb-1 uppercase tracking-wider">Pesan / Laporan Kendala</label>
+                        <textarea name="message" required rows="4" placeholder="Tuliskan pesan atau bukti transaksi kamu di sini..." class="w-full bg-black/60 border border-white/10 rounded-xl p-3 text-sm text-white focus:outline-none focus:border-purple-500 transition resize-none"></textarea>
                     </div>
+
+                    <button type="submit" class="w-full bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-500 hover:to-blue-500 text-white font-extrabold py-3 rounded-xl text-sm transition shadow-lg glow-purple">
+                        Kirim Pesan
+                    </button>
+                </form>
+            </div>
+        </section>
+
+        <!-- TAB 5: ADMIN PANEL (TERSEMBUNYI DULU) -->
+        <section id="tab-admin" class="space-y-6 hidden">
+            <div class="glass-card p-6 rounded-2xl border border-red-500/30">
+                <div class="flex items-center justify-between mb-6 pb-4 border-b border-white/10">
                     <div>
-                        <label class="block text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-2">Reward (Teks Tampilan)</label>
-                        <input type="text" id="adm-q-reward" placeholder="Cth: Voucher Diskon 10%" class="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-purple-500 transition">
+                        <h2 class="text-2xl font-black text-red-400 flex items-center gap-2">
+                            <i class="fas fa-user-shield"></i> ADMIN PANEL CONTROL
+                        </h2>
+                        <p class="text-xs text-gray-400">Pengaturan server, slogan, voucher, dan media sosial secara real-time.</p>
+                    </div>
+                    <button onclick="lockAdmin()" class="bg-red-500/20 hover:bg-red-500/40 text-red-300 border border-red-500/30 text-xs font-bold px-3 py-1.5 rounded-xl transition">
+                        Kunci Admin
+                    </button>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- 1. Status Server & Slogan -->
+                    <div class="space-y-4 glass p-4 rounded-xl border border-white/5">
+                        <h3 class="font-bold text-white text-sm border-b border-white/10 pb-2">Status & Slogan Server</h3>
+                        
+                        <div>
+                            <label class="text-xs text-gray-400 block mb-1">Status Server:</label>
+                            <select id="admin-status-toggle" onchange="toggleServerStatus()" class="w-full bg-black/60 border border-white/10 rounded-xl p-2 text-xs text-white">
+                                <option value="online">ONLINE</option>
+                                <option value="offline">OFFLINE / MAINTENANCE</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <label class="text-xs text-gray-400 block mb-1">Ubah Slogan Server:</label>
+                            <input type="text" id="admin-slogan-input" placeholder="Masukkan slogan baru..." class="w-full bg-black/60 border border-white/10 rounded-xl p-2 text-xs text-white mb-2">
+                            <button onclick="updateSlogan()" class="bg-purple-600 hover:bg-purple-500 text-white text-xs font-bold px-4 py-2 rounded-xl transition w-full">Terapkan Slogan</button>
+                        </div>
+                    </div>
+
+                    <!-- 2. Buat Kode Voucher -->
+                    <div class="space-y-4 glass p-4 rounded-xl border border-white/5">
+                        <h3 class="font-bold text-white text-sm border-b border-white/10 pb-2">Manajemen Voucher Diskon</h3>
+                        
+                        <div>
+                            <label class="text-xs text-gray-400 block mb-1">Kode Voucher:</label>
+                            <input type="text" id="admin-voucher-code" placeholder="Contoh: DISKON50" class="w-full bg-black/60 border border-white/10 rounded-xl p-2 text-xs text-white uppercase mb-2">
+                        </div>
+
+                        <div>
+                            <label class="text-xs text-gray-400 block mb-1">Persentase Diskon (%):</label>
+                            <input type="number" id="admin-voucher-discount" placeholder="20" min="1" max="100" class="w-full bg-black/60 border border-white/10 rounded-xl p-2 text-xs text-white mb-2">
+                        </div>
+
+                        <button onclick="createVoucher()" class="bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold px-4 py-2 rounded-xl transition w-full">Buat Kode Voucher</button>
+                        
+                        <div id="active-vouchers-list" class="text-xs text-gray-400 pt-2">
+                            <!-- List voucher aktif -->
+                        </div>
+                    </div>
+
+                    <!-- 3. Buat Rank Langganan Khusus -->
+                    <div class="space-y-4 glass p-4 rounded-xl border border-white/5 md:col-span-2">
+                        <h3 class="font-bold text-white text-sm border-b border-white/10 pb-2">Rank Langganan Khusus Web</h3>
+                        
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                            <input type="text" id="admin-custom-rank-name" placeholder="Nama Rank (misal: SULTAN)" class="bg-black/60 border border-white/10 rounded-xl p-2 text-xs text-white">
+                            <input type="number" id="admin-custom-rank-price" placeholder="Harga (Rp)" class="bg-black/60 border border-white/10 rounded-xl p-2 text-xs text-white">
+                            <button onclick="addCustomRank()" class="bg-amber-600 hover:bg-amber-500 text-white text-xs font-bold px-4 py-2 rounded-xl transition">Tambah Rank Khusus</button>
+                        </div>
                     </div>
                 </div>
-                <button onclick="saveAdminQuest()" class="w-full py-3 rounded-xl bg-gradient-to-r from-accentblue to-accentpurple text-white font-bold text-xs uppercase tracking-wider shadow-lg shadow-purple-500/30 hover:brightness-115 transition">Tambahkan Quest</button>
             </div>
-        </div>
-    </div>
+        </section>
 
-    <!-- MODAL: AUTH -->
-    <div id="modal-auth" class="fixed inset-0 bg-black/80 backdrop-blur-md hidden items-center justify-center z-50 p-4">
-        <div class="bg-surface border border-purple-500/30 w-full max-w-sm rounded-3xl p-6 relative shadow-2xl">
-            <button onclick="closeModal('modal-auth')" class="absolute top-4 right-4 w-8 h-8 rounded-full bg-white/5 flex items-center justify-center text-slate-400 hover:text-white transition">&times;</button>
-            <h2 class="font-outfit text-lg font-bold text-purple-400 mb-4">SYSTEM LOGIN</h2>
-            <div class="mb-6">
-                <label class="block text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-2">PIN Admin</label>
-                <input type="password" id="auth-pin" placeholder="••••••••" class="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-purple-500 transition">
-            </div>
-            <button onclick="verifyAuth()" class="w-full py-3 rounded-xl bg-gradient-to-r from-accentblue to-accentpurple text-white font-bold text-xs uppercase tracking-wider shadow-lg shadow-purple-500/30">Akses Panel</button>
-        </div>
-    </div>
+    </main>
 
-    <!-- MODAL: CHECKOUT -->
-    <div id="modal-checkout" class="fixed inset-0 bg-black/80 backdrop-blur-md hidden items-center justify-center z-50 p-4">
-        <div class="bg-surface border border-purple-500/30 w-full max-w-sm rounded-3xl p-6 relative shadow-2xl">
-            <button onclick="closeModal('modal-checkout')" class="absolute top-4 right-4 w-8 h-8 rounded-full bg-white/5 flex items-center justify-center text-slate-400 hover:text-white transition">&times;</button>
-            <h2 class="font-outfit text-lg font-bold mb-4">CHECKOUT PESANAN</h2>
-            <div id="co-details-box" class="bg-black/30 border border-white/10 p-4 rounded-2xl mb-6 text-xs space-y-1"></div>
-            <div class="mb-6">
-                <label class="block text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-2">Nickname In-Game Minecraft</label>
-                <input type="text" id="co-nickname" placeholder="Ketik nama karaktermu..." class="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-purple-500 transition">
+    <!-- CHECKOUT MODAL -->
+    <div id="checkout-modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+        <div class="glass-card max-w-md w-full p-6 rounded-3xl border border-purple-500/30 space-y-4 relative">
+            <button onclick="closeCheckout()" class="absolute top-4 right-4 text-gray-400 hover:text-white">
+                <i class="fas fa-times"></i>
+            </button>
+
+            <h3 class="text-xl font-black text-white flex items-center gap-2">
+                <i class="fas fa-shopping-cart text-purple-400"></i> Ringkasan Pembelian
+            </h3>
+
+            <div class="space-y-2 bg-black/40 p-4 rounded-xl border border-white/5 text-sm">
+                <div class="flex justify-between text-gray-400">
+                    <span>Username:</span>
+                    <span id="modal-username" class="font-bold text-white">-</span>
+                </div>
+                <div class="flex justify-between text-gray-400">
+                    <span>Item:</span>
+                    <span id="modal-item-name" class="font-bold text-white">-</span>
+                </div>
+                <div class="flex justify-between text-gray-400">
+                    <span>Harga Normal:</span>
+                    <span id="modal-original-price" class="font-bold text-white">-</span>
+                </div>
+                <div id="modal-discount-row" class="flex justify-between text-emerald-400 hidden">
+                    <span>Diskon Voucher:</span>
+                    <span id="modal-discount-val">-0%</span>
+                </div>
+                <div class="border-t border-white/10 pt-2 flex justify-between text-base font-extrabold">
+                    <span class="text-white">Total Bayar:</span>
+                    <span id="modal-final-price" class="text-emerald-400">-</span>
+                </div>
             </div>
-            <button onclick="processCheckout()" class="w-full py-3 rounded-xl bg-gradient-to-r from-emerald-600 to-emerald-500 hover:brightness-110 text-white font-bold text-xs uppercase tracking-wider shadow-lg shadow-emerald-600/30 flex items-center justify-center gap-2">
-                <i class="fa-brands fa-whatsapp text-base"></i> Konfirmasi via WhatsApp
+
+            <!-- Voucher Code Input -->
+            <div class="flex gap-2">
+                <input type="text" id="voucher-input" placeholder="Punya kode voucher?" class="flex-1 bg-black/60 border border-white/10 rounded-xl px-3 py-2 text-xs text-white uppercase focus:outline-none focus:border-purple-500">
+                <button onclick="applyVoucher()" class="bg-purple-600 hover:bg-purple-500 text-white font-bold px-4 py-2 rounded-xl text-xs transition">Gunakan</button>
+            </div>
+
+            <p class="text-[11px] text-gray-400 text-center">Setiap pembelian akan diverifikasi oleh Admin via WhatsApp.</p>
+
+            <button onclick="submitToWhatsApp()" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-extrabold py-3 rounded-xl text-sm transition flex items-center justify-center space-x-2">
+                <i class="fab fa-whatsapp text-lg"></i>
+                <span>Lanjutkan Pembayaran via WA</span>
             </button>
         </div>
     </div>
 
-    <!-- SCRIPT -->
+    <!-- ADMIN PASSWORD POPUP MODAL -->
+    <div id="admin-pass-modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+        <div class="glass-card max-w-sm w-full p-6 rounded-3xl border border-red-500/30 space-y-4 text-center">
+            <div class="w-12 h-12 rounded-2xl bg-red-500/20 text-red-400 text-xl mx-auto flex items-center justify-center">
+                <i class="fas fa-lock"></i>
+            </div>
+            <h3 class="text-lg font-black text-white">Verifikasi Admin Panel</h3>
+            <p class="text-xs text-gray-400">Masukkan kata sandi rahasia untuk membuka akses admin.</p>
+            
+            <input type="password" id="admin-pass-input" placeholder="Masukkan Password..." class="w-full bg-black/60 border border-white/10 rounded-xl p-3 text-center text-sm text-white focus:outline-none focus:border-red-500">
+
+            <div class="flex gap-2">
+                <button onclick="closeAdminPassModal()" class="flex-1 bg-white/10 hover:bg-white/20 text-white text-xs font-bold py-2.5 rounded-xl transition">Batal</button>
+                <button onclick="verifyAdminPassword()" class="flex-1 bg-red-600 hover:bg-red-500 text-white text-xs font-bold py-2.5 rounded-xl transition">Masuk</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- BOTTOM NAVBAR DOCK -->
+    <nav class="fixed bottom-4 left-1/2 transform -translate-x-1/2 z-40 glass rounded-full px-4 py-2 border border-white/10 shadow-2xl flex items-center space-x-2 sm:space-x-4">
+        <button onclick="switchTab('home')" id="nav-home" class="nav-btn px-4 py-2 rounded-full text-xs font-bold transition flex items-center space-x-2 text-purple-400 bg-purple-500/10 border border-purple-500/20">
+            <i class="fas fa-home"></i>
+            <span class="hidden sm:inline">Home</span>
+        </button>
+
+        <button onclick="switchTab('store')" id="nav-store" class="nav-btn px-4 py-2 rounded-full text-xs font-bold transition flex items-center space-x-2 text-gray-400 hover:text-white">
+            <i class="fas fa-shopping-bag"></i>
+            <span class="hidden sm:inline">Store</span>
+        </button>
+
+        <button onclick="switchTab('social')" id="nav-social" class="nav-btn px-4 py-2 rounded-full text-xs font-bold transition flex items-center space-x-2 text-gray-400 hover:text-white">
+            <i class="fas fa-share-alt"></i>
+            <span class="hidden sm:inline">Medsos</span>
+        </button>
+
+        <button onclick="switchTab('account')" id="nav-account" class="nav-btn px-4 py-2 rounded-full text-xs font-bold transition flex items-center space-x-2 text-gray-400 hover:text-white">
+            <i class="fas fa-user"></i>
+            <span class="hidden sm:inline">Akun</span>
+        </button>
+
+        <!-- Dynamic Hidden Admin Nav Button -->
+        <button onclick="switchTab('admin')" id="nav-admin" class="nav-btn px-4 py-2 rounded-full text-xs font-bold transition flex items-center space-x-2 text-red-400 hover:text-red-300 hidden">
+            <i class="fas fa-user-shield"></i>
+            <span class="hidden sm:inline">Admin</span>
+        </button>
+    </nav>
+
+    <!-- JAVASCRIPT LOGIC -->
     <script>
-        const defaultStore = {
-            bundles: {
-                basic: { name: "Paket Basic", price: 25000, tag: "", desc: ["Rank OBLIV", "Money 25.000", "Shards 1500", "Kit OBLIV", "Key Gold 5x"] },
-                medium: { name: "Paket Medium", price: 50000, tag: "Ekonomis", desc: ["Rank OBLIV+", "Money 50.000", "Shards 2500", "Amethysth Pickaxe", "Kit OBLIV+", "Key Prime 5x"] },
-                high: { name: "Paket High", price: 60000, tag: "Best Seller", desc: ["Rank OBLIV++", "Money 150.000", "Shards 3500", "Amethysth Pickaxe", "Kit OBLIV++", "Key Crimson 2x & Key Prime 5x", "Spawner Golem 2x"] },
-                extreme: { name: "Paket Extreme", price: 125000, tag: "Rekomendasi", desc: ["Rank OBLIV+++", "Money 250.000", "Shards 5000", "Amethysth Pickaxe", "Kit OBLIV+++", "Key Amethyst 5x & Crimson 5x", "Spawner Golem 5x"] }
-            },
-            rates: { money: 1000, shards: 1000 },
-            keys: { common: 2000, gold: 4000, prime: 6000, amethyst: 8000, crimson: 10000 }
-        };
+        // Global States
+        let titleClickCount = 0;
+        let titleClickTimer = null;
+        let isAdminUnlocked = false;
+        let activeVouchers = { "OBLIVION20": 20 }; // default voucher 20%
+        let currentCheckout = { item: '', price: 0, finalPrice: 0, discount: 0 };
 
-        const defaultQuests = [
-            { id: 1, title: '1x Beli Produk', target: 1, rewardText: 'Voucher Khusus Pemula' },
-            { id: 5, title: '5x Beli Produk', target: 5, rewardText: 'Voucher Pelanggan Setia' }
-        ];
+        // Toast Helper
+        function showToast(msg, isSuccess = true) {
+            const toast = document.getElementById('toast');
+            const toastMsg = document.getElementById('toast-msg');
+            const toastIcon = document.getElementById('toast-icon');
 
-        let storeData = JSON.parse(localStorage.getItem('oblivion_store_data')) || defaultStore;
-        let questsData = JSON.parse(localStorage.getItem('oblivion_quests_data')) || defaultQuests;
-        let purchaseCount = parseInt(localStorage.getItem('oblivion_buy_count')) || 0;
-        let claimedQuests = JSON.parse(localStorage.getItem('oblivion_claimed_quests')) || [];
+            toastMsg.innerText = msg;
+            toastIcon.className = isSuccess ? "fas fa-check-circle text-purple-400 text-lg" : "fas fa-exclamation-circle text-red-400 text-lg";
+            
+            toast.classList.remove('translate-y-[-100px]', 'opacity-0');
+            toast.classList.add('translate-y-0', 'opacity-100');
 
-        localStorage.setItem('oblivion_store_data', JSON.stringify(storeData));
-        localStorage.setItem('oblivion_quests_data', JSON.stringify(questsData));
+            setTimeout(() => {
+                toast.classList.add('translate-y-[-100px]', 'opacity-0');
+                toast.classList.remove('translate-y-0', 'opacity-100');
+            }, 3000);
+        }
 
-        function renderBundles() {
-            const container = document.getElementById('cat-bundling');
-            container.innerHTML = '';
-            for (let key in storeData.bundles) {
-                const b = storeData.bundles[key];
-                let lis = '';
-                b.desc.forEach(item => { lis += `<li class="flex items-start gap-2.5 text-xs text-slate-400"><i class="fa-solid fa-check text-accentblue mt-0.5"></i> ${item}</li>`; });
-                
-                container.innerHTML += `
-                    <div class="bg-white/[0.02] border border-white/10 backdrop-blur-xl p-6 rounded-3xl flex flex-col justify-between relative overflow-hidden hover:border-purple-500/40 transition shadow-xl">
-                        ${b.tag ? `<div class="absolute top-4 -right-8 bg-gradient-to-r from-accentblue to-accentpurple text-white text-[9px] font-extrabold py-1 px-8 rotate-45 uppercase tracking-widest shadow-md">${b.tag}</div>` : ''}
-                        <div>
-                            <h2 class="font-outfit text-xl font-bold mb-4">${b.name}</h2>
-                            <ul class="space-y-2 mb-6">${lis}</ul>
-                        </div>
-                        <div>
-                            <div class="font-outfit text-2xl font-black bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent mb-4">Rp ${b.price.toLocaleString('id-ID')}</div>
-                            <button onclick="openCheckout('Bundling Package', '${b.name}', ${b.price})" class="w-full py-3 rounded-xl bg-gradient-to-r from-accentblue to-accentpurple text-white font-bold text-xs uppercase tracking-wider shadow-lg shadow-purple-500/30 hover:brightness-115 transition">Beli Paket</button>
-                        </div>
-                    </div>
-                `;
+        // Switch Bottom Navbar Tabs
+        function switchTab(tabName) {
+            const tabs = ['home', 'store', 'social', 'account', 'admin'];
+            tabs.forEach(t => {
+                const tabEl = document.getElementById(`tab-${t}`);
+                const navBtn = document.getElementById(`nav-${t}`);
+                if (tabEl) tabEl.classList.add('hidden');
+                if (navBtn) {
+                    navBtn.className = "nav-btn px-4 py-2 rounded-full text-xs font-bold transition flex items-center space-x-2 text-gray-400 hover:text-white";
+                }
+            });
+
+            const targetTab = document.getElementById(`tab-${tabName}`);
+            const targetNav = document.getElementById(`nav-${tabName}`);
+            if (targetTab) targetTab.classList.remove('hidden');
+            if (targetNav) {
+                targetNav.className = "nav-btn px-4 py-2 rounded-full text-xs font-bold transition flex items-center space-x-2 text-purple-400 bg-purple-500/10 border border-purple-500/20";
             }
         }
 
-        function formatRp(num) { return 'Rp ' + num.toLocaleString('id-ID'); }
+        // 5-Click Admin Unlock Secret
+        function handleTitleClick() {
+            titleClickCount++;
+            clearTimeout(titleClickTimer);
 
-        function calcDynamicPrice(type) {
-            if (type === 'money') {
-                const qty = parseInt(document.getElementById('input-money-qty').value) || 0;
-                document.getElementById('price-money-display').innerText = formatRp((qty / 10000) * storeData.rates.money);
-            } else if (type === 'shards') {
-                const qty = parseInt(document.getElementById('input-shards-qty').value) || 0;
-                document.getElementById('price-shards-display').innerText = formatRp((qty / 100) * storeData.rates.shards);
-            } else if (type === 'keys') {
-                const kType = document.getElementById('input-key-type').value;
-                const qty = parseInt(document.getElementById('input-key-qty').value) || 1;
-                document.getElementById('price-keys-display').innerText = formatRp(storeData.keys[kType] * qty);
+            if (titleClickCount >= 5) {
+                titleClickCount = 0;
+                if (!isAdminUnlocked) {
+                    document.getElementById('admin-pass-modal').classList.remove('hidden');
+                } else {
+                    switchTab('admin');
+                    showToast("Kamu sudah masuk dalam mode Admin!");
+                }
+            } else {
+                titleClickTimer = setTimeout(() => {
+                    titleClickCount = 0;
+                }, 1500);
             }
         }
 
-        function getDynamicPrice(type) {
-            if (type === 'money') return (parseInt(document.getElementById('input-money-qty').value) / 10000) * storeData.rates.money;
-            if (type === 'shards') return (parseInt(document.getElementById('input-shards-qty').value) / 100) * storeData.rates.shards;
-            return 0;
+        function closeAdminPassModal() {
+            document.getElementById('admin-pass-modal').classList.add('hidden');
+            document.getElementById('admin-pass-input').value = '';
+        }
+
+        function verifyAdminPassword() {
+            const inputPass = document.getElementById('admin-pass-input').value;
+            if (inputPass === 'admin123') {
+                isAdminUnlocked = true;
+                closeAdminPassModal();
+                document.getElementById('nav-admin').classList.remove('hidden');
+                switchTab('admin');
+                showToast("Password benar! Panel Admin telah diaktifkan.");
+            } else {
+                showToast("Password Admin Salah!", false);
+            }
+        }
+
+        function lockAdmin() {
+            isAdminUnlocked = false;
+            document.getElementById('nav-admin').classList.add('hidden');
+            switchTab('home');
+            showToast("Akses Admin dikunci kembali.");
+        }
+
+        // Copy Server IP
+        function copyIP() {
+            navigator.clipboard.writeText("play.oblivion.my.id:25616");
+            showToast("IP Server berhasil disalin ke clipboard!");
+        }
+
+        // Currency Calculators
+        function updateMoneyPrice() {
+            const qty = parseInt(document.getElementById('money-qty').value) || 0;
+            const price = Math.ceil((qty / 5000) * 1000);
+            document.getElementById('money-total-price').innerText = `Rp ${price.toLocaleString('id-ID')}`;
+        }
+
+        function updateShardsPrice() {
+            const qty = parseInt(document.getElementById('shards-qty').value) || 0;
+            const price = Math.ceil((qty / 100) * 1000);
+            document.getElementById('shards-total-price').innerText = `Rp ${price.toLocaleString('id-ID')}`;
+        }
+
+        function updateKeyPrice() {
+            const select = document.getElementById('key-type');
+            const unitPrice = parseInt(select.options[select.selectedIndex].getAttribute('data-price'));
+            const qty = parseInt(document.getElementById('key-qty').value) || 1;
+            const total = unitPrice * qty;
+            document.getElementById('key-total-price').innerText = `Rp ${total.toLocaleString('id-ID')}`;
+        }
+
+        // Store Checkout Functions
+        function checkoutItem(itemName, price) {
+            const username = document.getElementById('store-username').value.trim();
+            if (!username) {
+                showToast("Masukkan username Minecraft kamu dulu di bagian atas store!", false);
+                return;
+            }
+
+            currentCheckout = { item: itemName, price: price, finalPrice: price, discount: 0 };
+            
+            document.getElementById('modal-username').innerText = username;
+            document.getElementById('modal-item-name').innerText = itemName;
+            document.getElementById('modal-original-price').innerText = `Rp ${price.toLocaleString('id-ID')}`;
+            document.getElementById('modal-final-price').innerText = `Rp ${price.toLocaleString('id-ID')}`;
+            document.getElementById('modal-discount-row').classList.add('hidden');
+            document.getElementById('voucher-input').value = '';
+
+            document.getElementById('checkout-modal').classList.remove('hidden');
+        }
+
+        function checkoutMoney() {
+            const qty = parseInt(document.getElementById('money-qty').value) || 0;
+            const price = Math.ceil((qty / 5000) * 1000);
+            checkoutItem(`${qty.toLocaleString('id-ID')} In-Game Money`, price);
+        }
+
+        function checkoutShards() {
+            const qty = parseInt(document.getElementById('shards-qty').value) || 0;
+            const price = Math.ceil((qty / 100) * 1000);
+            checkoutItem(`${qty.toLocaleString('id-ID')} In-Game Shards`, price);
         }
 
         function checkoutKey() {
-            const kType = document.getElementById('input-key-type');
-            const qty = parseInt(document.getElementById('input-key-qty').value);
-            openCheckout('Crates Key', `${qty}x ${kType.options[kType.selectedIndex].text}`, storeData.keys[kType.value] * qty);
+            const select = document.getElementById('key-type');
+            const keyName = select.options[select.selectedIndex].text.split('(')[0].trim();
+            const qty = parseInt(document.getElementById('key-qty').value) || 1;
+            const unitPrice = parseInt(select.options[select.selectedIndex].getAttribute('data-price'));
+            checkoutItem(`${qty}x ${keyName}`, unitPrice * qty);
         }
 
-        function renderQuests() {
-            document.getElementById('user-buy-count').innerText = purchaseCount;
-            const container = document.getElementById('quest-container');
-            container.innerHTML = '';
-            questsData.forEach(q => {
-                const isClaimed = claimedQuests.includes(q.id);
-                const canClaim = purchaseCount >= q.target;
-                
-                container.innerHTML += `
-                    <div class="bg-white/[0.02] border border-white/10 backdrop-blur-xl p-5 rounded-2xl flex justify-between items-center ${isClaimed ? 'opacity-50' : ''}">
-                        <div>
-                            <h4 class="font-bold text-sm text-white mb-1">${q.title}</h4>
-                            <p class="text-xs font-semibold text-purple-400">${q.rewardText}</p>
-                        </div>
-                        <button class="py-2 px-4 rounded-xl font-bold text-xs uppercase tracking-wider transition ${isClaimed || !canClaim ? 'bg-white/5 text-slate-500 border border-white/5 cursor-not-allowed' : 'bg-gradient-to-r from-accentblue to-accentpurple text-white shadow-md shadow-purple-500/20 hover:brightness-115'}" 
-                        ${isClaimed || !canClaim ? 'disabled' : ''} onclick="claimQuest(${q.id})">
-                            ${isClaimed ? 'Diklaim' : canClaim ? 'Klaim' : `Kurang ${q.target - purchaseCount}x`}
-                        </button>
-                    </div>
-                `;
-            });
-        }
+        function applyVoucher() {
+            const code = document.getElementById('voucher-input').value.trim().toUpperCase();
+            if (activeVouchers[code]) {
+                const discountPercent = activeVouchers[code];
+                const discountAmount = (currentCheckout.price * discountPercent) / 100;
+                currentCheckout.finalPrice = currentCheckout.price - discountAmount;
+                currentCheckout.discount = discountPercent;
 
-        function claimQuest(id) {
-            if (!claimedQuests.includes(id)) {
-                claimedQuests.push(id);
-                localStorage.setItem('oblivion_claimed_quests', JSON.stringify(claimedQuests));
-                alert("Reward Berhasil Diklaim!");
-                renderQuests();
+                document.getElementById('modal-original-price').classList.add('line-through', 'text-gray-500');
+                document.getElementById('modal-discount-val').innerText = `-${discountPercent}%`;
+                document.getElementById('modal-discount-row').classList.remove('hidden');
+                document.getElementById('modal-final-price').innerText = `Rp ${currentCheckout.finalPrice.toLocaleString('id-ID')}`;
+
+                showToast(`Voucher berhasil dipasang! Diskon ${discountPercent}%`);
+            } else {
+                showToast("Kode voucher tidak valid atau sudah kadaluarsa!", false);
             }
         }
 
-        function switchCategory(catId, btn) {
-            document.querySelectorAll('.cat-tab').forEach(b => {
-                b.className = "cat-tab px-6 py-3 rounded-xl font-bold text-xs tracking-wider uppercase transition bg-white/[0.03] text-slate-400 hover:text-white border border-white/10 whitespace-nowrap";
-            });
-            btn.className = "cat-tab px-6 py-3 rounded-xl font-bold text-xs tracking-wider uppercase transition bg-gradient-to-r from-accentblue to-accentpurple text-white shadow-lg shadow-purple-500/25 whitespace-nowrap";
-            
-            document.querySelectorAll('.products-grid').forEach(g => g.classList.add('hidden'));
-            document.getElementById('cat-' + catId).classList.remove('hidden');
-            if (catId === 'topup' || catId === 'keys') { calcDynamicPrice('money'); calcDynamicPrice('shards'); calcDynamicPrice('keys'); }
+        function closeCheckout() {
+            document.getElementById('checkout-modal').classList.add('hidden');
         }
 
-        function switchMainTab(tabId, btn) {
-            document.querySelectorAll('.nav-btn').forEach(b => {
-                b.className = "nav-btn px-5 py-2 rounded-xl text-xs font-semibold tracking-wide text-slate-400 hover:text-white transition";
-            });
-            if(btn) btn.className = "nav-btn px-5 py-2 rounded-xl text-xs font-semibold tracking-wide transition active bg-gradient-to-r from-accentblue to-accentpurple text-white shadow-md shadow-purple-500/20";
+        function submitToWhatsApp() {
+            const username = document.getElementById('modal-username').innerText;
+            const msg = `Halo Admin OBLIVION OFFICIAL, saya mau membeli:\n\n` +
+                        ` Username: ${username}\n` +
+                        ` Item: ${currentCheckout.item}\n` +
+                        ` Total Bayar: Rp ${currentCheckout.finalPrice.toLocaleString('id-ID')}\n` +
+                        (currentCheckout.discount > 0 ? ` Voucher: Ya (${currentCheckout.discount}% OFF)\n` : '') +
+                        `Mohon diproses, terima kasih!`;
             
-            document.querySelectorAll('.view-section').forEach(v => v.classList.add('hidden'));
-            document.getElementById('view-' + tabId).classList.remove('hidden');
-            
-            if(tabId === 'quest') renderQuests();
-            if(tabId === 'admin') loadAdminData();
-            window.scrollTo(0,0);
+            const waUrl = `https://wa.me/6281234567890?text=${encodeURIComponent(msg)}`;
+            window.open(waUrl, '_blank');
         }
 
-        let currentCheckout = {};
-        function openCheckout(category, item, price) {
-            currentCheckout = { category, item, price };
-            document.getElementById('co-details-box').innerHTML = `
-                <p class="text-slate-400">Kategori: <strong class="text-white">${category}</strong></p>
-                <p class="text-slate-400">Item: <strong class="text-white">${item}</strong></p>
-                <p class="text-purple-400 pt-2 font-bold text-sm">Total: ${formatRp(price)}</p>
-            `;
-            document.getElementById('modal-checkout').classList.remove('hidden');
-            document.getElementById('modal-checkout').classList.add('flex');
-        }
+        // Admin Panel Controls
+        function toggleServerStatus() {
+            const val = document.getElementById('admin-status-toggle').value;
+            const indicator = document.getElementById('status-indicator');
+            const text = document.getElementById('status-text');
 
-        function processCheckout() {
-            const nick = document.getElementById('co-nickname').value.trim();
-            if(!nick) return alert("Nickname Minecraft wajib diisi!");
-            
-            purchaseCount++;
-            localStorage.setItem('oblivion_buy_count', purchaseCount);
-            
-            const text = `🚀 *OBLIVION SMP STORE*\n\n• *Nickname:* ${nick}\n• *Kategori:* ${currentCheckout.category}\n• *Pesanan:* ${currentCheckout.item}\n• *Total Tagihan:* Rp ${currentCheckout.price.toLocaleString('id-ID')}\n\nMohon proses pesanan saya, min!`;
-            window.open(`https://wa.me/6289676623406?text=${encodeURIComponent(text)}`, '_blank');
-            closeModal('modal-checkout');
-            renderQuests();
-        }
-
-        let logoClicks = 0, clickTimer;
-        document.getElementById('logo-trigger').addEventListener('click', () => {
-            logoClicks++; clearTimeout(clickTimer);
-            clickTimer = setTimeout(() => logoClicks = 0, 2000);
-            if(logoClicks >= 5) {
-                logoClicks = 0;
-                document.getElementById('modal-auth').classList.remove('hidden');
-                document.getElementById('modal-auth').classList.add('flex');
-                document.getElementById('auth-pin').value = '';
+            if (val === 'online') {
+                indicator.className = "w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse";
+                text.innerText = "SERVER ONLINE";
+            } else {
+                indicator.className = "w-2.5 h-2.5 rounded-full bg-red-500";
+                text.innerText = "MAINTENANCE";
             }
-        });
-
-        function verifyAuth() {
-            if(document.getElementById('auth-pin').value === 'admin123') {
-                localStorage.setItem('oblivion_is_admin', 'true');
-                alert("Akses Sistem Admin Terbuka.");
-                closeModal('modal-auth'); checkAdminStatus();
-                switchMainTab('admin', document.getElementById('admin-nav-btn'));
-            } else { alert("PIN Salah!"); }
+            showToast("Status server diperbarui!");
         }
 
-        function checkAdminStatus() {
-            if(localStorage.getItem('oblivion_is_admin') === 'true') {
-                document.getElementById('admin-nav-btn').classList.remove('hidden');
+        function updateSlogan() {
+            const newSlogan = document.getElementById('admin-slogan-input').value.trim();
+            if (newSlogan) {
+                document.getElementById('header-slogan').innerText = newSlogan;
+                document.getElementById('hero-slogan').innerText = newSlogan;
+                showToast("Slogan server berhasil diubah!");
             }
         }
 
-        function loadAdminData() {
-            let bHtml = '';
-            for(let k in storeData.bundles) {
-                bHtml += `<div class="flex justify-between items-center bg-black/30 px-4 py-2.5 rounded-xl border border-white/5"><span class="text-xs font-semibold">${storeData.bundles[k].name}</span><input type="number" id="adm-b-${k}" value="${storeData.bundles[k].price}" class="w-24 bg-darkbg border border-white/10 rounded-lg px-3 py-1 text-right text-xs focus:outline-none focus:border-purple-500"></div>`;
+        function createVoucher() {
+            const code = document.getElementById('admin-voucher-code').value.trim().toUpperCase();
+            const discount = parseInt(document.getElementById('admin-voucher-discount').value);
+
+            if (code && discount > 0) {
+                activeVouchers[code] = discount;
+                showToast(`Voucher '${code}' (${discount}%) berhasil dibuat!`);
+                renderVouchersList();
             }
-            document.getElementById('admin-bundles-list').innerHTML = bHtml;
-            
-            document.getElementById('adm-rate-money').value = storeData.rates.money;
-            document.getElementById('adm-rate-shards').value = storeData.rates.shards;
+        }
 
-            let kHtml = '';
-            for(let k in storeData.keys) {
-                kHtml += `<div class="flex justify-between items-center bg-black/30 px-4 py-2.5 rounded-xl border border-white/5"><span class="text-xs font-semibold capitalize">${k} Key</span><input type="number" id="adm-k-${k}" value="${storeData.keys[k]}" class="w-24 bg-darkbg border border-white/10 rounded-lg px-3 py-1 text-right text-xs focus:outline-none focus:border-purple-500"></div>`;
+        function renderVouchersList() {
+            const listEl = document.getElementById('active-vouchers-list');
+            listEl.innerHTML = '<p class="font-bold mb-1">Voucher Aktif:</p>';
+            for (let [code, disc] of Object.entries(activeVouchers)) {
+                listEl.innerHTML += `<div class="flex justify-between border-b border-white/5 py-1"><span>${code}</span><span class="text-emerald-400 font-bold">${disc}% OFF</span></div>`;
             }
-            document.getElementById('admin-keys-list').innerHTML = kHtml;
         }
 
-        function saveAdminPrices() {
-            for(let k in storeData.bundles) { storeData.bundles[k].price = parseInt(document.getElementById(`adm-b-${k}`).value); }
-            storeData.rates.money = parseInt(document.getElementById('adm-rate-money').value);
-            storeData.rates.shards = parseInt(document.getElementById('adm-rate-shards').value);
-            for(let k in storeData.keys) { storeData.keys[k] = parseInt(document.getElementById(`adm-k-${k}`).value); }
-            
-            localStorage.setItem('oblivion_store_data', JSON.stringify(storeData));
-            alert("Harga berhasil diperbarui!");
-            renderBundles();
+        function addCustomRank() {
+            const rankName = document.getElementById('admin-custom-rank-name').value.trim();
+            const rankPrice = parseInt(document.getElementById('admin-custom-rank-price').value);
+
+            if (rankName && rankPrice) {
+                showToast(`Rank khusus '${rankName}' ditambahkan ke web!`);
+            }
         }
 
-        function saveAdminQuest() {
-            const title = document.getElementById('adm-q-title').value;
-            const target = parseInt(document.getElementById('adm-q-target').value);
-            const reward = document.getElementById('adm-q-reward').value;
-            
-            if(!title || !target || !reward) return alert("Isi semua data quest!");
-            
-            questsData.push({ id: Date.now(), title, target, rewardText: reward });
-            localStorage.setItem('oblivion_quests_data', JSON.stringify(questsData));
-            
-            alert("Quest Baru Berhasil Ditambahkan!");
-            document.getElementById('adm-q-title').value = '';
-            document.getElementById('adm-q-target').value = '';
-            document.getElementById('adm-q-reward').value = '';
-        }
-
-        function closeModal(id) {
-            document.getElementById(id).classList.add('hidden');
-            document.getElementById(id).classList.remove('flex');
-        }
-
-        window.addEventListener('DOMContentLoaded', () => {
-            checkAdminStatus();
-            renderBundles();
-            calcDynamicPrice('money'); calcDynamicPrice('shards'); calcDynamicPrice('keys');
-        });
+        // Initial setup
+        renderVouchersList();
     </script>
 </body>
 </html>
